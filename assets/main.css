@@ -1,0 +1,9 @@
+body,html{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    border: 0;
+    overflow: hidden; /*  Disable scrollbars */
+    display: block;  /* No floating content on sides */
+}
