@@ -1,3 +1,6 @@
+var appName = 'HeavyBall',
+    errorTitle = '[' + appName + ' - Error]: ';
+
 function HeavyBall( options ) {
     // Private
     var area   = null,
@@ -49,8 +52,8 @@ function HeavyBall( options ) {
 
     // resize game area
     function resize(){
-        ctxWidth  = canvas.height = area.clientHeight;
-        ctxHeight = canvas.width  = area.clientWidth;
+        ctxHeight = canvas.height = area.clientHeight;
+        ctxWidth  = canvas.width  = area.clientWidth;
     }
 
     // Default options od class
