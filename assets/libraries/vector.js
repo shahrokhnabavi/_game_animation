@@ -1,10 +1,10 @@
 function Vector(x, y){
 
-    this.move = velocity => {
+    this.move = (velocity, speed) => {
         if( typeof velocity !== 'object' || velocity.constructor.name !== 'Vector') throw errorTitle + 'Invalid Parameter';
-
-        this.x += velocity.x;
-        this.y += velocity.y;
+        speed = speed ? speed : 1;
+        this.x += velocity.x * speed;
+        this.y += velocity.y * speed;
     };
 
     this.isEmpty = (typeof x == 'undefined' || typeof y == 'undefined');

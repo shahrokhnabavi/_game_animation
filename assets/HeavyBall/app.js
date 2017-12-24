@@ -37,6 +37,11 @@ function HeavyBall( options ) {
         ctx.clearRect(0, 0, ctxWidth, ctxHeight);
 
         for (let index = 0; index < balls.length; index++) {
+            if( balls[index].getLifeTime() ) {
+                balls.splice(index,1);
+                index--;
+                continue;
+            }
             balls[index].move().draw();
         }
     }
@@ -44,7 +49,10 @@ function HeavyBall( options ) {
     // Create new ball
     function createBall(){
         var ball = new Ball({
-            ctx: ctx
+            ctx: ctx,
+            velocity: new Vector(0, 0),
+            speed: 0.5,
+            lifeTime: 5,
         });
 
         balls.push(ball);
@@ -54,6 +62,8 @@ function HeavyBall( options ) {
     function resize(){
         ctxHeight = canvas.height = area.clientHeight;
         ctxWidth  = canvas.width  = area.clientWidth;
+
+        balls.forEach( item => item.getActiveArea() );
     }
 
     // Default options od class
