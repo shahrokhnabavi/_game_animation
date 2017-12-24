@@ -3,9 +3,12 @@ function HeavyBall( options ) {
     var area   = null,
         canvas = null,
         ctx    = null,
+        ctxWidth  = 0,
+        ctxHeight = 0,
 
-        balls  = [];
+        balls = [];
 
+    // Initialize
     function init() {
 
         area = document.querySelector(this.opt.selector);
@@ -19,30 +22,35 @@ function HeavyBall( options ) {
 
         ctx = canvas.getContext('2d');
 
-        createBall();
-
+        window.addEventListener('click', createBall);
         window.addEventListener('resize', resize);
+
+        createBall();
+        update();
     }
 
     function update() {
         requestAnimationFrame(update);
-        this.ctx.clearRect(0, 0, this.width, this.height);
+        ctx.clearRect(0, 0, ctxWidth, ctxHeight);
 
-        for (let index = 0; index < this.balls.length; index++) {
-            this.balls[index].move().scale(this.mouse, 50).draw();
+        for (let index = 0; index < balls.length; index++) {
+            balls[index].move().draw();
         }
     }
 
+    // Create new ball
     function createBall(){
-        var ball = new Ball();
+        var ball = new Ball({
+            ctx: ctx
+        });
 
         balls.push(ball);
     }
 
     // resize game area
     function resize(){
-        canvas.height = area.clientHeight;
-        canvas.width  = area.clientWidth;
+        ctxWidth  = canvas.height = area.clientHeight;
+        ctxHeight = canvas.width  = area.clientWidth;
     }
 
     // Default options od class
@@ -52,5 +60,6 @@ function HeavyBall( options ) {
         bgColor: '#22333B',
     }, options);
 
+    // Call Initialize
     init.call(this);
 };
