@@ -4,7 +4,7 @@ function Ball( option ){
         ctxWidth  = 0,
         ctxHeight = 0,
 
-        gravity   = 0.8,
+        gravity   = 0.5,
         createdAt = 0;
 
 
@@ -50,25 +50,32 @@ function Ball( option ){
     this.move = () => {
         var x = this.opt.pos.x,
             y = this.opt.pos.y,
-            r = this.opt.radius;
+            r = this.opt.radius,
+            friction = 1 / (this.opt.weight > 15 ? 15 : this.opt.weight < 1 ? 1 : this.opt.weight);
 
         if( x < r || x > ctxWidth - r )
             this.opt.velocity.x *= -1;
 
         if( y < r || y > ctxHeight - r )
-            this.opt.velocity.y *= -1;
-        else
+        {
+            this.opt.velocity.y *= -1 * friction;
+
+            if ( this.opt.velocity.y < 0.00001 )
+                this.opt.pos.y = ctxHeight - r;
+        } else
             this.opt.velocity.y += gravity;
 
         this.opt.pos.move(this.opt.velocity, this.opt.speed);
         return this;
     };
 
+    // Set Active Area for Ball
     this.getActiveArea = () => {
         ctxHeight = ctx.canvas.clientHeight;
         ctxWidth  = ctx.canvas.clientWidth;
     };
 
+    // Define a Destroy Time
     this.getLifeTime = () => {
         if( this.opt.lifeTime === 0 ) return false;
         return parseInt( (new Date().getTime() - createdAt) / 1000)  > this.opt.lifeTime;
@@ -83,6 +90,7 @@ function Ball( option ){
         color: randColor(),
         speed: 5,
         lifeTime: 0,
+        weight: 14,
     }, option);
 
     // Call Initialize

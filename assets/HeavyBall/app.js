@@ -50,9 +50,10 @@ function HeavyBall( options ) {
     function createBall(){
         var ball = new Ball({
             ctx: ctx,
-            velocity: new Vector(0, 0),
+            velocity: new Vector(rand(-2,2), 0),
             speed: 0.5,
-            lifeTime: 5,
+            lifeTime: 0,
+            weight: 1.5,
         });
 
         balls.push(ball);
