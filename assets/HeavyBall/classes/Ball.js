@@ -58,7 +58,6 @@ function Ball(option) {
         else
             this.opt.velocity.x *= 0.995;
 
-
         if (y < r || y > ctxHeight - r - this.opt.velocity.y * this.opt.speed) {
             this.opt.velocity.y *= -1 * friction;
 
