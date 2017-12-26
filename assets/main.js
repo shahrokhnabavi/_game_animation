@@ -1,5 +1,7 @@
 // BackgroundBalls();
 
-var app = new HeavyBall({
-    bgColor: '#1D3237'
-});
+// var app = new HeavyBall({
+//     bgColor: '#1D3237'
+// });
+
+new BlockRunner();
