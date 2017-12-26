@@ -7,6 +7,10 @@ function Vector(x, y){
         this.y += velocity.y * speed;
     };
 
+    this.pointCollission = point => {
+
+    }
+
     this.isEmpty = (typeof x == 'undefined' || typeof y == 'undefined');
 
     this.x = x;

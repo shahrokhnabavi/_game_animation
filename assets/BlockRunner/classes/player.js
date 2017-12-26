@@ -10,11 +10,10 @@ function Player(option) {
 
         ctx = this.opt.ctx;
 
-        ctxHeight = ctx.canvas.clientHeight;
-        ctxWidth = ctx.canvas.clientWidth;
+        this.resizeStage(this.opt.stage);
 
-        this.opt.pos.x = this.opt.stage.l + 10;
-        this.opt.pos.y = this.opt.stage.b - this.opt.size - 10;
+        this.opt.pos.x = this.opt.stage.l + 1;
+        this.opt.pos.y = this.opt.stage.b - this.opt.size - 1;
 
         window.addEventListener('keyup', function(event) { Key.onKeyup(event); }, false);
         window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
@@ -44,23 +43,34 @@ function Player(option) {
     };
 
     // Move Ball
-    this.move = ( movement) => {
+    this.move = ( movement ) => {
         var x = this.opt.pos.x + (movement.x * this.opt.speed),
             y = this.opt.pos.y + (movement.y * this.opt.speed),
             w = this.opt.size;
 
-        if (x > this.opt.stage.l+1 && x + w < this.opt.stage.r-1)
+        if (x > this.opt.stage.l+2 && x + w < this.opt.stage.r-1)
             this.opt.velocity.x = movement.x;
-        else
+        else {
             this.opt.velocity.x = 0;
+            this.opt.pos.x = x < ctxWidth/2 ? this.opt.stage.l+1 : this.opt.stage.r - w - 1;
+        }
 
         if (y > this.opt.stage.t + 1 && y + w< this.opt.stage.b - 1)
             this.opt.velocity.y = movement.y;
-        else
+        else{
             this.opt.velocity.y = 0;
+            this.opt.pos.y = y < ctxHeight/2 ? this.opt.stage.t+1 : this.opt.stage.b - w - 1;
+        }
 
         this.opt.pos.move(this.opt.velocity, this.opt.speed);
         return this;
+    };
+
+    this.resizeStage = (stage) => {
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        this.opt.stage = stage;
     };
 
     // Default options od class

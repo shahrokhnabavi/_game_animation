@@ -1,10 +1,9 @@
-var appName = 'BlockRunner',
-    errorTitle = '[' + appName + ' - Error]: ';
-
 function BlockRunner(options) {
     // Private
-    var area = null,
-        canvas = null,
+    var appName = 'BlockRunner',
+        errorTitle = '[' + appName + ' - Error]: ';
+
+    var canvas = null,
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
@@ -13,12 +12,14 @@ function BlockRunner(options) {
         bodyArea = 100,
         stage = null,
 
-        player = null;
+        player = null,
+        enemy  = [],
+        enemies = 20;
 
     // Initialize
     function init() {
 
-        area = document.querySelector(this.opt.selector);
+        var area = document.querySelector(this.opt.selector);
         area.innerHTML = '';
 
         canvas = document.createElement('canvas');
@@ -27,18 +28,15 @@ function BlockRunner(options) {
         area.appendChild(canvas);
         ctx = canvas.getContext('2d');
 
-        resize();
-
-        // window.addEventListener('click', singleBall);
-        window.addEventListener('resize', resize);
-        // window.addEventListener('keypress', keyHandler);
-
+        window.addEventListener('resize', () => { resize(area)}, false);
+        resize(area);
 
         player = new Player({
             ctx: ctx,
             stage: stage,
             size: 10
         });
+        makeEnemies();
         update();
     }
 
@@ -48,12 +46,14 @@ function BlockRunner(options) {
 
         userInterface();
         player.update();
+        for(var i = 0; i < enemy.length; i++ )
+            enemy[i].update();
     }
 
     // resize game area
-    function resize() {
+    function resize(area) {
         ctxHeight = canvas.height = area.clientHeight;
-        ctxWidth = canvas.width = area.clientWidth;
+        ctxWidth  = canvas.width  = area.clientWidth;
 
         stage = {
             l: margin,
@@ -61,6 +61,18 @@ function BlockRunner(options) {
             r: ctxWidth - margin ,
             b: ctxHeight - margin,
         };
+        if( player ) player.resizeStage(stage);
+        if( enemy ) { makeEnemies(); }
+    }
+
+    //Make enemies
+    function makeEnemies(){
+        enemy = [];
+        for( let i = 0; i < enemies; i++)
+            enemy.push( new Enemy({
+                ctx: ctx,
+                stage: stage,
+            }));
     }
 
     //How to Use
@@ -82,6 +94,20 @@ function BlockRunner(options) {
         ctx.fillStyle = 'black';
         ctx.fill();
         ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.rect(
+            stage.l + 1,
+            stage.b - player.opt.size - 10,
+            player.opt.size + 10,
+            player.opt.size + 10,
+        );
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = 'green';
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
     }
 
     // Default options od class

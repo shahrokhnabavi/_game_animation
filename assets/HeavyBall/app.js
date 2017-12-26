@@ -1,8 +1,10 @@
-var appName = 'HeavyBall',
-    errorTitle = '[' + appName + ' - Error]: ';
+
 
 function HeavyBall( options ) {
     // Private
+    var appName = 'HeavyBall',
+        errorTitle = '[' + appName + ' - Error]: ';
+
     var area   = null,
         canvas = null,
         ctx    = null,
