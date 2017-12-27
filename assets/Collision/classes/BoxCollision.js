@@ -1,8 +1,6 @@
-function BoxColli(options){
+function BoxCollision(options){
     // Private
-    var ctx = null,
-        ctxWidth = 0,
-        ctxHeight = 0;
+    var ctx = null;
 
     function init(options){
         if (!this.opt.ctx) throw errorTitle + 'Object needs Context';
@@ -20,27 +18,20 @@ function BoxColli(options){
 
     this.collision = box => {
 
-        var x01 = this.opt.pos.x,
-            x02 = this.opt.pos.x + this.opt.width,
-            y01 = this.opt.pos.y,
-            y02 = this.opt.pos.y + this.opt.height,
+        var xl1 = this.opt.pos.x,
+            yl1 = this.opt.pos.y,
+            xr1 = this.opt.pos.x + this.opt.width,
+            yr1 = this.opt.pos.y + this.opt.height,
 
-            x11 = box.opt.pos.x,
-            x12 = box.opt.pos.x + box.opt.width,
-            y11 = box.opt.pos.y,
-            y12 = box.opt.pos.y + box.opt.height;
+            xl2 = box.opt.pos.x,
+            yl2 = box.opt.pos.y,
+            xr2 = box.opt.pos.x + box.opt.width,
+            yr2 = box.opt.pos.y + box.opt.height;
 
-        var l1 = {x: x01, y: y01},
-            r1 = {x: x02, y: y02},
-
-            l2 = {x: x11, y: y11},
-            r2 = {x: x12, y: y12};
-
-        if( l1.x > r2.x || r1.x < l2.x)
+        if( xl1 > xr2 || xr1 < xl2)
             return false;
 
-
-        if( l1.y > r2.y || r1.y < l2.y)
+        if( yl1 > yr2 || yr1 < yl2)
             return false;
 
         return true;

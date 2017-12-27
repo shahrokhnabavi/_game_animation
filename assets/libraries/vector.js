@@ -7,9 +7,9 @@ function Vector(x, y){
         this.y += velocity.y * speed;
     };
 
-    this.pointCollission = point => {
-
-    }
+    this.distance = point => {
+        return Math.sqrt( Math.pow(this.x - point.x, 2) + Math.pow(this.y - point.y, 2) );
+    };
 
     this.isEmpty = (typeof x == 'undefined' || typeof y == 'undefined');
 

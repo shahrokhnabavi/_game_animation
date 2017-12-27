@@ -1,6 +1,6 @@
-function BoxCollision(options) {
+function Collision(options) {
     // Private
-    var appName = 'BoxCollision',
+    var appName = 'Collision',
         errorTitle = '[' + appName + ' - Error]: ';
 
     var canvas = null,
@@ -10,8 +10,8 @@ function BoxCollision(options) {
 
         mouse = new Vector(0, 0),
 
-        box1 = null,
-        box2 = null;
+        obj1 = null,
+        obj2 = null;
 
     // Initialize
     function init() {
@@ -30,18 +30,29 @@ function BoxCollision(options) {
         resize(area);
 
 
-        box1 = new BoxColli({
+        // obj1 = new BoxCollision({
+        //     ctx: ctx,
+        //     pos: new Vector(ctxWidth/2 - 50, ctxHeight/2 - 25),
+        //     width: 100,
+        //     height: 50
+        // });
+        obj1 = new CircleCollision({
             ctx: ctx,
-            pos: new Vector(ctxWidth/2 - 50, ctxHeight/2 - 25),
-            width: 100,
-            height: 50
+            pos: new Vector(ctxWidth/2 - 25, ctxHeight/2 - 25),
+            radius: 50
         });
 
-        box2 = new BoxColli({
+        // obj2 = new BoxCollision({
+        //     ctx: ctx,
+        //     pos: new Vector(ctxWidth/2 - 25, ctxHeight/2 - 12.5),
+        //     width: 50,
+        //     height: 25,
+        //     color: '#225D71'
+        // });
+        obj2 = new CircleCollision({
             ctx: ctx,
-            pos: new Vector(ctxWidth/2 - 25, ctxHeight/2 - 12.5),
-            width: 50,
-            height: 25,
+            pos: new Vector(ctxWidth/2 - 12, ctxHeight/2 - 12),
+            radius: 24,
             color: '#225D71'
         });
         update();
@@ -52,13 +63,13 @@ function BoxCollision(options) {
         ctx.clearRect(0, 0, ctxWidth, ctxHeight);
 
         userInterface();
-        box1.update().draw();
-        box2.update(mouse).draw();
+        obj1.update().draw();
+        obj2.update(mouse).draw();
 
-        if( box2.collision( box1 ) )
-            box1.opt.color = '#ABC9D8';
+        if( obj2.collision( obj1 ) )
+            obj1.opt.color = '#ABC9D8';
         else
-            box1.opt.color = '#052B3E';
+            obj1.opt.color = '#052B3E';
     }
 
     // resize game area
