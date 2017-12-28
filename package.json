@@ -1,0 +1,31 @@
+{
+  "name": "canvas_balls",
+  "version": "1.0.0",
+  "description": "Animation, Interact and making game with html5 canvas",
+  "main": "",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "browser-sync": "^2.22.0",
+    "browser-sync-webpack-plugin": "^1.2.0",
+    "jshint": "^2.9.5",
+    "jshint-loader": "^0.8.4",
+    "webpack": "^3.10.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shahrokhnabavi/_canvas_animation.git"
+  },
+  "keywords": [],
+  "author": "Shahrokh Nabavi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shahrokhnabavi/_canvas_animation/issues"
+  },
+  "homepage": "https://github.com/shahrokhnabavi/_canvas_animation#readme"
+}
