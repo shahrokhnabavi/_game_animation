@@ -4,25 +4,29 @@ import BackgroundBalls from './modules/BackgroundBalls/app';
 import MouseTail from './modules/MouseTail/app';
 import Physics from './modules/Physics/app';
 import BlockRunner from './modules/BlockRunner/app';
+import RotatePlayer from './modules/RotatePlayer/app';
 
 
-switch( 6 ){
-    case 1:
-        new Collision();
-        break;
-    case 2:
-        new BackgroundBalls();
-        break;
-    case 3:
-        new HeavyBall();
-        break;
-    case 4:
-        new MouseTail();
-        break;
-    case 5:
-        new Physics();
+switch( 7 ){
+    case 7:
+        new RotatePlayer();
         break;
     case 6:
+        new Collision();
+        break;
+    case 5:
+        new BackgroundBalls();
+        break;
+    case 4:
+        new HeavyBall();
+        break;
+    case 3:
+        new MouseTail();
+        break;
+    case 2:
+        new Physics();
+        break;
+    case 1:
         new BlockRunner();
         break;
 }

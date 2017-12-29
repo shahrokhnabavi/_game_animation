@@ -1,1 +1,1944 @@
-!function(t){function e(i){if(o[i])return o[i].exports;var n=o[i]={i:i,l:!1,exports:{}};return t[i].call(n.exports,n,n.exports,e),n.l=!0,n.exports}var o={};e.m=t,e.c=o,e.d=function(t,o,i){e.o(t,o)||Object.defineProperty(t,o,{configurable:!1,enumerable:!0,get:i})},e.n=function(t){var o=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(o,"a",o),o},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=0)}([function(t,e,o){"use strict";function i(t){return t&&t.__esModule?t:{default:t}}var n=o(2),s=(i(n),o(5)),r=(i(s),o(7)),a=(i(r),o(11)),l=(i(a),o(12));i(l);new(i(o(14)).default)},,function(t,e,o){"use strict";function i(t){return t&&t.__esModule?t:{default:t}}function n(t){function e(){var t=document.querySelector(this.opt.selector);t.innerHTML="",l=document.createElement("canvas"),l.id=this.opt.id,l.style.backgroundColor=this.opt.bgColor,t.appendChild(l),c=l.getContext("2d"),window.addEventListener("mousemove",n,!1),window.addEventListener("resize",function(){return i(t)},!1),i(t),d=new r.default({ctx:c,pos:new Vector(p/2-25,u/2-25),radius:50}),f=new r.default({ctx:c,pos:new Vector(p/2-12,u/2-12),radius:24,color:"#225D71"}),o()}function o(){requestAnimationFrame(o),c.clearRect(0,0,p,u),s(),d.update().draw(),f.update(h).draw(),f.collision(d)?d.opt.color="#ABC9D8":d.opt.color="#052B3E"}function i(t){u=l.height=t.clientHeight,p=l.width=t.clientWidth}function n(t){h.x=t.clientX,h.y=t.clientY}function s(){c.font="20px Georgia",c.textAlign="left",c.fillStyle="#052B3E",c.fillText("App Name: "+a,10,30)}var a="Collision",l=null,c=null,p=0,u=0,h=new Vector(0,0),d=null,f=null;this.opt=Object.assign({selector:"body",id:"screen",bgColor:"#F2F2F2"},t),e.call(this)}var s=o(3),r=i(s),a=o(4);i(a);t.exports=n},function(t,e,o){"use strict";function i(t){function e(t){if(!this.opt.ctx)throw errorTitle+"Object needs Context";i=this.opt.ctx}var o=this,i=null;this.update=function(t){return t&&(o.opt.pos.x=t.x,o.opt.pos.y=t.y),o},this.collision=function(t){return o.opt.pos.distance(t.opt.pos)<o.opt.radius+t.opt.radius},this.draw=function(){i.beginPath(),i.arc(o.opt.pos.x,o.opt.pos.y,o.opt.radius,0,2*Math.PI,!1),i.fillStyle=o.opt.color,i.fill()},this.opt=Object.assign({ctx:null,pos:new Vector,radius:20,color:"#052B3E"},t),e.call(this)}t.exports=i},function(t,e,o){"use strict";function i(t){function e(t){if(!this.opt.ctx)throw errorTitle+"Object needs Context";i=this.opt.ctx}var o=this,i=null;this.update=function(t){return t&&(o.opt.pos.x=t.x-o.opt.width/2,o.opt.pos.y=t.y-o.opt.height/2),o},this.collision=function(t){var e=o.opt.pos.x,i=o.opt.pos.y,n=o.opt.pos.x+o.opt.width,s=o.opt.pos.y+o.opt.height,r=t.opt.pos.x,a=t.opt.pos.y,l=t.opt.pos.x+t.opt.width,c=t.opt.pos.y+t.opt.height;return!(e>l||n<r)&&!(i>c||s<a)},this.draw=function(){i.beginPath(),i.rect(o.opt.pos.x,o.opt.pos.y,o.opt.width,o.opt.height),i.fillStyle=o.opt.color,i.fill()},this.opt=Object.assign({ctx:null,pos:new Vector,width:20,height:20,color:"#052B3E"},t),e.call(this)}t.exports=i},function(t,e,o){"use strict";function i(t){function e(){p=document.querySelector(this.opt.selector),p.innerHTML="",u=document.createElement("canvas"),u.id=this.opt.id,u.style.backgroundColor=this.opt.bgColor,p.appendChild(u),n(),h=u.getContext("2d"),window.addEventListener("click",a),window.addEventListener("resize",n),window.addEventListener("keyup",r),i(),o()}function o(){requestAnimationFrame(o),h.clearRect(0,0,d,f),l();for(var t=0;t<y.length;t++)y[t].getLifeTime()?(y.splice(t,1),t--):y[t].move().draw()}function i(){var t=new s.default({ctx:h,velocity:new Vector(rand(-2,2),0),speed:1,lifeTime:0,weight:1.2,radius:rand(8,20)});y.push(t)}function n(){f=u.height=p.clientHeight,d=u.width=p.clientWidth,y.forEach(function(t){return t.getActiveArea()})}function r(t){switch(t.key){case"r":case"R":for(var e=0;e<500;e++)i();break;case"c":case"C":y=[];break;case"d":case"D":var o=new s.default({ctx:h,velocity:new Vector(rand(-2,2),rand(-2,2)),speed:1,lifeTime:10,weight:1.2,radius:rand(8,20)});y.push(o);break;case" ":i()}}function a(t){var e=new s.default({ctx:h,velocity:new Vector(rand(-2,2),rand(-2,2)),pos:new Vector(t.clientX,t.clientY),speed:1,lifeTime:0,weight:1.2,radius:rand(8,20)});y.push(e)}function l(){h.font="20px Georgia",h.textAlign="left",h.fillStyle="white",h.fillText("App Name:"+c,10,50),h.font="14px Georgia",h.fillText("Click anywhere to create a ball.",10,80),h.fillText("Press 'R' key to generate randomly 500 balls",10,96),h.fillText("Press 'C' key to clear screen",10,112),h.fillText("Press 'Space' key to create randomly a ball",10,128),h.fillText("Press 'D' key to create randomly a ball and automatically destroy",10,144),h.textAlign="right",h.fillText("Number of ball: "+y.length,d-10,50)}var c="HeavyBall",p=null,u=null,h=null,d=0,f=0,y=[];this.opt=Object.assign({selector:"body",id:"screen",bgColor:"#22333B"},t),e.call(this)}var n=o(6),s=function(t){return t&&t.__esModule?t:{default:t}}(n);t.exports=i},function(t,e,o){"use strict";function i(t){function e(){if(!this.opt.ctx)throw errorTitle+"Object needs Context";i=this.opt.ctx,this.getActiveArea(),s=i.canvas.clientHeight,n=i.canvas.clientWidth,this.opt.pos.isEmpty&&(this.opt.pos=new Vector(rand(this.opt.radius,n-this.opt.radius),rand(this.opt.radius,s-this.opt.radius))),r=(new Date).getTime(),this.draw()}var o=this,i=null,n=0,s=0,r=0;this.draw=function(){i.beginPath(),i.arc(o.opt.pos.x,o.opt.pos.y,o.opt.radius,0,2*Math.PI),i.closePath(),i.fillStyle=o.opt.color,i.fill()},this.move=function(){var t=o.opt.pos.x,e=o.opt.pos.y,i=o.opt.radius,r=(1/(o.opt.weight>15?15:o.opt.weight<1?1:o.opt.weight)).toPrecision(2);return o.opt.velocity.x*=t<i||t>n-i?-1:.995,e<i||e>s-i-o.opt.velocity.y*o.opt.speed?(o.opt.velocity.y*=-1*r,Math.abs(o.opt.velocity.y)<.001&&(o.opt.pos.y=s-i,o.opt.velocity.y=0)):o.opt.velocity.y+=.5,o.opt.pos.move(o.opt.velocity,o.opt.speed),o},this.getActiveArea=function(){s=i.canvas.clientHeight,n=i.canvas.clientWidth},this.getLifeTime=function(){return 0!==o.opt.lifeTime&&parseInt(((new Date).getTime()-r)/1e3)>o.opt.lifeTime},this.opt=Object.assign({ctx:null,pos:new Vector,velocity:new Vector(rand(-.5,.5),rand(-.5,.5)),radius:20,color:randColor(),speed:5,lifeTime:0,weight:14},t),e.call(this)}t.exports=i},function(t,e,o){"use strict";function i(t){return t&&t.__esModule?t:{default:t}}function n(){function t(){var t=new r.default;i=t.getContext("2d"),e(t),o(),window.addEventListener("mousemove",function(t){c={x:t.x,y:t.y}}),window.addEventListener("resize",function(){return e(t)})}function e(t){n=t.width,s=t.height,a=[];for(var e=0;e<p;e++)a.push(new l.default({ctx:i,isRandom:!0,color:randColor()}))}function o(){requestAnimationFrame(o),i.clearRect(0,0,n,s);for(var t=0;t<a.length;t++)a[t].move().scale(c,50).draw()}var i=null,n=0,s=0,a=[],c=null,p=1e3;t.call(this)}var s=o(8),r=i(s),a=o(9),l=i(a),c=o(10);i(c);t.exports=n},function(t,e,o){"use strict";function i(t,e){function o(){var e=this;this.area=t?document.querySelector(t):document.body,this.area.innerHTML="",this.canvas=document.createElement("canvas"),this.canvas.id=this.opt.screenId,this.canvas.style.backgroundColor=this.opt.bgColor,this.area.appendChild(this.canvas),i.call(this),window.addEventListener("resize",function(){return i.call(e)},!1)}function i(){this.canvas.height=this.area.clientHeight,this.canvas.width=this.area.clientWidth}return this.area=null,this.canvas=null,this.opt=Object.assign({screenId:"screen",bgColor:"#22333B"},e),o.call(this),this.canvas}t.exports=i},function(t,e,o){"use strict";function i(t){function e(){s=this.opt.ctx,a=this.opt.radius=this.opt.isRandom?rand(5,15):this.opt.radius,this.opt.pos.x=this.opt.isRandom?rand(this.opt.radius,this.opt.ctx.canvas.width-this.opt.radius-12):this.opt.pos.x,this.opt.pos.y=this.opt.isRandom?rand(this.opt.radius,this.opt.ctx.canvas.height-this.opt.radius-12):this.opt.pos.y,this.opt.speed=this.opt.isRandom?rand(.5,1):this.opt.speed}function o(t,e){return t=this.opt.isRandom?rand(-1,1):t,e=this.opt.isRandom?rand(-1,1):e,t>e?{x:1,y:t?e/t:0}:{x:e?t/e:0,y:1}}function i(t,e,o){return t.x+o>e.x&&t.x-o<e.x&&t.y+o>e.y&&t.y-o<e.y}var n=this;this.opt=Object.assign({ctx:null,pos:{x:10,y:10},radius:20,color:"#A53860",isRandom:!1,speed:5},t);var s=null,r=null,a=null;this.draw=function(){s.beginPath(),s.arc(n.opt.pos.x,n.opt.pos.y,n.opt.radius,0,2*Math.PI,!1),s.fillStyle=n.opt.color,s.fill()},this.move=function(t,e){return r=r||o.call(n,t,e),(n.opt.pos.x+r.x<=n.opt.radius||n.opt.pos.x+r.x>n.opt.ctx.canvas.width-n.opt.radius)&&(r.x*=-1),(n.opt.pos.y+r.y<=n.opt.radius||n.opt.pos.y+r.y>n.opt.ctx.canvas.height-n.opt.radius)&&(r.y*=-1),n.opt.pos.x+=r.x*n.opt.speed,n.opt.pos.y+=r.y*n.opt.speed,n},this.scale=function(t,e){return t?(i(n.opt.pos,t,e)&&n.opt.radius<50?n.opt.radius+=1:n.opt.radius>a&&(n.opt.radius-=1),n):n},e.call(this)}t.exports=i},function(t,e,o){"use strict";t.exports.Box=function(t,e){function o(){t.fillStyle=this.opt.color,t.fillRect(this.opt.pos.x,this.opt.pos.y,this.opt.size.w,this.opt.size.h)}(void 0).opt=Object.assign({pos:{x:10,y:10},size:{w:10,h:10},color:"blue"},e),o.call(void 0)},t.exports.Line=function(t){t.beginPath(),t.moveTo(10,200),t.lineTo(50,100),t.lineTo(120,130),t.strokeStyle="white",t.stroke()},t.exports.Circle=function(t){t.beginPath(),t.arc(300,200,50,0,Math.PI,!1),t.fill(),t.strokeStyle="white",t.stroke()},t.exports.Packman=function(t){t.beginPath(),t.moveTo(400,200),t.arc(400,200,25,Math.PI/8,3*Math.PI/1.61,!1),t.closePath(),t.fillStyle="#F9DBBD",t.fill(),t.stroke()}},function(t,e,o){"use strict";function i(t){function e(){var t=document.querySelector(this.opt.selector);t.innerHTML="",a=document.createElement("canvas"),a.id=this.opt.id,a.style.backgroundColor=this.opt.bgColor,t.appendChild(a),l=a.getContext("2d"),window.addEventListener("mousemove",n,!1),window.addEventListener("resize",function(){s(t)},!1),s(t),o()}function o(){requestAnimationFrame(o),l.clearRect(0,0,c,p),i()}function i(){l.font="20px Georgia",l.textAlign="left",l.fillStyle="white",l.fillText("App Name: "+r,u.x,u.y)}function n(t){u.x=t.clientX,u.y=t.clientY}function s(t){p=a.height=t.clientHeight,c=a.width=t.clientWidth}var r="Mouse Tail",a=null,l=null,c=0,p=0,u=new Vector(20,20);this.opt=Object.assign({selector:"body",id:"screen",bgColor:"#152523"},t),e.call(this)}t.exports=i},function(t,e,o){"use strict";function i(t){function e(){var t=document.querySelector(this.opt.selector);t.innerHTML="",p=document.createElement("canvas"),p.id=this.opt.id,p.style.backgroundColor=this.opt.bgColor,t.appendChild(p),u=p.getContext("2d"),window.addEventListener("mousemove",a,!1),window.addEventListener("resize",function(){l(t)},!1),l(t),n(),o()}function o(){requestAnimationFrame(o),u.clearRect(0,0,h,d),r(),x.forEach(function(t){t.update(x,f,v).draw()}),i()}function i(){u.beginPath(),u.arc(f.x,f.y,v,0,2*Math.PI,!1),u.strokeStyle="rgba(255,249,218,0.1)",u.stroke()}function n(){x=[];for(var t=0;t<y;t++){var e=!1,o=new s.default({ctx:u,pos:new Vector(rand(10,h-10),rand(10,d-10)),radius:10}),i=!0,n=!1,r=void 0;try{for(var a,l=x[Symbol.iterator]();!(i=(a=l.next()).done);i=!0){var c=a.value;if(o.hasOverlap(c)){g++,e=!0;break}}}catch(t){n=!0,r=t}finally{try{!i&&l.return&&l.return()}finally{if(n)throw r}}e?t--:x.push(o)}}function r(){u.font="20px Georgia",u.textAlign="left",u.fillStyle="white",u.fillText("App Name: "+c,10,30)}function a(t){f.x=t.clientX,f.y=t.clientY}function l(t){d=p.height=t.clientHeight,h=p.width=t.clientWidth}var c="CirclePhysics",p=null,u=null,h=0,d=0,f=new Vector(20,20),y=400,x=[],g=0,v=100;this.opt=Object.assign({selector:"body",id:"screen",bgColor:"#152523"},t),e.call(this)}var n=o(13),s=function(t){return t&&t.__esModule?t:{default:t}}(n);t.exports=i},function(t,e,o){"use strict";function i(t){function e(t){if(!this.opt.ctx)throw errorTitle+"Object needs Context";i=this.opt.ctx,s=i.canvas.clientHeight,n=i.canvas.clientWidth}var o=this,i=null,n=0,s=0;this.update=function(t,e,i){if(e){var r=o.opt.pos.x,a=o.opt.pos.y,l=e.x,c=e.y;Math.sqrt(Math.pow(r-l,2)+Math.pow(a-c,2))<i&&o.opt.opacity<.5?(o.opt.opacity+=.02,o.opt.radius+=.5):o.opt.opacity>0&&(o.opt.opacity-=.02,o.opt.opacity=Math.max(0,o.opt.opacity),o.opt.radius-=.5)}var p=Math.abs(o.opt.vel.x),u=Math.abs(o.opt.vel.y),h=o.opt.pos.x,d=o.opt.pos.y,f=o.opt.radius,y=o.opt.speed;return(h<f+p*y||h>n-f-p*y)&&(o.opt.vel.x*=-1),(d<f+u*y||d>s-f-u*y)&&(o.opt.vel.y*=-1),o.opt.pos.move(o.opt.vel,y),o},this.draw=function(){i.beginPath(),i.arc(o.opt.pos.x,o.opt.pos.y,o.opt.radius,0,2*Math.PI,!1),i.save(),i.globalAlpha=o.opt.opacity,i.fillStyle=o.opt.color,i.fill(),i.restore(),i.strokeStyle=o.opt.color,i.stroke()},this.hasOverlap=function(t){var e=o.opt.pos.x,i=o.opt.pos.y,n=t.opt.pos.x,s=t.opt.pos.y;return Math.sqrt(Math.pow(e-n,2)+Math.pow(i-s,2))<o.opt.radius+t.opt.radius},this.opt=Object.assign({ctx:null,pos:new Vector,vel:new Vector(rand(-20,20),rand(-20,20)),speed:.04,radius:20,opacity:0,color:randColor()},t),e.call(this)}t.exports=i},function(t,e,o){"use strict";function i(t){return t&&t.__esModule?t:{default:t}}function n(t){function e(){var t=document.querySelector(this.opt.selector);t.innerHTML="",c=document.createElement("canvas"),c.id=this.opt.id,c.style.backgroundColor=this.opt.bgColor,t.appendChild(c),p=c.getContext("2d"),window.addEventListener("resize",function(){i(t)},!1),i(t),x=new l.default({ctx:p,stage:y,size:10}),n(),o()}function o(){requestAnimationFrame(o),p.clearRect(0,0,u,h),s(),x.update();for(var t=0;t<g.length;t++)g[t].update()}function i(t){h=c.height=t.clientHeight,u=c.width=t.clientWidth,y={l:d,t:f,r:u-d,b:h-d},x&&x.resizeStage(y),g&&n()}function n(){g=[];for(var t=0;t<v;t++)g.push(new r.default({ctx:p,stage:y}))}function s(){p.font="20px Georgia",p.textAlign="left",p.fillStyle="white",p.fillText("App Name: "+a,d,30),p.beginPath(),p.moveTo(y.l,y.t),p.lineTo(y.r,y.t),p.lineTo(y.r,y.b),p.lineTo(y.l,y.b),p.closePath(),p.strokeStyle="white",p.fillStyle="black",p.fill(),p.stroke(),p.closePath(),p.beginPath(),p.rect(y.l+1,y.b-x.opt.size-10,x.opt.size+10,x.opt.size+10),p.globalAlpha=.5,p.fillStyle="green",p.fill(),p.globalAlpha=1}var a="BlockRunner",c=null,p=null,u=0,h=0,d=10,f=100,y=null,x=null,g=[],v=20;this.opt=Object.assign({selector:"body",id:"screen",bgColor:"#004356"},t),e.call(this)}var s=o(15),r=i(s),a=o(16),l=i(a);t.exports=n},function(t,e,o){"use strict";function i(t){function e(){i=this.opt.ctx,this.resizeStage(this.opt.stage),this.opt.pos.isEmpty&&(this.opt.pos=new Vector(rand(this.opt.stage.l,this.opt.stage.r-this.opt.size),rand(this.opt.stage.t,this.opt.stage.b-this.opt.size)))}var o=this,i=null,n=0,s=0;this.draw=function(){i.beginPath(),i.rect(o.opt.pos.x,o.opt.pos.y,o.opt.size,o.opt.size),i.fillStyle=o.opt.color,i.fill()},this.update=function(){o.draw()},this.resizeStage=function(t){n=i.canvas.clientHeight,s=i.canvas.clientWidth,o.opt.stage=t},this.opt=Object.assign({ctx:null,pos:new Vector,color:"red",stage:null,size:20},t),e.call(this)}t.exports=i},function(t,e,o){"use strict";function i(t){function e(){if(!this.opt.ctx)throw errorTitle+"Object needs Context";i=this.opt.ctx,this.resizeStage(this.opt.stage),this.opt.pos.x=this.opt.stage.l+1,this.opt.pos.y=this.opt.stage.b-this.opt.size-1,window.addEventListener("keyup",function(t){Key.onKeyup(t)},!1),window.addEventListener("keydown",function(t){Key.onKeydown(t)},!1)}var o=this,i=null,n=0,s=0;this.update=function(){var t=0,e=0;Key.isDown(Key.UP)&&(e-=1),Key.isDown(Key.LEFT)&&(t-=1),Key.isDown(Key.DOWN)&&(e+=1),Key.isDown(Key.RIGHT)&&(t+=1),o.move(new Vector(t,e)).draw()},this.draw=function(){i.beginPath(),i.rect(o.opt.pos.x,o.opt.pos.y,o.opt.size,o.opt.size),i.fillStyle=o.opt.color,i.fill()},this.move=function(t){var e=o.opt.pos.x+t.x*o.opt.speed,i=o.opt.pos.y+t.y*o.opt.speed,r=o.opt.size;return e>o.opt.stage.l+2&&e+r<o.opt.stage.r-1?o.opt.velocity.x=t.x:(o.opt.velocity.x=0,o.opt.pos.x=e<n/2?o.opt.stage.l+1:o.opt.stage.r-r-1),i>o.opt.stage.t+1&&i+r<o.opt.stage.b-1?o.opt.velocity.y=t.y:(o.opt.velocity.y=0,o.opt.pos.y=i<s/2?o.opt.stage.t+1:o.opt.stage.b-r-1),o.opt.pos.move(o.opt.velocity,o.opt.speed),o},this.resizeStage=function(t){s=i.canvas.clientHeight,n=i.canvas.clientWidth,o.opt.stage=t},this.opt=Object.assign({ctx:null,pos:new Vector(0,0),velocity:new Vector,size:20,color:"#FFF9DD",speed:5,stage:null},t),e.call(this)}t.exports=i}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _app = __webpack_require__(1);
+
+var _app2 = _interopRequireDefault(_app);
+
+var _app3 = __webpack_require__(4);
+
+var _app4 = _interopRequireDefault(_app3);
+
+var _app5 = __webpack_require__(6);
+
+var _app6 = _interopRequireDefault(_app5);
+
+var _app7 = __webpack_require__(10);
+
+var _app8 = _interopRequireDefault(_app7);
+
+var _app9 = __webpack_require__(11);
+
+var _app10 = _interopRequireDefault(_app9);
+
+var _app11 = __webpack_require__(13);
+
+var _app12 = _interopRequireDefault(_app11);
+
+var _app13 = __webpack_require__(16);
+
+var _app14 = _interopRequireDefault(_app13);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+switch (7) {
+    case 7:
+        new _app14.default();
+        break;
+    case 6:
+        new _app2.default();
+        break;
+    case 5:
+        new _app6.default();
+        break;
+    case 4:
+        new _app4.default();
+        break;
+    case 3:
+        new _app8.default();
+        break;
+    case 2:
+        new _app10.default();
+        break;
+    case 1:
+        new _app12.default();
+        break;
+}
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _CircleCollision = __webpack_require__(2);
+
+var _CircleCollision2 = _interopRequireDefault(_CircleCollision);
+
+var _BoxCollision = __webpack_require__(3);
+
+var _BoxCollision2 = _interopRequireDefault(_BoxCollision);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Collision(options) {
+    // Private
+    var appName = 'Collision',
+        errorTitle = '[' + appName + ' - Error]: ';
+
+    var canvas = null,
+        ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        mouse = new Vector(0, 0),
+        obj1 = null,
+        obj2 = null;
+
+    // Initialize
+    function init() {
+
+        var area = document.querySelector(this.opt.selector);
+        area.innerHTML = '';
+
+        canvas = document.createElement('canvas');
+        canvas.id = this.opt.id;
+        canvas.style.backgroundColor = this.opt.bgColor;
+        area.appendChild(canvas);
+        ctx = canvas.getContext('2d');
+
+        window.addEventListener('mousemove', getMousePos, false);
+        window.addEventListener('resize', function () {
+            return resize(area);
+        }, false);
+        resize(area);
+
+        // obj1 = new BoxCollision({
+        //     ctx: ctx,
+        //     pos: new Vector(ctxWidth/2 - 50, ctxHeight/2 - 25),
+        //     width: 100,
+        //     height: 50
+        // });
+        obj1 = new _CircleCollision2.default({
+            ctx: ctx,
+            pos: new Vector(ctxWidth / 2 - 25, ctxHeight / 2 - 25),
+            radius: 50
+        });
+
+        // obj2 = new BoxCollision({
+        //     ctx: ctx,
+        //     pos: new Vector(ctxWidth/2 - 25, ctxHeight/2 - 12.5),
+        //     width: 50,
+        //     height: 25,
+        //     color: '#225D71'
+        // });
+        obj2 = new _CircleCollision2.default({
+            ctx: ctx,
+            pos: new Vector(ctxWidth / 2 - 12, ctxHeight / 2 - 12),
+            radius: 24,
+            color: '#225D71'
+        });
+        update();
+    }
+
+    function update() {
+        requestAnimationFrame(update);
+        ctx.clearRect(0, 0, ctxWidth, ctxHeight);
+
+        userInterface();
+        obj1.update().draw();
+        obj2.update(mouse).draw();
+
+        if (obj2.collision(obj1)) obj1.opt.color = '#ABC9D8';else obj1.opt.color = '#052B3E';
+    }
+
+    // resize game area
+    function resize(area) {
+        ctxHeight = canvas.height = area.clientHeight;
+        ctxWidth = canvas.width = area.clientWidth;
+    }
+
+    // Get Mouse Position
+    function getMousePos(e) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    }
+
+    //How to Use
+    function userInterface() {
+        ctx.font = "20px Georgia";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = "#052B3E";
+        ctx.fillText("App Name: " + appName, 10, 30);
+    }
+
+    // Default options od class
+    this.opt = Object.assign({
+        selector: 'body',
+        id: 'screen',
+        bgColor: '#F2F2F2'
+    }, options);
+
+    // Call Initialize
+    init.call(this);
+}
+
+module.exports = Collision;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function CircleCollision(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null;
+
+    function init(options) {
+        if (!this.opt.ctx) throw errorTitle + 'Object needs Context';
+
+        ctx = this.opt.ctx;
+    }
+
+    this.update = function (mouse) {
+        if (mouse) {
+            _this.opt.pos.x = mouse.x;
+            _this.opt.pos.y = mouse.y;
+        }
+        return _this;
+    };
+
+    this.collision = function (circle) {
+        return _this.opt.pos.distance(circle.opt.pos) < _this.opt.radius + circle.opt.radius;
+    };
+
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.arc(_this.opt.pos.x, _this.opt.pos.y, _this.opt.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = _this.opt.color;
+        ctx.fill();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new Vector(),
+        radius: 20,
+        color: '#052B3E'
+    }, options);
+    init.call(this);
+}
+
+module.exports = CircleCollision;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function BoxCollision(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null;
+
+    function init(options) {
+        if (!this.opt.ctx) throw errorTitle + 'Object needs Context';
+
+        ctx = this.opt.ctx;
+    }
+
+    this.update = function (mouse) {
+        if (mouse) {
+            _this.opt.pos.x = mouse.x - _this.opt.width / 2;
+            _this.opt.pos.y = mouse.y - _this.opt.height / 2;
+        }
+        return _this;
+    };
+
+    this.collision = function (box) {
+
+        var xl1 = _this.opt.pos.x,
+            yl1 = _this.opt.pos.y,
+            xr1 = _this.opt.pos.x + _this.opt.width,
+            yr1 = _this.opt.pos.y + _this.opt.height,
+            xl2 = box.opt.pos.x,
+            yl2 = box.opt.pos.y,
+            xr2 = box.opt.pos.x + box.opt.width,
+            yr2 = box.opt.pos.y + box.opt.height;
+
+        if (xl1 > xr2 || xr1 < xl2) return false;
+
+        if (yl1 > yr2 || yr1 < yl2) return false;
+
+        return true;
+    };
+
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.rect(_this.opt.pos.x, _this.opt.pos.y, _this.opt.width, _this.opt.height);
+        ctx.fillStyle = _this.opt.color;
+        ctx.fill();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new Vector(),
+        width: 20,
+        height: 20,
+        color: '#052B3E'
+    }, options);
+    init.call(this);
+}
+
+module.exports = BoxCollision;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Ball = __webpack_require__(5);
+
+var _Ball2 = _interopRequireDefault(_Ball);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function HeavyBall(options) {
+    // Private
+    var appName = 'HeavyBall',
+        errorTitle = '[' + appName + ' - Error]: ';
+
+    var area = null,
+        canvas = null,
+        ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        balls = [];
+
+    // Initialize
+    function init() {
+
+        area = document.querySelector(this.opt.selector);
+        area.innerHTML = '';
+
+        canvas = document.createElement('canvas');
+        canvas.id = this.opt.id;
+        canvas.style.backgroundColor = this.opt.bgColor;
+        area.appendChild(canvas);
+        resize();
+
+        ctx = canvas.getContext('2d');
+
+        window.addEventListener('click', singleBall);
+        window.addEventListener('resize', resize);
+        window.addEventListener('keyup', keyHandler);
+
+        createBall();
+        update();
+    }
+
+    function update() {
+        requestAnimationFrame(update);
+        ctx.clearRect(0, 0, ctxWidth, ctxHeight);
+
+        help();
+
+        for (var index = 0; index < balls.length; index++) {
+            if (balls[index].getLifeTime()) {
+                balls.splice(index, 1);
+                index--;
+                continue;
+            }
+            balls[index].move().draw();
+        }
+    }
+
+    // Create new ball
+    function createBall() {
+        var ball = new _Ball2.default({
+            ctx: ctx,
+            velocity: new Vector(rand(-2, 2), 0),
+            speed: 1,
+            lifeTime: 0,
+            weight: 1.2,
+            radius: rand(8, 20)
+        });
+
+        balls.push(ball);
+    }
+
+    // resize game area
+    function resize() {
+        ctxHeight = canvas.height = area.clientHeight;
+        ctxWidth = canvas.width = area.clientWidth;
+
+        balls.forEach(function (item) {
+            return item.getActiveArea();
+        });
+    }
+
+    // resize game area
+    function keyHandler(e) {
+        switch (e.key) {
+            case 'r':
+            case 'R':
+                for (var i = 0; i < 500; i++) {
+                    createBall();
+                }
+                break;
+            case 'c':
+            case 'C':
+                balls = [];
+                break;
+            case 'd':
+            case 'D':
+                var ball = new _Ball2.default({
+                    ctx: ctx,
+                    velocity: new Vector(rand(-2, 2), rand(-2, 2)),
+                    speed: 1,
+                    lifeTime: 10,
+                    weight: 1.2,
+                    radius: rand(8, 20)
+                });
+
+                balls.push(ball);
+                break;
+            case ' ':
+                createBall();
+                break;
+        }
+    }
+
+    // create ball in the position of mouse
+    function singleBall(e) {
+        var ball = new _Ball2.default({
+            ctx: ctx,
+            velocity: new Vector(rand(-2, 2), rand(-2, 2)),
+            pos: new Vector(e.clientX, e.clientY),
+            speed: 1,
+            lifeTime: 0,
+            weight: 1.2,
+            radius: rand(8, 20)
+        });
+
+        balls.push(ball);
+    }
+
+    //How to Use
+    function help() {
+        ctx.font = "20px Georgia";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = "white";
+        ctx.fillText("App Name:" + appName, 10, 50);
+        ctx.font = "14px Georgia";
+        ctx.fillText("Click anywhere to create a ball.", 10, 80);
+        ctx.fillText("Press \'R\' key to generate randomly 500 balls", 10, 96);
+        ctx.fillText("Press \'C\' key to clear screen", 10, 112);
+        ctx.fillText("Press \'Space\' key to create randomly a ball", 10, 128);
+        ctx.fillText("Press \'D\' key to create randomly a ball and automatically destroy", 10, 144);
+
+        ctx.textAlign = 'right';
+        ctx.fillText('Number of ball: ' + balls.length, ctxWidth - 10, 50);
+    }
+
+    // Default options od class
+    this.opt = Object.assign({
+        selector: 'body',
+        id: 'screen',
+        bgColor: '#22333B'
+    }, options);
+
+    // Call Initialize
+    init.call(this);
+}
+
+module.exports = HeavyBall;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Ball(option) {
+    var _this = this;
+
+    // Privates
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        gravity = 0.5,
+        createdAt = 0;
+
+    // Initialize
+    function init() {
+        if (!this.opt.ctx) throw errorTitle + 'Object needs Context';
+
+        ctx = this.opt.ctx;
+
+        this.getActiveArea();
+
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.pos.isEmpty) this.opt.pos = new Vector(rand(this.opt.radius, ctxWidth - this.opt.radius), rand(this.opt.radius, ctxHeight - this.opt.radius));
+
+        createdAt = new Date().getTime();
+        this.draw();
+    }
+
+    // Draw Ball
+    this.draw = function () {
+
+        ctx.beginPath();
+        ctx.arc(_this.opt.pos.x, _this.opt.pos.y, _this.opt.radius, 0, Math.PI * 2);
+        ctx.closePath();
+
+        ctx.fillStyle = _this.opt.color;
+        ctx.fill();
+    };
+
+    // Move Ball
+    this.move = function () {
+        var x = _this.opt.pos.x,
+            y = _this.opt.pos.y,
+            r = _this.opt.radius,
+            friction = (1 / (_this.opt.weight > 15 ? 15 : _this.opt.weight < 1 ? 1 : _this.opt.weight)).toPrecision(2);
+
+        if (x < r || x > ctxWidth - r) _this.opt.velocity.x *= -1;else _this.opt.velocity.x *= 0.995;
+
+        if (y < r || y > ctxHeight - r - _this.opt.velocity.y * _this.opt.speed) {
+            _this.opt.velocity.y *= -1 * friction;
+
+            if (Math.abs(_this.opt.velocity.y) < 0.001) {
+                _this.opt.pos.y = ctxHeight - r;
+                _this.opt.velocity.y = 0;
+            }
+        } else _this.opt.velocity.y += gravity;
+
+        _this.opt.pos.move(_this.opt.velocity, _this.opt.speed);
+        return _this;
+    };
+
+    // Set Active Area for Ball
+    this.getActiveArea = function () {
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+    };
+
+    // Define a Destroy Time
+    this.getLifeTime = function () {
+        if (_this.opt.lifeTime === 0) return false;
+        return parseInt((new Date().getTime() - createdAt) / 1000) > _this.opt.lifeTime;
+    };
+
+    // Default options od class
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new Vector(),
+        velocity: new Vector(rand(-0.5, 0.5), rand(-0.5, 0.5)),
+        radius: 20,
+        color: randColor(),
+        speed: 5,
+        lifeTime: 0,
+        weight: 14
+    }, option);
+
+    // Call Initialize
+    init.call(this);
+}
+
+module.exports = Ball;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _screen = __webpack_require__(7);
+
+var _screen2 = _interopRequireDefault(_screen);
+
+var _ball = __webpack_require__(8);
+
+var _ball2 = _interopRequireDefault(_ball);
+
+var _shapes = __webpack_require__(9);
+
+var _shapes2 = _interopRequireDefault(_shapes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function BackgroundBalls() {
+    var ctx = null,
+        width = 0,
+        height = 0,
+        balls = [],
+        mouse = null,
+        ballsNumber = 1000;
+
+    function init() {
+        var canvas = new _screen2.default();
+        ctx = canvas.getContext('2d');
+
+        genarateBall(canvas);
+        update();
+
+        window.addEventListener('mousemove', function (e) {
+            mouse = { x: e.x, y: e.y };
+        });
+        window.addEventListener('resize', function () {
+            return genarateBall(canvas);
+        });
+    }
+
+    function genarateBall(canvas) {
+
+        width = canvas.width;
+        height = canvas.height;
+
+        balls = [];
+        for (var index = 0; index < ballsNumber; index++) {
+            balls.push(new _ball2.default({
+                ctx: ctx,
+                isRandom: true,
+                color: randColor()
+            }));
+        }
+    }
+    function update() {
+        requestAnimationFrame(update);
+        ctx.clearRect(0, 0, width, height);
+
+        for (var index = 0; index < balls.length; index++) {
+            balls[index].move().scale(mouse, 50).draw();
+        }
+    }
+
+    // Testing to draw some shapes
+    function ShapeTest() {
+        _shapes2.default.Box(ctx, {
+            pos: randPos(0, width - 20, 0, height - 20),
+            size: { w: 20, h: 20 },
+            color: randColor()
+        });
+        _shapes2.default.Line(ctx);
+        _shapes2.default.Circle(ctx);
+        _shapes2.default.Packman(ctx);
+    }
+
+    init.call(this);
+}
+
+module.exports = BackgroundBalls;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Screen(selector, options) {
+    this.area = null;
+    this.canvas = null;
+
+    function init() {
+        var _this = this;
+
+        this.area = selector ? document.querySelector(selector) : document.body;
+        this.area.innerHTML = '';
+
+        this.canvas = document.createElement('canvas');
+        this.canvas.id = this.opt.screenId;
+        this.canvas.style.backgroundColor = this.opt.bgColor;
+        this.area.appendChild(this.canvas);
+
+        resize.call(this);
+
+        window.addEventListener('resize', function () {
+            return resize.call(_this);
+        }, false);
+    }
+
+    function resize() {
+        this.canvas.height = this.area.clientHeight;
+        this.canvas.width = this.area.clientWidth;
+    }
+
+    this.opt = Object.assign({
+        screenId: 'screen',
+        bgColor: '#22333B'
+    }, options);
+    init.call(this);
+
+    return this.canvas;
+}
+
+module.exports = Screen;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Ball(options) {
+    var _this = this;
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: {
+            x: 10,
+            y: 10
+        },
+        radius: 20,
+        color: '#A53860',
+        isRandom: false,
+        speed: 5
+    }, options);
+
+    //Private
+    var ctx = null,
+        velocity = null,
+        originalSize = null;
+
+    function init() {
+        ctx = this.opt.ctx;
+
+        originalSize = this.opt.radius = this.opt.isRandom ? rand(5, 15) : this.opt.radius;
+
+        this.opt.pos.x = this.opt.isRandom ? rand(this.opt.radius, this.opt.ctx.canvas.width - this.opt.radius - 12) : this.opt.pos.x;
+        this.opt.pos.y = this.opt.isRandom ? rand(this.opt.radius, this.opt.ctx.canvas.height - this.opt.radius - 12) : this.opt.pos.y;
+
+        this.opt.speed = this.opt.isRandom ? rand(0.5, 1) : this.opt.speed;
+    }
+
+    function normalize(x, y) {
+        x = this.opt.isRandom ? rand(-1, 1) : x;
+        y = this.opt.isRandom ? rand(-1, 1) : y;
+        if (x > y) {
+            return { x: 1, y: x ? y / x : 0 };
+        } else {
+            return { x: y ? x / y : 0, y: 1 };
+        }
+    }
+
+    function onMouseArea(pos, mouse, scaleRadius) {
+        return pos.x + scaleRadius > mouse.x && pos.x - scaleRadius < mouse.x && pos.y + scaleRadius > mouse.y && pos.y - scaleRadius < mouse.y;
+    }
+
+    //Public
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.arc(_this.opt.pos.x, _this.opt.pos.y, _this.opt.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = _this.opt.color;
+        ctx.fill();
+    };
+
+    this.move = function (xMove, yMove) {
+        velocity = velocity ? velocity : normalize.call(_this, xMove, yMove);
+
+        // this.opt.speed
+        if (_this.opt.pos.x + velocity.x <= _this.opt.radius || _this.opt.pos.x + velocity.x > _this.opt.ctx.canvas.width - _this.opt.radius) {
+            velocity.x *= -1;
+        }
+
+        if (_this.opt.pos.y + velocity.y <= _this.opt.radius || _this.opt.pos.y + velocity.y > _this.opt.ctx.canvas.height - _this.opt.radius) {
+            velocity.y *= -1;
+        }
+        _this.opt.pos.x += velocity.x * _this.opt.speed;
+        _this.opt.pos.y += velocity.y * _this.opt.speed;
+
+        return _this;
+    };
+
+    this.scale = function (mouse, scaleRadius) {
+        if (!mouse) return _this;
+
+        if (onMouseArea(_this.opt.pos, mouse, scaleRadius) && _this.opt.radius < 50) {
+            _this.opt.radius += 1;
+        } else if (_this.opt.radius > originalSize) {
+            _this.opt.radius -= 1;
+        }
+
+        return _this;
+    };
+
+    init.call(this);
+}
+
+module.exports = Ball;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports.Box = function (ctx, options) {
+    undefined.opt = Object.assign({
+        pos: { x: 10, y: 10 },
+        size: { w: 10, h: 10 },
+        color: 'blue'
+    }, options);
+
+    function init() {
+        ctx.fillStyle = this.opt.color;
+        ctx.fillRect(this.opt.pos.x, this.opt.pos.y, this.opt.size.w, this.opt.size.h);
+    }
+
+    init.call(undefined);
+};
+
+module.exports.Line = function (ctx) {
+    ctx.beginPath();
+    ctx.moveTo(10, 200);
+    ctx.lineTo(50, 100);
+    ctx.lineTo(120, 130);
+    ctx.strokeStyle = 'white';
+    ctx.stroke();
+};
+
+module.exports.Circle = function (ctx) {
+    ctx.beginPath();
+    ctx.arc(300, 200, 50, 0, Math.PI, false);
+    ctx.fill();
+    ctx.strokeStyle = 'white';
+    ctx.stroke();
+};
+
+module.exports.Packman = function (ctx) {
+    ctx.beginPath();
+    ctx.moveTo(400, 200);
+    ctx.arc(400, 200, 25, Math.PI / 8, Math.PI * 3 / 1.61, false);
+    ctx.closePath();
+    ctx.fillStyle = "#F9DBBD";
+    ctx.fill();
+    ctx.stroke();
+};
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function MouseTail(options) {
+    // Private
+    var appName = 'Mouse Tail',
+        errorTitle = '[' + appName + ' - Error]: ';
+
+    var canvas = null,
+        ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        mouse = new Vector(20, 20);
+
+    function init() {
+        var area = document.querySelector(this.opt.selector);
+        area.innerHTML = '';
+
+        canvas = document.createElement('canvas');
+        canvas.id = this.opt.id;
+        canvas.style.backgroundColor = this.opt.bgColor;
+        area.appendChild(canvas);
+        ctx = canvas.getContext('2d');
+
+        window.addEventListener('mousemove', getMousePos, false);
+        window.addEventListener('resize', function () {
+            resize(area);
+        }, false);
+        resize(area);
+
+        update();
+    }
+
+    function update() {
+        requestAnimationFrame(update);
+        ctx.clearRect(0, 0, ctxWidth, ctxHeight);
+
+        userInterface();
+    }
+
+    function userInterface() {
+        ctx.font = "20px Georgia";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = "white";
+        ctx.fillText("App Name: " + appName, mouse.x, mouse.y);
+    }
+
+    function getMousePos(e) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    }
+
+    function resize(area) {
+        ctxHeight = canvas.height = area.clientHeight;
+        ctxWidth = canvas.width = area.clientWidth;
+    }
+
+    this.opt = Object.assign({
+        selector: 'body',
+        id: 'screen',
+        bgColor: '#152523'
+    }, options);
+
+    init.call(this);
+}
+
+module.exports = MouseTail;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Particle = __webpack_require__(12);
+
+var _Particle2 = _interopRequireDefault(_Particle);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function CirclePhysics(options) {
+    // Private
+    var appName = 'CirclePhysics',
+        canvas = null,
+        ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        mouse = new Vector(20, 20),
+        particlesNumber = 400,
+        particles = [],
+        overlapRegenerate = 0,
+        fadeRange = 100;
+
+    function init() {
+        var area = document.querySelector(this.opt.selector);
+        area.innerHTML = '';
+
+        canvas = document.createElement('canvas');
+        canvas.id = this.opt.id;
+        canvas.style.backgroundColor = this.opt.bgColor;
+        area.appendChild(canvas);
+        ctx = canvas.getContext('2d');
+
+        window.addEventListener('mousemove', getMousePos, false);
+        window.addEventListener('resize', function () {
+            resize(area);
+        }, false);
+        resize(area);
+
+        createObjects();
+        update();
+    }
+
+    // Update animation
+    function update() {
+        requestAnimationFrame(update);
+        ctx.clearRect(0, 0, ctxWidth, ctxHeight);
+
+        userInterface();
+
+        particles.forEach(function (particle) {
+            particle.update(particles, mouse, fadeRange).draw();
+        });
+        mouseCircle();
+    }
+
+    function mouseCircle() {
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, fadeRange, 0, Math.PI * 2, false);
+        ctx.strokeStyle = 'rgba(255,249,218,0.1)';
+        ctx.stroke();
+    }
+
+    function createObjects() {
+        particles = [];
+        for (var i = 0; i < particlesNumber; i++) {
+            var overlap = false,
+                r = 10,
+                particle = new _Particle2.default({
+                ctx: ctx,
+                pos: new Vector(rand(r, ctxWidth - r), rand(r, ctxHeight - r)),
+                radius: r
+            });
+
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = particles[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var obj = _step.value;
+
+                    if (particle.hasOverlap(obj)) {
+                        overlapRegenerate++;
+                        overlap = true;
+                        break;
+                    }
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            if (!overlap) particles.push(particle);else i--;
+        }
+    }
+
+    // Draw User Interface
+    function userInterface() {
+        ctx.font = "20px Georgia";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = "white";
+        ctx.fillText("App Name: " + appName, 10, 30);
+    }
+
+    //Get mouse position
+    function getMousePos(e) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    }
+
+    // Resize windows event
+    function resize(area) {
+        ctxHeight = canvas.height = area.clientHeight;
+        ctxWidth = canvas.width = area.clientWidth;
+    }
+
+    this.opt = Object.assign({
+        selector: 'body',
+        id: 'screen',
+        bgColor: '#152523'
+    }, options);
+
+    init.call(this);
+}
+
+module.exports = CirclePhysics;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Particle(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    function init(options) {
+        if (!this.opt.ctx) throw errorTitle + 'Object needs Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+    }
+
+    // Update object
+    this.update = function (particles, mouse, fadeRange) {
+
+        if (mouse) {
+            var x1 = _this.opt.pos.x,
+                y1 = _this.opt.pos.y,
+                x2 = mouse.x,
+                y2 = mouse.y;
+            if (Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)) < fadeRange && _this.opt.opacity < 0.5) {
+                _this.opt.opacity += 0.02;
+                _this.opt.radius += 0.5;
+            } else if (_this.opt.opacity > 0) {
+                _this.opt.opacity -= 0.02;
+                _this.opt.opacity = Math.max(0, _this.opt.opacity);
+                _this.opt.radius -= 0.5;
+            }
+        }
+
+        // particles.forEach( function( particle ){
+        //     if( this !== particle){
+        //         if( this.hasOverlap( particle ) )
+        //             console.log("has");
+        //     }
+        // }.bind(this));
+
+        var dx = Math.abs(_this.opt.vel.x),
+            dy = Math.abs(_this.opt.vel.y),
+            x = _this.opt.pos.x,
+            y = _this.opt.pos.y,
+            r = _this.opt.radius,
+            s = _this.opt.speed;
+
+        if (x < r + dx * s || x > ctxWidth - r - dx * s) _this.opt.vel.x *= -1;
+
+        if (y < r + dy * s || y > ctxHeight - r - dy * s) _this.opt.vel.y *= -1;
+
+        _this.opt.pos.move(_this.opt.vel, s);
+        return _this;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.arc(_this.opt.pos.x, _this.opt.pos.y, _this.opt.radius, 0, Math.PI * 2, false);
+        ctx.save();
+        ctx.globalAlpha = _this.opt.opacity;
+        ctx.fillStyle = _this.opt.color;
+        ctx.fill();
+        ctx.restore();
+        ctx.strokeStyle = _this.opt.color;
+        ctx.stroke();
+    };
+
+    this.hasOverlap = function (particle) {
+        var x1 = _this.opt.pos.x,
+            y1 = _this.opt.pos.y,
+            x2 = particle.opt.pos.x,
+            y2 = particle.opt.pos.y;
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)) < _this.opt.radius + particle.opt.radius;
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new Vector(),
+        vel: new Vector(rand(-20, 20), rand(-20, 20)),
+        speed: 0.04,
+        radius: 20,
+        opacity: 0,
+        color: randColor()
+    }, options);
+    init.call(this);
+}
+
+module.exports = Particle;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Enemy = __webpack_require__(14);
+
+var _Enemy2 = _interopRequireDefault(_Enemy);
+
+var _Player = __webpack_require__(15);
+
+var _Player2 = _interopRequireDefault(_Player);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function BlockRunner(options) {
+    // Private
+    var appName = 'BlockRunner',
+        errorTitle = '[' + appName + ' - Error]: ';
+
+    var canvas = null,
+        ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        margin = 10,
+        bodyArea = 100,
+        stage = null,
+        player = null,
+        enemy = [],
+        enemies = 20;
+
+    // Initialize
+    function init() {
+
+        var area = document.querySelector(this.opt.selector);
+        area.innerHTML = '';
+
+        canvas = document.createElement('canvas');
+        canvas.id = this.opt.id;
+        canvas.style.backgroundColor = this.opt.bgColor;
+        area.appendChild(canvas);
+        ctx = canvas.getContext('2d');
+
+        window.addEventListener('resize', function () {
+            resize(area);
+        }, false);
+        resize(area);
+
+        player = new _Player2.default({
+            ctx: ctx,
+            stage: stage,
+            size: 10
+        });
+        makeEnemies();
+        update();
+    }
+
+    function update() {
+        requestAnimationFrame(update);
+        ctx.clearRect(0, 0, ctxWidth, ctxHeight);
+
+        userInterface();
+        player.update();
+        for (var i = 0; i < enemy.length; i++) {
+            enemy[i].update();
+        }
+    }
+
+    // resize game area
+    function resize(area) {
+        ctxHeight = canvas.height = area.clientHeight;
+        ctxWidth = canvas.width = area.clientWidth;
+
+        stage = {
+            l: margin,
+            t: bodyArea,
+            r: ctxWidth - margin,
+            b: ctxHeight - margin
+        };
+        if (player) player.resizeStage(stage);
+        if (enemy) {
+            makeEnemies();
+        }
+    }
+
+    //Make enemies
+    function makeEnemies() {
+        enemy = [];
+        for (var i = 0; i < enemies; i++) {
+            enemy.push(new _Enemy2.default({
+                ctx: ctx,
+                stage: stage
+            }));
+        }
+    }
+
+    //How to Use
+    function userInterface() {
+        ctx.font = "20px Georgia";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = "white";
+        ctx.fillText("App Name: " + appName, margin, 30);
+        // ctx.font = "14px Georgia";
+        // ctx.fillText("Click anywhere to create a ball.", margin, 80);
+
+        ctx.beginPath();
+        ctx.moveTo(stage.l, stage.t);
+        ctx.lineTo(stage.r, stage.t);
+        ctx.lineTo(stage.r, stage.b);
+        ctx.lineTo(stage.l, stage.b);
+        ctx.closePath();
+        ctx.strokeStyle = 'white';
+        ctx.fillStyle = 'black';
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.rect(stage.l + 1, stage.b - player.opt.size - 10, player.opt.size + 10, player.opt.size + 10);
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = 'green';
+        ctx.fill();
+        ctx.globalAlpha = 1;
+    }
+
+    // Default options od class
+    this.opt = Object.assign({
+        selector: 'body',
+        id: 'screen',
+        bgColor: '#004356'
+    }, options);
+
+    // Call Initialize
+    init.call(this);
+}
+
+module.exports = BlockRunner;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Enemy(option) {
+    var _this = this;
+
+    //Public
+
+    //Private
+    var speed = 3,
+        ctx = null,
+        ctxHeight = 0,
+        ctxWidth = 0;
+
+    // Init function
+    function init() {
+        ctx = this.opt.ctx;
+        this.resizeStage(this.opt.stage);
+
+        if (this.opt.pos.isEmpty) this.opt.pos = new Vector(rand(this.opt.stage.l, this.opt.stage.r - this.opt.size), rand(this.opt.stage.t, this.opt.stage.b - this.opt.size));
+    }
+
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.rect(_this.opt.pos.x, _this.opt.pos.y, _this.opt.size, _this.opt.size);
+        ctx.fillStyle = _this.opt.color;
+        ctx.fill();
+    };
+
+    this.update = function () {
+        _this.draw();
+    };
+
+    this.resizeStage = function (stage) {
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        _this.opt.stage = stage;
+    };
+
+    // Default options
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new Vector(),
+        color: 'red',
+        stage: null,
+        size: 20
+    }, option);
+    init.call(this);
+}
+
+module.exports = Enemy;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Player(option) {
+    var _this = this;
+
+    // Privates
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    // Initialize
+    function init() {
+        if (!this.opt.ctx) throw errorTitle + 'Object needs Context';
+
+        ctx = this.opt.ctx;
+
+        this.resizeStage(this.opt.stage);
+
+        this.opt.pos.x = this.opt.stage.l + 1;
+        this.opt.pos.y = this.opt.stage.b - this.opt.size - 1;
+
+        window.addEventListener('keyup', function (event) {
+            Key.onKeyup(event);
+        }, false);
+        window.addEventListener('keydown', function (event) {
+            Key.onKeydown(event);
+        }, false);
+    }
+
+    this.update = function () {
+        var x = 0,
+            y = 0;
+
+        if (Key.isDown(Key.UP)) y -= 1;
+        if (Key.isDown(Key.LEFT)) x -= 1;
+        if (Key.isDown(Key.DOWN)) y += 1;
+        if (Key.isDown(Key.RIGHT)) x += 1;
+        _this.move(new Vector(x, y)).draw();
+    };
+
+    // Draw Ball
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.rect(_this.opt.pos.x, _this.opt.pos.y, _this.opt.size, _this.opt.size);
+        ctx.fillStyle = _this.opt.color;
+        ctx.fill();
+    };
+
+    // Move Ball
+    this.move = function (movement) {
+        var x = _this.opt.pos.x + movement.x * _this.opt.speed,
+            y = _this.opt.pos.y + movement.y * _this.opt.speed,
+            w = _this.opt.size;
+
+        if (x > _this.opt.stage.l + 2 && x + w < _this.opt.stage.r - 1) _this.opt.velocity.x = movement.x;else {
+            _this.opt.velocity.x = 0;
+            _this.opt.pos.x = x < ctxWidth / 2 ? _this.opt.stage.l + 1 : _this.opt.stage.r - w - 1;
+        }
+
+        if (y > _this.opt.stage.t + 1 && y + w < _this.opt.stage.b - 1) _this.opt.velocity.y = movement.y;else {
+            _this.opt.velocity.y = 0;
+            _this.opt.pos.y = y < ctxHeight / 2 ? _this.opt.stage.t + 1 : _this.opt.stage.b - w - 1;
+        }
+
+        _this.opt.pos.move(_this.opt.velocity, _this.opt.speed);
+        return _this;
+    };
+
+    this.resizeStage = function (stage) {
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        _this.opt.stage = stage;
+    };
+
+    // Default options od class
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new Vector(0, 0),
+        velocity: new Vector(),
+        size: 20,
+        color: '#FFF9DD',
+        speed: 5,
+        stage: null
+    }, option);
+
+    // Call Initialize
+    init.call(this);
+}
+
+module.exports = Player;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Mouse = __webpack_require__(18);
+
+var _Mouse2 = _interopRequireDefault(_Mouse);
+
+var _Player = __webpack_require__(22);
+
+var _Player2 = _interopRequireDefault(_Player);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function RotatePlayer(options) {
+    // Private
+    var appName = 'RotatePlayer',
+        canvas = null,
+        ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        mouse = new _Mouse2.default(),
+        player = null;
+
+    function init() {
+        var area = document.querySelector(this.opt.selector);
+        area.innerHTML = '';
+
+        canvas = document.createElement('canvas');
+        canvas.id = this.opt.id;
+        canvas.style.backgroundColor = this.opt.bgColor;
+        area.appendChild(canvas);
+        ctx = canvas.getContext('2d');
+
+        window.addEventListener('resize', function () {
+            resize(area);
+        }, false);
+        resize(area);
+
+        player = new _Player2.default({
+            ctx: ctx,
+            pos: new Vector(ctxWidth / 2, ctxHeight / 2),
+            velocity: new Vector(0, 0),
+            radius: 100
+        });
+        update();
+    }
+
+    // Update animation
+    function update() {
+        requestAnimationFrame(update);
+        ctx.clearRect(0, 0, ctxWidth, ctxHeight);
+
+        player.update(mouse).lookAt(new Vector(10, 200));
+        // player.draw();
+        userInterface();
+    }
+
+    // Draw User Interface
+    function userInterface() {
+        ctx.font = "20px Georgia";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = "white";
+        ctx.fillText("App Name: " + appName, 10, 50);
+    }
+
+    // Resize windows event
+    function resize(area) {
+        ctxHeight = canvas.height = area.clientHeight;
+        ctxWidth = canvas.width = area.clientWidth;
+    }
+
+    this.opt = Object.assign({
+        selector: 'body',
+        id: 'screen',
+        bgColor: '#292C44'
+    }, options);
+
+    init.call(this);
+}
+
+module.exports = RotatePlayer;
+
+/***/ }),
+/* 17 */,
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Mouse(options) {
+    // Public
+    this.x = 0;
+    this.y = 0;
+
+    // Private
+    var mouse = null;
+
+    function init() {
+        var _this = this;
+
+        mouse = this.opt.pos;
+        window.addEventListener('mousemove', function (e) {
+            getMousePos.call(_this, e);
+        }, false);
+    }
+
+    // Retrieve mouse position from window
+    function getMousePos(e) {
+        this.x = mouse.x = e.clientX;
+        this.y = mouse.y = e.clientY;
+    }
+
+    // return vector
+    this.get = function () {
+        return mouse;
+    };
+
+    this.opt = Object.assign({
+        pos: new Vector(0, 0)
+    }, options);
+    init.call(this);
+}
+
+module.exports = Mouse;
+
+/***/ }),
+/* 19 */,
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Circle = __webpack_require__(21);
+
+var _Circle2 = _interopRequireDefault(_Circle);
+
+var _Line = __webpack_require__(23);
+
+var _Line2 = _interopRequireDefault(_Line);
+
+var _Rectangle = __webpack_require__(24);
+
+var _Rectangle2 = _interopRequireDefault(_Rectangle);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Shapes(type, options) {
+    switch (type) {
+        case 'circle':
+            return new _Circle2.default(options);
+        case 'line':
+            return new _Line2.default(options);
+        case 'rect':
+            return new _Rectangle2.default(options);
+        default:
+            throw 'Undefined Shape type.';
+    }
+}
+
+module.exports = Shapes;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Circle(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    function init(options) {
+        if (!this.opt.ctx) throw 'Circle Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.pos.isEmpty) {
+            this.opt.pos = new Vector(ctxWidth / 2, ctxHeight / 2);
+        }
+    }
+
+    // Update object
+    this.update = function (mouse) {
+        if (mouse) {
+            _this.opt.pos.x = mouse.x;
+            _this.opt.pos.y = mouse.y;
+        }
+        return _this;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.arc(_this.opt.pos.x, _this.opt.pos.y, _this.opt.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = _this.opt.bgColor;
+        ctx.fill();
+
+        if (_this.opt.brColor !== null) {
+            ctx.strokeStyle = _this.opt.brColor;
+            ctx.stroke();
+        }
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new Vector(),
+        radius: 20,
+        bgColor: '#052B3E',
+        brColor: null
+    }, options);
+    init.call(this);
+}
+
+module.exports = Circle;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Shapes = __webpack_require__(20);
+
+var _Shapes2 = _interopRequireDefault(_Shapes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Player(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        objBox = null,
+        objCircle = null,
+        objLine = null,
+        mouse = null;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Object needs Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        // Objects
+        objCircle = (0, _Shapes2.default)('circle', {
+            ctx: ctx,
+            pos: new Vector(0, 0),
+            radius: this.opt.radius,
+            bgColor: this.opt.color
+        });
+        objLine = (0, _Shapes2.default)('line', {
+            ctx: ctx,
+            thickness: 5,
+            from: new Vector(0, 0),
+            to: new Vector(this.opt.radius + 10, 0)
+        });
+        objBox = (0, _Shapes2.default)('rect', {
+            ctx: ctx,
+            pos: new Vector(2, 3),
+            bgColor: '#4F80E1',
+            size: { w: 30, h: 50 }
+        });
+    }
+
+    // Update object
+    this.update = function (mPos) {
+        if (mPos) {
+            mouse = mPos;
+        }
+
+        return _this;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        objCircle.draw();
+        objLine.draw();
+        objBox.draw();
+    };
+
+    this.lookAt = function (point) {
+        var y = _this.opt.pos.y,
+            x = _this.opt.pos.x;
+
+        // 1 degree = 1 * Math.PI/180
+        ctx.save();
+        ctx.translate(x, y);
+
+        var arcTan = Math.atan2(mouse.y - y, mouse.x - x);
+        ctx.rotate(arcTan);
+
+        _this.draw();
+        ctx.restore();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new Vector(),
+        radius: 20,
+        color: '#FF5349'
+    }, options);
+    init.call(this);
+}
+
+module.exports = Player;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Line(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Line Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.from.isEmpty) {
+            this.opt.from = new Vector(ctxWidth / 2 - 5, ctxHeight / 2);
+        }
+
+        if (this.opt.to.isEmpty) {
+            this.opt.to = new Vector(ctxWidth / 2 + 5, ctxHeight / 2);
+        }
+    }
+
+    // Update object
+    this.update = function () {
+        return _this;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.moveTo(_this.opt.from.x, _this.opt.from.y);
+        ctx.lineTo(_this.opt.to.x, _this.opt.to.y);
+        ctx.lineWidth = _this.opt.thickness;
+        ctx.strokeStyle = _this.opt.color;
+        ctx.stroke();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        from: new Vector(0, 0),
+        to: new Vector(),
+        thickness: 1,
+        color: '#F0F0F1'
+    }, options);
+    init.call(this);
+}
+
+module.exports = Line;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Rectangle(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Rectangle Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.pos.isEmpty) {
+            this.opt.pos = new Vector(ctxWidth / 2, ctxHeight / 2);
+        }
+
+        if (this.opt.size === null) this.opt.size = { w: 10, h: 10 };
+    }
+
+    // Update object
+    this.update = function (mouse) {
+        if (mouse) {
+            _this.opt.pos.x = mouse.x;
+            _this.opt.pos.y = mouse.y;
+        }
+        return _this;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.rect(_this.opt.pos.x, _this.opt.pos.y, _this.opt.size.w, _this.opt.size.h);
+        ctx.fillStyle = _this.opt.bgColor;
+        ctx.fill();
+
+        if (_this.opt.brColor !== null) {
+            ctx.strokeStyle = _this.opt.brColor;
+            ctx.stroke();
+        }
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new Vector(),
+        size: null,
+        bgColor: '#052B3E',
+        brColor: null
+    }, options);
+    init.call(this);
+}
+
+module.exports = Rectangle;
+
+/***/ })
+/******/ ]);
+//# sourceMappingURL=app.bundle.js.map

@@ -36,9 +36,9 @@ module.exports = {
             }
         ]
     },
-    // devtool: 'source-map',
+    devtool: 'source-map',
     plugins: [
-        new webpack.optimize.UglifyJsPlugin(),  // for debug this option show commented and devtool: 'source-map' uncommented
+        // new webpack.optimize.UglifyJsPlugin(),  // for debug this option show commented and devtool: 'source-map' uncommented
         new BrowserSyncPlugin({
             host: 'localhost',
             port: 5000,

@@ -44,6 +44,28 @@ randColor = () => {
 
 function Vector(x, y){
 
+    this.normal = (multi) => {
+        var x = Math.abs(this.x),
+            y = Math.abs(this.y);
+
+        if( x > y ){
+            y = y / x;
+            x = 1;
+        } else if ( x < y ) {
+            x = x / y;
+            y = 1;
+        } else
+            x = y = 1;
+
+        // x += multi;
+        // y += multi;
+
+        x = (this.x < 0 ? x*-1 : x);
+        y = (this.y < 0 ? y*-1 : y);
+
+        return new Vector(x , y);
+    };
+
     this.move = (velocity, speed) => {
         if( typeof velocity !== 'object' || velocity.constructor.name !== 'Vector') throw 'Invalid Parameter';
         speed = speed ? speed : 1;
@@ -52,6 +74,8 @@ function Vector(x, y){
     };
 
     this.distance = point => {
+        if( !point )
+            return Math.sqrt( Math.pow(this.x, 2) + Math.pow(this.y, 2) );
         return Math.sqrt( Math.pow(this.x - point.x, 2) + Math.pow(this.y - point.y, 2) );
     };
 
