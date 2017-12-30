@@ -29,6 +29,8 @@ function CirclePhysics(options) {
         window.addEventListener('resize', ()=>{resize(area);}, false);
         resize(area);
 
+        allGamesMenu(2);
+
         createObjects();
         update();
     }

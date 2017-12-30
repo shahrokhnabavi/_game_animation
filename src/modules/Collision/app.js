@@ -32,6 +32,8 @@ function Collision(options) {
         window.addEventListener('resize', () => resize(area), false);
         resize(area);
 
+        allGamesMenu(6);
+
 
         // obj1 = new BoxCollision({
         //     ctx: ctx,

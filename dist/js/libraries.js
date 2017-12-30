@@ -1,3 +1,29 @@
+
+function allGamesMenu( idxGame ){
+
+    var area = document.body,
+        select = document.createElement('select'),
+        games = [
+            'BlockRunner','Physics','MouseTail','HeavyBall','BackgroundBalls','Collision','RotatePlayer',
+            'Tennis',
+        ];
+
+    select.id = 'game';
+    area.appendChild(select);
+
+    games.forEach( (game, index) => {
+        let opt = document.createElement('option');
+        opt.innerText = game;
+        if( idxGame === (index+1) )
+            opt.setAttribute('selected', 'selected');
+
+        select.appendChild(opt);
+    });
+    select.addEventListener('change', (e) => {loadGame(select.selectedIndex+1);});
+}
+
+
+
 var Key = {
     _pressed: {},
 

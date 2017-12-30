@@ -15,6 +15,8 @@ function BackgroundBalls() {
         var canvas = new Screen();
         ctx = canvas.getContext('2d');
 
+        allGamesMenu(5);
+
         genarateBall(canvas);
         update();
 

@@ -7,3 +7,11 @@ body,html{
     overflow: hidden; /*  Disable scrollbars */
     display: block;  /* No floating content on sides */
 }
+
+#game {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+}

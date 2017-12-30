@@ -24,6 +24,8 @@ function MouseTail(options) {
         window.addEventListener('resize', ()=>{resize(area);}, false);
         resize(area);
 
+        allGamesMenu(3);
+
         update();
     }
 

@@ -1,4 +1,4 @@
-import Mouse from '../../lib/Mouse';
+// import Mouse from '../../lib/Mouse';
 import Player from './classes/Player';
 
 function RotatePlayer(options) {
@@ -24,6 +24,8 @@ function RotatePlayer(options) {
 
         window.addEventListener('resize', ()=>{resize(area);}, false);
         resize(area);
+
+        allGamesMenu(7);
 
         player = new Player({
             ctx: ctx,

@@ -40,6 +40,8 @@ function BlockRunner(options) {
         }, false);
         resize(area);
 
+        allGamesMenu(1);
+
 
         player = new Player({
             ctx: ctx,

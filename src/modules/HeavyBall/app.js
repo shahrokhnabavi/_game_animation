@@ -27,6 +27,8 @@ function HeavyBall( options ) {
 
         ctx = canvas.getContext('2d');
 
+        allGamesMenu(4);
+
         window.addEventListener('click', singleBall);
         window.addEventListener('resize', resize);
         window.addEventListener('keyup', keyHandler);

@@ -5,28 +5,34 @@ import MouseTail from './modules/MouseTail/app';
 import Physics from './modules/Physics/app';
 import BlockRunner from './modules/BlockRunner/app';
 import RotatePlayer from './modules/RotatePlayer/app';
+import Tennis from './modules/Tennis/app';
 
-
-switch( 1 ){
-    case 7:
-        new RotatePlayer();
-        break;
-    case 6:
-        new Collision();
-        break;
-    case 5:
-        new BackgroundBalls();
-        break;
-    case 4:
-        new HeavyBall();
-        break;
-    case 3:
-        new MouseTail();
-        break;
-    case 2:
-        new Physics();
-        break;
-    case 1:
-        new BlockRunner();
-        break;
-}
+window.loadGame = idx => {
+    switch( idx ){
+        case 8:
+            new Tennis();
+            break;
+        case 7:
+            new RotatePlayer();
+            break;
+        case 6:
+            new Collision();
+            break;
+        case 5:
+            new BackgroundBalls();
+            break;
+        case 4:
+            new HeavyBall();
+            break;
+        case 3:
+            new MouseTail();
+            break;
+        case 2:
+            new Physics();
+            break;
+        case 1:
+            new BlockRunner();
+            break;
+    }
+};
+loadGame(8);

@@ -134,31 +134,41 @@ var _app13 = __webpack_require__(20);
 
 var _app14 = _interopRequireDefault(_app13);
 
+var _app15 = __webpack_require__(23);
+
+var _app16 = _interopRequireDefault(_app15);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-switch (1) {
-    case 7:
-        new _app14.default();
-        break;
-    case 6:
-        new _app2.default();
-        break;
-    case 5:
-        new _app6.default();
-        break;
-    case 4:
-        new _app4.default();
-        break;
-    case 3:
-        new _app8.default();
-        break;
-    case 2:
-        new _app10.default();
-        break;
-    case 1:
-        new _app12.default();
-        break;
-}
+window.loadGame = function (idx) {
+    switch (idx) {
+        case 8:
+            new _app16.default();
+            break;
+        case 7:
+            new _app14.default();
+            break;
+        case 6:
+            new _app2.default();
+            break;
+        case 5:
+            new _app6.default();
+            break;
+        case 4:
+            new _app4.default();
+            break;
+        case 3:
+            new _app8.default();
+            break;
+        case 2:
+            new _app10.default();
+            break;
+        case 1:
+            new _app12.default();
+            break;
+    }
+};
+loadGame(8);
 
 /***/ }),
 /* 2 */
@@ -207,6 +217,8 @@ function Collision(options) {
             return resize(area);
         }, false);
         resize(area);
+
+        allGamesMenu(6);
 
         // obj1 = new BoxCollision({
         //     ctx: ctx,
@@ -431,6 +443,8 @@ function HeavyBall(options) {
         resize();
 
         ctx = canvas.getContext('2d');
+
+        allGamesMenu(4);
 
         window.addEventListener('click', singleBall);
         window.addEventListener('resize', resize);
@@ -686,6 +700,8 @@ function BackgroundBalls() {
     function init() {
         var canvas = new _screen2.default();
         ctx = canvas.getContext('2d');
+
+        allGamesMenu(5);
 
         genarateBall(canvas);
         update();
@@ -960,6 +976,8 @@ function MouseTail(options) {
         }, false);
         resize(area);
 
+        allGamesMenu(3);
+
         update();
     }
 
@@ -1039,6 +1057,8 @@ function CirclePhysics(options) {
             resize(area);
         }, false);
         resize(area);
+
+        allGamesMenu(2);
 
         createObjects();
         update();
@@ -1292,6 +1312,8 @@ function BlockRunner(options) {
             resize(area);
         }, false);
         resize(area);
+
+        allGamesMenu(1);
 
         player = new _Player2.default({
             ctx: ctx,
@@ -1839,10 +1861,6 @@ module.exports = Player;
 "use strict";
 
 
-var _Mouse = __webpack_require__(21);
-
-var _Mouse2 = _interopRequireDefault(_Mouse);
-
 var _Player = __webpack_require__(22);
 
 var _Player2 = _interopRequireDefault(_Player);
@@ -1856,7 +1874,7 @@ function RotatePlayer(options) {
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
-        mouse = new _Mouse2.default(),
+        mouse = new Mouse(),
         player = null;
 
     function init() {
@@ -1873,6 +1891,8 @@ function RotatePlayer(options) {
             resize(area);
         }, false);
         resize(area);
+
+        allGamesMenu(7);
 
         player = new _Player2.default({
             ctx: ctx,
@@ -1914,54 +1934,13 @@ function RotatePlayer(options) {
     }, options);
 
     init.call(this);
-}
+} // import Mouse from '../../lib/Mouse';
+
 
 module.exports = RotatePlayer;
 
 /***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function Mouse(options) {
-    // Public
-    this.x = 0;
-    this.y = 0;
-
-    // Private
-    var mouse = null;
-
-    function init() {
-        var _this = this;
-
-        mouse = this.opt.pos;
-        window.addEventListener('mousemove', function (e) {
-            getMousePos.call(_this, e);
-        }, false);
-    }
-
-    // Retrieve mouse position from window
-    function getMousePos(e) {
-        this.x = mouse.x = e.clientX;
-        this.y = mouse.y = e.clientY;
-    }
-
-    // return vector
-    this.get = function () {
-        return mouse;
-    };
-
-    this.opt = Object.assign({
-        pos: new Vector(0, 0)
-    }, options);
-    init.call(this);
-}
-
-module.exports = Mouse;
-
-/***/ }),
+/* 21 */,
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2055,6 +2034,153 @@ function Player(options) {
 }
 
 module.exports = Player;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(24);
+
+function Tennis(options) {
+    // Private
+    var appName = 'Tennis',
+        ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        mouse = new _Game.Mouse();
+
+    function init() {
+        var g = new _Game.Game(this.opt);
+
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
+
+        update();
+    }
+
+    // Update animation
+    function update() {
+        requestAnimationFrame(update);
+        ctx.clearRect(0, 0, ctxWidth, ctxHeight);
+
+        userInterface();
+    }
+
+    // Resize
+    function resize(ctxMe) {
+        ctxWidth = ctxMe.canvas.width;
+        ctxHeight = ctxMe.canvas.height;
+    }
+
+    // Draw User Interface
+    function userInterface() {
+        ctx.font = "20px Georgia";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = "white";
+        ctx.fillText("App Name: " + appName, mouse.x, mouse.y);
+    }
+
+    this.opt = Object.assign({
+        selector: 'body',
+        id: 'screen',
+        bgColor: '#152523',
+        cfResize: resize
+    }, options);
+
+    init.call(this);
+}
+
+module.exports = Tennis;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports.Game = function (options) {
+    var _this2 = this;
+
+    // Private
+    var ctx = null;
+
+    function init() {
+        var _this = this;
+
+        var area = document.querySelector(this.opt.selector);
+        area.innerHTML = '';
+
+        var canvas = document.createElement('canvas');
+        canvas.id = this.opt.id;
+        canvas.style.backgroundColor = this.opt.bgColor;
+        area.appendChild(canvas);
+        ctx = canvas.getContext('2d');
+
+        window.addEventListener('resize', function () {
+            _this.resize(area);
+        }, false);
+        this.resize(area);
+    }
+
+    this.getCtx = function () {
+        return ctx;
+    };
+
+    // Resize windows event
+    this.resize = function (area) {
+        ctx.canvas.height = area.clientHeight;
+        ctx.canvas.width = area.clientWidth;
+
+        if (typeof _this2.opt.cfResize === 'function') _this2.opt.cfResize(ctx);
+    };
+
+    this.opt = Object.assign({
+        selector: 'body',
+        id: 'screen',
+        bgColor: '#152523',
+        cfResize: null
+    }, options);
+    init.call(this);
+};
+
+module.exports.Mouse = function (options) {
+    // Public
+    this.x = 0;
+    this.y = 0;
+
+    // Private
+    var mouse = null;
+
+    function init() {
+        var _this3 = this;
+
+        mouse = this.opt.pos;
+        window.addEventListener('mousemove', function (e) {
+            getMousePos.call(_this3, e);
+        }, false);
+    }
+
+    // Retrieve mouse position from window
+    function getMousePos(e) {
+        this.x = mouse.x = e.clientX;
+        this.y = mouse.y = e.clientY;
+    }
+
+    // return vector
+    this.get = function () {
+        return mouse;
+    };
+
+    this.opt = Object.assign({
+        pos: new Vector(0, 0)
+    }, options);
+    init.call(this);
+};
 
 /***/ })
 /******/ ]);
