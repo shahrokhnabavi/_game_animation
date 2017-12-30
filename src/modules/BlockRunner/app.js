@@ -102,7 +102,7 @@ function BlockRunner(options) {
                 playerHomeSize: playerHomeSize
             });
 
-            if (enemy.isInPlayerHome()) {
+            if (enemy.isInPlayerHome() || enemy.isIntersection(enemies)) {
                 i--;
                 continue;
             }

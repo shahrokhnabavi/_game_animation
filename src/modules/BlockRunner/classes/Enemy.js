@@ -35,7 +35,27 @@ function Enemy( option ) {
     };
 
     this.isIntersection = enemies => {
+        var xl0 = this.opt.pos.x,
+            yl0 = this.opt.pos.y,
+            xr0 = this.opt.pos.x + this.opt.size,
+            yr0 = this.opt.pos.y + this.opt.size,
 
+            result = false;
+
+        enemies.forEach( enemy => {
+            let xl1 = enemy.opt.pos.x,
+                yl1 = enemy.opt.pos.y,
+                xr1 = enemy.opt.pos.x + enemy.opt.size,
+                yr1 = enemy.opt.pos.y + enemy.opt.size;
+            //
+            if( xl0 > xr1 || xl1 > xr0 )
+                return false;
+            if( yl0 > yr1 || yl1 > yr0 )
+                return false;
+
+           result = true;
+        });
+        return result;
     };
 
     this.update = () =>{

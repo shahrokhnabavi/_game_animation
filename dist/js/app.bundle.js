@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,31 +70,67 @@
 "use strict";
 
 
-var _app = __webpack_require__(1);
+var _Circle = __webpack_require__(16);
+
+var _Circle2 = _interopRequireDefault(_Circle);
+
+var _Line = __webpack_require__(17);
+
+var _Line2 = _interopRequireDefault(_Line);
+
+var _Rectangle = __webpack_require__(18);
+
+var _Rectangle2 = _interopRequireDefault(_Rectangle);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Shapes(type, options) {
+    switch (type) {
+        case 'circle':
+            return new _Circle2.default(options);
+        case 'line':
+            return new _Line2.default(options);
+        case 'rect':
+            return new _Rectangle2.default(options);
+        default:
+            throw 'Undefined Shape type.';
+    }
+}
+
+module.exports = Shapes;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _app = __webpack_require__(2);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _app3 = __webpack_require__(4);
+var _app3 = __webpack_require__(5);
 
 var _app4 = _interopRequireDefault(_app3);
 
-var _app5 = __webpack_require__(6);
+var _app5 = __webpack_require__(7);
 
 var _app6 = _interopRequireDefault(_app5);
 
-var _app7 = __webpack_require__(10);
+var _app7 = __webpack_require__(11);
 
 var _app8 = _interopRequireDefault(_app7);
 
-var _app9 = __webpack_require__(11);
+var _app9 = __webpack_require__(12);
 
 var _app10 = _interopRequireDefault(_app9);
 
-var _app11 = __webpack_require__(13);
+var _app11 = __webpack_require__(14);
 
 var _app12 = _interopRequireDefault(_app11);
 
-var _app13 = __webpack_require__(16);
+var _app13 = __webpack_require__(20);
 
 var _app14 = _interopRequireDefault(_app13);
 
@@ -125,17 +161,17 @@ switch (1) {
 }
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _CircleCollision = __webpack_require__(2);
+var _CircleCollision = __webpack_require__(3);
 
 var _CircleCollision2 = _interopRequireDefault(_CircleCollision);
 
-var _BoxCollision = __webpack_require__(3);
+var _BoxCollision = __webpack_require__(4);
 
 var _BoxCollision2 = _interopRequireDefault(_BoxCollision);
 
@@ -245,7 +281,7 @@ function Collision(options) {
 module.exports = Collision;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -294,7 +330,7 @@ function CircleCollision(options) {
 module.exports = CircleCollision;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -358,13 +394,13 @@ function BoxCollision(options) {
 module.exports = BoxCollision;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Ball = __webpack_require__(5);
+var _Ball = __webpack_require__(6);
 
 var _Ball2 = _interopRequireDefault(_Ball);
 
@@ -522,7 +558,7 @@ function HeavyBall(options) {
 module.exports = HeavyBall;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -619,21 +655,21 @@ function Ball(option) {
 module.exports = Ball;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _screen = __webpack_require__(7);
+var _screen = __webpack_require__(8);
 
 var _screen2 = _interopRequireDefault(_screen);
 
-var _ball = __webpack_require__(8);
+var _ball = __webpack_require__(9);
 
 var _ball2 = _interopRequireDefault(_ball);
 
-var _shapes = __webpack_require__(9);
+var _shapes = __webpack_require__(10);
 
 var _shapes2 = _interopRequireDefault(_shapes);
 
@@ -703,7 +739,7 @@ function BackgroundBalls() {
 module.exports = BackgroundBalls;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -748,7 +784,7 @@ function Screen(selector, options) {
 module.exports = Screen;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -842,7 +878,7 @@ function Ball(options) {
 module.exports = Ball;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -891,7 +927,7 @@ module.exports.Packman = function (ctx) {
 };
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -963,13 +999,13 @@ function MouseTail(options) {
 module.exports = MouseTail;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Particle = __webpack_require__(12);
+var _Particle = __webpack_require__(13);
 
 var _Particle2 = _interopRequireDefault(_Particle);
 
@@ -1104,7 +1140,7 @@ function CirclePhysics(options) {
 module.exports = CirclePhysics;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1202,21 +1238,21 @@ function Particle(options) {
 module.exports = Particle;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Enemy = __webpack_require__(14);
+var _Enemy = __webpack_require__(15);
 
 var _Enemy2 = _interopRequireDefault(_Enemy);
 
-var _Player = __webpack_require__(15);
+var _Player = __webpack_require__(19);
 
 var _Player2 = _interopRequireDefault(_Player);
 
-var _Shapes = __webpack_require__(19);
+var _Shapes = __webpack_require__(0);
 
 var _Shapes2 = _interopRequireDefault(_Shapes);
 
@@ -1319,7 +1355,7 @@ function BlockRunner(options) {
                 playerHomeSize: playerHomeSize
             });
 
-            if (enemy.isInPlayerHome()) {
+            if (enemy.isInPlayerHome() || enemy.isIntersection(enemies)) {
                 i--;
                 continue;
             }
@@ -1354,13 +1390,13 @@ function BlockRunner(options) {
 module.exports = BlockRunner;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Shapes = __webpack_require__(19);
+var _Shapes = __webpack_require__(0);
 
 var _Shapes2 = _interopRequireDefault(_Shapes);
 
@@ -1397,7 +1433,26 @@ function Enemy(option) {
         return _this.opt.pos.x < _this.opt.stage.l + 1 + _this.opt.playerHomeSize && _this.opt.pos.y > _this.opt.stage.b - 1 - _this.opt.playerHomeSize - _this.opt.size;
     };
 
-    this.isIntersection = function (enemies) {};
+    this.isIntersection = function (enemies) {
+        var xl0 = _this.opt.pos.x,
+            yl0 = _this.opt.pos.y,
+            xr0 = _this.opt.pos.x + _this.opt.size,
+            yr0 = _this.opt.pos.y + _this.opt.size,
+            result = false;
+
+        enemies.forEach(function (enemy) {
+            var xl1 = enemy.opt.pos.x,
+                yl1 = enemy.opt.pos.y,
+                xr1 = enemy.opt.pos.x + enemy.opt.size,
+                yr1 = enemy.opt.pos.y + enemy.opt.size;
+            //
+            if (xl0 > xr1 || xl1 > xr0) return false;
+            if (yl0 > yr1 || yl1 > yr0) return false;
+
+            result = true;
+        });
+        return result;
+    };
 
     this.update = function () {
         box.draw();
@@ -1425,7 +1480,194 @@ function Enemy(option) {
 module.exports = Enemy;
 
 /***/ }),
-/* 15 */
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Circle(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    function init(options) {
+        if (!this.opt.ctx) throw 'Circle Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.pos.isEmpty) {
+            this.opt.pos = new Vector(ctxWidth / 2, ctxHeight / 2);
+        }
+    }
+
+    // Update object
+    this.update = function (mouse) {
+        if (mouse) {
+            _this.opt.pos.x = mouse.x;
+            _this.opt.pos.y = mouse.y;
+        }
+        return _this;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.arc(_this.opt.pos.x, _this.opt.pos.y, _this.opt.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = _this.opt.bgColor;
+        ctx.fill();
+
+        if (_this.opt.brColor !== null) {
+            ctx.strokeStyle = _this.opt.brColor;
+            ctx.stroke();
+        }
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new Vector(),
+        radius: 20,
+        bgColor: '#052B3E',
+        brColor: null
+    }, options);
+    init.call(this);
+}
+
+module.exports = Circle;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Line(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Line Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.from.isEmpty) {
+            this.opt.from = new Vector(ctxWidth / 2 - 5, ctxHeight / 2);
+        }
+
+        if (this.opt.to.isEmpty) {
+            this.opt.to = new Vector(ctxWidth / 2 + 5, ctxHeight / 2);
+        }
+    }
+
+    // Update object
+    this.update = function () {
+        return _this;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.moveTo(_this.opt.from.x, _this.opt.from.y);
+        ctx.lineTo(_this.opt.to.x, _this.opt.to.y);
+        ctx.lineWidth = _this.opt.thickness;
+        ctx.strokeStyle = _this.opt.color;
+        ctx.stroke();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        from: new Vector(0, 0),
+        to: new Vector(),
+        thickness: 1,
+        color: '#F0F0F1'
+    }, options);
+    init.call(this);
+}
+
+module.exports = Line;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function Rectangle(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Rectangle Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.pos.isEmpty) {
+            this.opt.pos = new Vector(ctxWidth / 2, ctxHeight / 2);
+        }
+
+        if (this.opt.size === null) this.opt.size = { w: 10, h: 10 };
+    }
+
+    // Update object
+    this.update = function (mouse) {
+        if (mouse) {
+            _this.opt.pos.x = mouse.x;
+            _this.opt.pos.y = mouse.y;
+        }
+        return _this;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.rect(_this.opt.pos.x, _this.opt.pos.y, _this.opt.size.w, _this.opt.size.h);
+        ctx.fillStyle = _this.opt.bgColor;
+
+        var orgAlpha = ctx.globalAlpha;
+        if (_this.opt.alpha !== null) ctx.globalAlpha = _this.opt.alpha;
+        ctx.fill();
+        ctx.globalAlpha = orgAlpha;
+
+        if (_this.opt.brColor !== null) {
+            ctx.strokeStyle = _this.opt.brColor;
+            ctx.stroke();
+        }
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new Vector(),
+        size: null,
+        bgColor: '#052B3E',
+        brColor: null,
+        alpha: null
+    }, options);
+    init.call(this);
+}
+
+module.exports = Rectangle;
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1522,17 +1764,17 @@ function Player(option) {
 module.exports = Player;
 
 /***/ }),
-/* 16 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Mouse = __webpack_require__(17);
+var _Mouse = __webpack_require__(21);
 
 var _Mouse2 = _interopRequireDefault(_Mouse);
 
-var _Player = __webpack_require__(18);
+var _Player = __webpack_require__(22);
 
 var _Player2 = _interopRequireDefault(_Player);
 
@@ -1608,7 +1850,7 @@ function RotatePlayer(options) {
 module.exports = RotatePlayer;
 
 /***/ }),
-/* 17 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1651,13 +1893,13 @@ function Mouse(options) {
 module.exports = Mouse;
 
 /***/ }),
-/* 18 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Shapes = __webpack_require__(19);
+var _Shapes = __webpack_require__(0);
 
 var _Shapes2 = _interopRequireDefault(_Shapes);
 
@@ -1744,229 +1986,6 @@ function Player(options) {
 }
 
 module.exports = Player;
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _Circle = __webpack_require__(20);
-
-var _Circle2 = _interopRequireDefault(_Circle);
-
-var _Line = __webpack_require__(21);
-
-var _Line2 = _interopRequireDefault(_Line);
-
-var _Rectangle = __webpack_require__(22);
-
-var _Rectangle2 = _interopRequireDefault(_Rectangle);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function Shapes(type, options) {
-    switch (type) {
-        case 'circle':
-            return new _Circle2.default(options);
-        case 'line':
-            return new _Line2.default(options);
-        case 'rect':
-            return new _Rectangle2.default(options);
-        default:
-            throw 'Undefined Shape type.';
-    }
-}
-
-module.exports = Shapes;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function Circle(options) {
-    var _this = this;
-
-    // Private
-    var ctx = null,
-        ctxWidth = 0,
-        ctxHeight = 0;
-
-    function init(options) {
-        if (!this.opt.ctx) throw 'Circle Objects need Context';
-
-        ctx = this.opt.ctx;
-        ctxHeight = ctx.canvas.clientHeight;
-        ctxWidth = ctx.canvas.clientWidth;
-
-        if (this.opt.pos.isEmpty) {
-            this.opt.pos = new Vector(ctxWidth / 2, ctxHeight / 2);
-        }
-    }
-
-    // Update object
-    this.update = function (mouse) {
-        if (mouse) {
-            _this.opt.pos.x = mouse.x;
-            _this.opt.pos.y = mouse.y;
-        }
-        return _this;
-    };
-
-    // Draw Object
-    this.draw = function () {
-        ctx.beginPath();
-        ctx.arc(_this.opt.pos.x, _this.opt.pos.y, _this.opt.radius, 0, Math.PI * 2, false);
-        ctx.fillStyle = _this.opt.bgColor;
-        ctx.fill();
-
-        if (_this.opt.brColor !== null) {
-            ctx.strokeStyle = _this.opt.brColor;
-            ctx.stroke();
-        }
-    };
-
-    this.opt = Object.assign({
-        ctx: null,
-        pos: new Vector(),
-        radius: 20,
-        bgColor: '#052B3E',
-        brColor: null
-    }, options);
-    init.call(this);
-}
-
-module.exports = Circle;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function Line(options) {
-    var _this = this;
-
-    // Private
-    var ctx = null,
-        ctxWidth = 0,
-        ctxHeight = 0;
-
-    function init() {
-        if (!this.opt.ctx) throw 'Line Objects need Context';
-
-        ctx = this.opt.ctx;
-        ctxHeight = ctx.canvas.clientHeight;
-        ctxWidth = ctx.canvas.clientWidth;
-
-        if (this.opt.from.isEmpty) {
-            this.opt.from = new Vector(ctxWidth / 2 - 5, ctxHeight / 2);
-        }
-
-        if (this.opt.to.isEmpty) {
-            this.opt.to = new Vector(ctxWidth / 2 + 5, ctxHeight / 2);
-        }
-    }
-
-    // Update object
-    this.update = function () {
-        return _this;
-    };
-
-    // Draw Object
-    this.draw = function () {
-        ctx.beginPath();
-        ctx.moveTo(_this.opt.from.x, _this.opt.from.y);
-        ctx.lineTo(_this.opt.to.x, _this.opt.to.y);
-        ctx.lineWidth = _this.opt.thickness;
-        ctx.strokeStyle = _this.opt.color;
-        ctx.stroke();
-    };
-
-    this.opt = Object.assign({
-        ctx: null,
-        from: new Vector(0, 0),
-        to: new Vector(),
-        thickness: 1,
-        color: '#F0F0F1'
-    }, options);
-    init.call(this);
-}
-
-module.exports = Line;
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function Rectangle(options) {
-    var _this = this;
-
-    // Private
-    var ctx = null,
-        ctxWidth = 0,
-        ctxHeight = 0;
-
-    function init() {
-        if (!this.opt.ctx) throw 'Rectangle Objects need Context';
-
-        ctx = this.opt.ctx;
-        ctxHeight = ctx.canvas.clientHeight;
-        ctxWidth = ctx.canvas.clientWidth;
-
-        if (this.opt.pos.isEmpty) {
-            this.opt.pos = new Vector(ctxWidth / 2, ctxHeight / 2);
-        }
-
-        if (this.opt.size === null) this.opt.size = { w: 10, h: 10 };
-    }
-
-    // Update object
-    this.update = function (mouse) {
-        if (mouse) {
-            _this.opt.pos.x = mouse.x;
-            _this.opt.pos.y = mouse.y;
-        }
-        return _this;
-    };
-
-    // Draw Object
-    this.draw = function () {
-        ctx.beginPath();
-        ctx.rect(_this.opt.pos.x, _this.opt.pos.y, _this.opt.size.w, _this.opt.size.h);
-        ctx.fillStyle = _this.opt.bgColor;
-
-        var orgAlpha = ctx.globalAlpha;
-        if (_this.opt.alpha !== null) ctx.globalAlpha = _this.opt.alpha;
-        ctx.fill();
-        ctx.globalAlpha = orgAlpha;
-
-        if (_this.opt.brColor !== null) {
-            ctx.strokeStyle = _this.opt.brColor;
-            ctx.stroke();
-        }
-    };
-
-    this.opt = Object.assign({
-        ctx: null,
-        pos: new Vector(),
-        size: null,
-        bgColor: '#052B3E',
-        brColor: null,
-        alpha: null
-    }, options);
-    init.call(this);
-}
-
-module.exports = Rectangle;
 
 /***/ })
 /******/ ]);
