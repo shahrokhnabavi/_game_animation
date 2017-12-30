@@ -38,7 +38,12 @@ function Rectangle(options){
             this.opt.size.h
         );
         ctx.fillStyle = this.opt.bgColor;
+
+        let orgAlpha = ctx.globalAlpha;
+        if( this.opt.alpha !== null)
+            ctx.globalAlpha = this.opt.alpha;
         ctx.fill();
+        ctx.globalAlpha = orgAlpha;
 
 
         if( this.opt.brColor !== null ) {
@@ -52,7 +57,8 @@ function Rectangle(options){
         pos: new Vector(),
         size: null,
         bgColor: '#052B3E',
-        brColor: null
+        brColor: null,
+        alpha: null
     }, options);
     init.call(this);
 }

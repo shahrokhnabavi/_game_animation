@@ -7,7 +7,7 @@ import BlockRunner from './modules/BlockRunner/app';
 import RotatePlayer from './modules/RotatePlayer/app';
 
 
-switch( 7 ){
+switch( 1 ){
     case 7:
         new RotatePlayer();
         break;
