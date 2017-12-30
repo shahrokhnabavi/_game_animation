@@ -44,7 +44,8 @@ function BlockRunner(options) {
         player = new Player({
             ctx: ctx,
             stage: stage,
-            size: playerSize
+            size: playerSize,
+            life: 500
         });
 
         gamePanel = Shapes('rect', {
@@ -70,9 +71,22 @@ function BlockRunner(options) {
         ctx.clearRect(0, 0, ctxWidth, ctxHeight);
 
         userInterface();
-        player.update();
-        for (var i = 0; i < enemies.length; i++)
-            enemies[i].update();
+        if( player.life > 0 ) {
+            player.update();
+            for (var i = 0; i < enemies.length; i++) {
+                enemies[i].update(player);
+                if (enemies[i].isExplode) {
+                    enemies.splice(i, 1);
+                    player.damage(rand(5, 32));
+                }
+            }
+
+            if (enemies.length === 0) {
+                makeEnemies();
+            }
+        } else {
+            gameOver();
+        }
     }
 
     // resize game area
@@ -116,11 +130,29 @@ function BlockRunner(options) {
         ctx.textAlign = 'left';
         ctx.fillStyle = "white";
         ctx.fillText("App Name: " + appName, margin, 30);
+        ctx.font = "16px Georgia";
+        ctx.textAlign = 'right';
+        ctx.fillText("Player life: " + player.life, stage.r, 30);
 
         gamePanel.opt.size = {w: stage.r - stage.l, h: stage.b - stage.t};
         gamePanel.draw();
         playerHome.opt.pos = new Vector(stage.l + 1, stage.b - playerHomeSize - 1);
         playerHome.draw();
+    }
+
+    function gameOver() {
+        Shapes('rect', {
+            ctx: ctx,
+            pos: new Vector(0,0),
+            size: {w:ctxWidth , h:ctxHeight},
+            alpha: 0.5,
+            bgColor: 'black'
+        }).draw();
+
+        ctx.font = "72px Georgia";
+        ctx.textAlign = 'center';
+        ctx.fillStyle = "white";
+        ctx.fillText("Game Over", ctxWidth/2, ctxHeight/2);
     }
 
     // Default options od class

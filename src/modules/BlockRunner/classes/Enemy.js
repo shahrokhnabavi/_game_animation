@@ -2,6 +2,7 @@ import Shapes from '../../../lib/Shapes';
 
 function Enemy( option ) {
     //Public
+    this.isExplode = false;
 
     //Private
     var ctx = null,
@@ -58,8 +59,31 @@ function Enemy( option ) {
         return result;
     };
 
-    this.update = () =>{
+    this.update = player =>{
+        if( this.hitPlayer(player) )
+            this.isExplode = true;
+
         box.draw();
+    };
+
+    this.hitPlayer = player => {
+        var xl0 = this.opt.pos.x,
+            yl0 = this.opt.pos.y,
+            xr0 = this.opt.pos.x + this.opt.size,
+            yr0 = this.opt.pos.y + this.opt.size,
+
+
+            xl1 = player.opt.pos.x,
+            yl1 = player.opt.pos.y,
+            xr1 = player.opt.pos.x + player.opt.size,
+            yr1 = player.opt.pos.y + player.opt.size;
+
+        if( xl0 > xr1 || xl1 > xr0 )
+            return false;
+        if( yl0 > yr1 || yl1 > yr0 )
+            return false;
+
+        return true;
     };
 
     this.resizeStage = stage => {

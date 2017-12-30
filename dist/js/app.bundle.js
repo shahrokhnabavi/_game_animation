@@ -1296,7 +1296,8 @@ function BlockRunner(options) {
         player = new _Player2.default({
             ctx: ctx,
             stage: stage,
-            size: playerSize
+            size: playerSize,
+            life: 500
         });
 
         gamePanel = (0, _Shapes2.default)('rect', {
@@ -1322,9 +1323,21 @@ function BlockRunner(options) {
         ctx.clearRect(0, 0, ctxWidth, ctxHeight);
 
         userInterface();
-        player.update();
-        for (var i = 0; i < enemies.length; i++) {
-            enemies[i].update();
+        if (player.life > 0) {
+            player.update();
+            for (var i = 0; i < enemies.length; i++) {
+                enemies[i].update(player);
+                if (enemies[i].isExplode) {
+                    enemies.splice(i, 1);
+                    player.damage(rand(5, 32));
+                }
+            }
+
+            if (enemies.length === 0) {
+                makeEnemies();
+            }
+        } else {
+            gameOver();
         }
     }
 
@@ -1369,11 +1382,29 @@ function BlockRunner(options) {
         ctx.textAlign = 'left';
         ctx.fillStyle = "white";
         ctx.fillText("App Name: " + appName, margin, 30);
+        ctx.font = "16px Georgia";
+        ctx.textAlign = 'right';
+        ctx.fillText("Player life: " + player.life, stage.r, 30);
 
         gamePanel.opt.size = { w: stage.r - stage.l, h: stage.b - stage.t };
         gamePanel.draw();
         playerHome.opt.pos = new Vector(stage.l + 1, stage.b - playerHomeSize - 1);
         playerHome.draw();
+    }
+
+    function gameOver() {
+        (0, _Shapes2.default)('rect', {
+            ctx: ctx,
+            pos: new Vector(0, 0),
+            size: { w: ctxWidth, h: ctxHeight },
+            alpha: 0.5,
+            bgColor: 'black'
+        }).draw();
+
+        ctx.font = "72px Georgia";
+        ctx.textAlign = 'center';
+        ctx.fillStyle = "white";
+        ctx.fillText("Game Over", ctxWidth / 2, ctxHeight / 2);
     }
 
     // Default options od class
@@ -1406,6 +1437,7 @@ function Enemy(option) {
     var _this = this;
 
     //Public
+    this.isExplode = false;
 
     //Private
     var ctx = null,
@@ -1454,8 +1486,26 @@ function Enemy(option) {
         return result;
     };
 
-    this.update = function () {
+    this.update = function (player) {
+        if (_this.hitPlayer(player)) _this.isExplode = true;
+
         box.draw();
+    };
+
+    this.hitPlayer = function (player) {
+        var xl0 = _this.opt.pos.x,
+            yl0 = _this.opt.pos.y,
+            xr0 = _this.opt.pos.x + _this.opt.size,
+            yr0 = _this.opt.pos.y + _this.opt.size,
+            xl1 = player.opt.pos.x,
+            yl1 = player.opt.pos.y,
+            xr1 = player.opt.pos.x + player.opt.size,
+            yr1 = player.opt.pos.y + player.opt.size;
+
+        if (xl0 > xr1 || xl1 > xr0) return false;
+        if (yl0 > yr1 || yl1 > yr0) return false;
+
+        return true;
     };
 
     this.resizeStage = function (stage) {
@@ -1673,17 +1723,24 @@ module.exports = Rectangle;
 "use strict";
 
 
+var _Shapes = __webpack_require__(0);
+
+var _Shapes2 = _interopRequireDefault(_Shapes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function Player(option) {
     var _this = this;
 
     // Privates
     var ctx = null,
         ctxWidth = 0,
-        ctxHeight = 0;
+        ctxHeight = 0,
+        box = null;
 
     // Initialize
     function init() {
-        if (!this.opt.ctx) throw errorTitle + 'Object needs Context';
+        if (!this.opt.ctx) throw 'Object needs Context';
 
         ctx = this.opt.ctx;
 
@@ -1698,6 +1755,14 @@ function Player(option) {
         window.addEventListener('keydown', function (event) {
             Key.onKeydown(event);
         }, false);
+
+        this.life = this.opt.life;
+        box = (0, _Shapes2.default)('rect', {
+            ctx: ctx,
+            pos: this.opt.pos,
+            bgColor: this.opt.color,
+            size: { w: this.opt.size, h: this.opt.size }
+        });
     }
 
     this.update = function () {
@@ -1708,15 +1773,18 @@ function Player(option) {
         if (Key.isDown(Key.LEFT)) x -= 1;
         if (Key.isDown(Key.DOWN)) y += 1;
         if (Key.isDown(Key.RIGHT)) x += 1;
-        _this.move(new Vector(x, y)).draw();
+        _this.move(new Vector(x, y));
+        _this.draw();
     };
 
     // Draw Ball
     this.draw = function () {
-        ctx.beginPath();
-        ctx.rect(_this.opt.pos.x, _this.opt.pos.y, _this.opt.size, _this.opt.size);
-        ctx.fillStyle = _this.opt.color;
-        ctx.fill();
+        box.opt.pos = _this.opt.pos;
+        box.draw();
+    };
+
+    this.damage = function (amount) {
+        _this.life -= amount;
     };
 
     // Move Ball
@@ -1753,8 +1821,9 @@ function Player(option) {
         velocity: new Vector(),
         size: 20,
         color: '#FFF9DD',
-        speed: 5,
-        stage: null
+        speed: 2,
+        stage: null,
+        life: 1000
     }, option);
 
     // Call Initialize

@@ -1,12 +1,16 @@
+import Shapes from '../../../lib/Shapes';
+
 function Player(option) {
     // Privates
     var ctx = null,
         ctxWidth = 0,
-        ctxHeight = 0;
+        ctxHeight = 0,
+
+        box = null;
 
     // Initialize
     function init() {
-        if (!this.opt.ctx) throw errorTitle + 'Object needs Context';
+        if (!this.opt.ctx) throw  'Object needs Context';
 
         ctx = this.opt.ctx;
 
@@ -17,6 +21,14 @@ function Player(option) {
 
         window.addEventListener('keyup', function(event) { Key.onKeyup(event); }, false);
         window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
+
+        this.life = this.opt.life;
+        box = Shapes('rect', {
+            ctx: ctx,
+            pos: this.opt.pos,
+            bgColor: this.opt.color,
+            size: {w: this.opt.size, h: this.opt.size}
+        });
     }
 
     this.update = () => {
@@ -27,20 +39,18 @@ function Player(option) {
         if (Key.isDown(Key.LEFT)) x -= 1;
         if (Key.isDown(Key.DOWN)) y += 1;
         if (Key.isDown(Key.RIGHT)) x += 1;
-        this.move( new Vector(x, y) ).draw();
+        this.move( new Vector(x, y));
+        this.draw();
     };
 
     // Draw Ball
     this.draw = () => {
-        ctx.beginPath();
-        ctx.rect(
-            this.opt.pos.x,
-            this.opt.pos.y,
-            this.opt.size,
-            this.opt.size
-        );
-        ctx.fillStyle = this.opt.color;
-        ctx.fill();
+        box.opt.pos = this.opt.pos;
+        box.draw();
+    };
+
+    this.damage = amount => {
+        this.life -= amount;
     };
 
     // Move Ball
@@ -81,8 +91,9 @@ function Player(option) {
         velocity: new Vector(),
         size: 20,
         color: '#FFF9DD',
-        speed: 5,
-        stage: null
+        speed: 2,
+        stage: null,
+        life: 1000
     }, option);
 
     // Call Initialize
