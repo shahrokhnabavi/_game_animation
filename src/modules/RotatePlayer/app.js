@@ -1,10 +1,9 @@
-// import Mouse from '../../lib/Mouse';
+import {Game, Mouse} from '../../lib/Game';
 import Player from './classes/Player';
 
 function RotatePlayer(options) {
     // Private
     var appName = 'RotatePlayer',
-        canvas = null,
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
@@ -13,17 +12,11 @@ function RotatePlayer(options) {
         player = null;
 
     function init(){
-        var area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
+        var g = new Game( this.opt );
 
-        canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        ctx = canvas.getContext('2d');
-
-        window.addEventListener('resize', ()=>{resize(area);}, false);
-        resize(area);
+        ctx       = g.getCtx();
+        ctxWidth  = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
 
         allGamesMenu(7);
 
@@ -42,7 +35,6 @@ function RotatePlayer(options) {
         ctx.clearRect(0, 0, ctxWidth, ctxHeight);
 
         player.update(mouse).lookAt( new Vector( 10, 200) );
-        // player.draw();
         userInterface();
     }
 
@@ -55,15 +47,16 @@ function RotatePlayer(options) {
     }
 
     // Resize windows event
-    function resize(area){
-        ctxHeight = canvas.height = area.clientHeight;
-        ctxWidth  = canvas.width  = area.clientWidth;
+    function resize( ctxMe ){
+        ctxWidth  = ctxMe.canvas.width;
+        ctxHeight = ctxMe.canvas.height
     }
 
     this.opt = Object.assign({
         selector: 'body',
         id: 'screen',
         bgColor: '#292C44',
+        cfResize: resize
     }, options);
 
     init.call(this);

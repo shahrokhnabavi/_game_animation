@@ -70,34 +70,137 @@
 "use strict";
 
 
-var _Circle = __webpack_require__(16);
-
-var _Circle2 = _interopRequireDefault(_Circle);
+var _Game = __webpack_require__(24);
 
 var _Line = __webpack_require__(17);
 
 var _Line2 = _interopRequireDefault(_Line);
 
-var _Rectangle = __webpack_require__(18);
-
-var _Rectangle2 = _interopRequireDefault(_Rectangle);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function Shapes(type, options) {
+module.exports.Shapes = function (type, options) {
     switch (type) {
         case 'circle':
-            return new _Circle2.default(options);
+            return new Circle(options);
         case 'line':
             return new _Line2.default(options);
         case 'rect':
-            return new _Rectangle2.default(options);
+            return new Rectangle(options);
         default:
             throw 'Undefined Shape type.';
     }
-}
+};
 
-module.exports = Shapes;
+module.exports.Rectangle = function (options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Rectangle Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.pos.isEmpty) {
+            this.opt.pos = new _Game.Vector2(ctxWidth / 2, ctxHeight / 2);
+        }
+
+        if (this.opt.size === null) this.opt.size = { w: 10, h: 10 };
+    }
+
+    // Update object
+    this.update = function (mouse) {
+        if (mouse) {
+            _this.opt.pos.x = mouse.x;
+            _this.opt.pos.y = mouse.y;
+        }
+        return _this;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.rect(_this.opt.pos.x, _this.opt.pos.y, _this.opt.size.w, _this.opt.size.h);
+        ctx.fillStyle = _this.opt.bgColor;
+
+        var orgAlpha = ctx.globalAlpha;
+        if (_this.opt.alpha !== null) ctx.globalAlpha = _this.opt.alpha;
+        ctx.fill();
+        ctx.globalAlpha = orgAlpha;
+
+        if (_this.opt.brColor !== null) {
+            ctx.strokeStyle = _this.opt.brColor;
+            ctx.stroke();
+        }
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new _Game.Vector2(),
+        size: null,
+        bgColor: '#052B3E',
+        brColor: null,
+        alpha: null
+    }, options);
+    init.call(this);
+};
+
+module.exports.Circle = function (options) {
+    var _this2 = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    function init(options) {
+        if (!this.opt.ctx) throw 'Circle Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.pos.isEmpty) {
+            this.opt.pos = new _Game.Vector2(ctxWidth / 2, ctxHeight / 2);
+        }
+    }
+
+    // Update object
+    this.update = function (mouse) {
+        if (mouse) {
+            _this2.opt.pos.x = mouse.x;
+            _this2.opt.pos.y = mouse.y;
+        }
+        return _this2;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.arc(_this2.opt.pos.x, _this2.opt.pos.y, _this2.opt.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = _this2.opt.bgColor;
+        ctx.fill();
+
+        if (_this2.opt.brColor !== null) {
+            ctx.strokeStyle = _this2.opt.brColor;
+            ctx.stroke();
+        }
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new _Game.Vector2(),
+        radius: 20,
+        bgColor: '#052B3E',
+        brColor: null
+    }, options);
+    init.call(this);
+};
 
 /***/ }),
 /* 1 */
@@ -1552,67 +1655,7 @@ function Enemy(option) {
 module.exports = Enemy;
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function Circle(options) {
-    var _this = this;
-
-    // Private
-    var ctx = null,
-        ctxWidth = 0,
-        ctxHeight = 0;
-
-    function init(options) {
-        if (!this.opt.ctx) throw 'Circle Objects need Context';
-
-        ctx = this.opt.ctx;
-        ctxHeight = ctx.canvas.clientHeight;
-        ctxWidth = ctx.canvas.clientWidth;
-
-        if (this.opt.pos.isEmpty) {
-            this.opt.pos = new Vector(ctxWidth / 2, ctxHeight / 2);
-        }
-    }
-
-    // Update object
-    this.update = function (mouse) {
-        if (mouse) {
-            _this.opt.pos.x = mouse.x;
-            _this.opt.pos.y = mouse.y;
-        }
-        return _this;
-    };
-
-    // Draw Object
-    this.draw = function () {
-        ctx.beginPath();
-        ctx.arc(_this.opt.pos.x, _this.opt.pos.y, _this.opt.radius, 0, Math.PI * 2, false);
-        ctx.fillStyle = _this.opt.bgColor;
-        ctx.fill();
-
-        if (_this.opt.brColor !== null) {
-            ctx.strokeStyle = _this.opt.brColor;
-            ctx.stroke();
-        }
-    };
-
-    this.opt = Object.assign({
-        ctx: null,
-        pos: new Vector(),
-        radius: 20,
-        bgColor: '#052B3E',
-        brColor: null
-    }, options);
-    init.call(this);
-}
-
-module.exports = Circle;
-
-/***/ }),
+/* 16 */,
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1671,74 +1714,7 @@ function Line(options) {
 module.exports = Line;
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function Rectangle(options) {
-    var _this = this;
-
-    // Private
-    var ctx = null,
-        ctxWidth = 0,
-        ctxHeight = 0;
-
-    function init() {
-        if (!this.opt.ctx) throw 'Rectangle Objects need Context';
-
-        ctx = this.opt.ctx;
-        ctxHeight = ctx.canvas.clientHeight;
-        ctxWidth = ctx.canvas.clientWidth;
-
-        if (this.opt.pos.isEmpty) {
-            this.opt.pos = new Vector(ctxWidth / 2, ctxHeight / 2);
-        }
-
-        if (this.opt.size === null) this.opt.size = { w: 10, h: 10 };
-    }
-
-    // Update object
-    this.update = function (mouse) {
-        if (mouse) {
-            _this.opt.pos.x = mouse.x;
-            _this.opt.pos.y = mouse.y;
-        }
-        return _this;
-    };
-
-    // Draw Object
-    this.draw = function () {
-        ctx.beginPath();
-        ctx.rect(_this.opt.pos.x, _this.opt.pos.y, _this.opt.size.w, _this.opt.size.h);
-        ctx.fillStyle = _this.opt.bgColor;
-
-        var orgAlpha = ctx.globalAlpha;
-        if (_this.opt.alpha !== null) ctx.globalAlpha = _this.opt.alpha;
-        ctx.fill();
-        ctx.globalAlpha = orgAlpha;
-
-        if (_this.opt.brColor !== null) {
-            ctx.strokeStyle = _this.opt.brColor;
-            ctx.stroke();
-        }
-    };
-
-    this.opt = Object.assign({
-        ctx: null,
-        pos: new Vector(),
-        size: null,
-        bgColor: '#052B3E',
-        brColor: null,
-        alpha: null
-    }, options);
-    init.call(this);
-}
-
-module.exports = Rectangle;
-
-/***/ }),
+/* 18 */,
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1861,6 +1837,8 @@ module.exports = Player;
 "use strict";
 
 
+var _Game = __webpack_require__(24);
+
 var _Player = __webpack_require__(22);
 
 var _Player2 = _interopRequireDefault(_Player);
@@ -1870,27 +1848,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function RotatePlayer(options) {
     // Private
     var appName = 'RotatePlayer',
-        canvas = null,
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
-        mouse = new Mouse(),
+        mouse = new _Game.Mouse(),
         player = null;
 
     function init() {
-        var area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
+        var g = new _Game.Game(this.opt);
 
-        canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        ctx = canvas.getContext('2d');
-
-        window.addEventListener('resize', function () {
-            resize(area);
-        }, false);
-        resize(area);
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
 
         allGamesMenu(7);
 
@@ -1909,7 +1878,6 @@ function RotatePlayer(options) {
         ctx.clearRect(0, 0, ctxWidth, ctxHeight);
 
         player.update(mouse).lookAt(new Vector(10, 200));
-        // player.draw();
         userInterface();
     }
 
@@ -1922,20 +1890,20 @@ function RotatePlayer(options) {
     }
 
     // Resize windows event
-    function resize(area) {
-        ctxHeight = canvas.height = area.clientHeight;
-        ctxWidth = canvas.width = area.clientWidth;
+    function resize(ctxMe) {
+        ctxWidth = ctxMe.canvas.width;
+        ctxHeight = ctxMe.canvas.height;
     }
 
     this.opt = Object.assign({
         selector: 'body',
         id: 'screen',
-        bgColor: '#292C44'
+        bgColor: '#292C44',
+        cfResize: resize
     }, options);
 
     init.call(this);
-} // import Mouse from '../../lib/Mouse';
-
+}
 
 module.exports = RotatePlayer;
 
@@ -2044,13 +2012,29 @@ module.exports = Player;
 
 var _Game = __webpack_require__(24);
 
+var _Shapes = __webpack_require__(0);
+
+var _player = __webpack_require__(25);
+
+var _player2 = _interopRequireDefault(_player);
+
+var _ball = __webpack_require__(26);
+
+var _ball2 = _interopRequireDefault(_ball);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function Tennis(options) {
     // Private
-    var appName = 'Tennis',
+    var appName = ' Tennis',
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
-        mouse = new _Game.Mouse();
+        mouse = new _Game.Mouse(),
+        margin = 5,
+        player1 = null,
+        player2 = null,
+        ball = null;
 
     function init() {
         var g = new _Game.Game(this.opt);
@@ -2059,6 +2043,9 @@ function Tennis(options) {
         ctxWidth = ctx.canvas.width;
         ctxHeight = ctx.canvas.height;
 
+        player1 = new _player2.default({ ctx: ctx, pos: new _Game.Vector2(margin, ctxHeight / 2) });
+        player2 = new _player2.default({ ctx: ctx, pos: new _Game.Vector2(ctxWidth - margin - player1.wPlayer, ctxHeight / 2) });
+        ball = new _ball2.default({ ctx: ctx });
         update();
     }
 
@@ -2068,26 +2055,41 @@ function Tennis(options) {
         ctx.clearRect(0, 0, ctxWidth, ctxHeight);
 
         userInterface();
+
+        player1.catchBall(ball).update(mouse);
+        player2.aiCatchBall(ball).aiUpdate(ball);
+        ball.update();
     }
 
-    // Resize
+    // onResize Game
     function resize(ctxMe) {
         ctxWidth = ctxMe.canvas.width;
         ctxHeight = ctxMe.canvas.height;
+
+        if (ball) ball.resize();
     }
 
     // Draw User Interface
     function userInterface() {
         ctx.font = "20px Georgia";
-        ctx.textAlign = 'left';
-        ctx.fillStyle = "white";
-        ctx.fillText("App Name: " + appName, mouse.x, mouse.y);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = "#4D6266";
+        ctx.fillText("App Name: " + appName, ctxWidth / 2, ctxHeight - 10);
+
+        for (var i = 0; i < ctxHeight; i += 30) {
+            new _Shapes.Rectangle({
+                ctx: ctx,
+                pos: new _Game.Vector2(ctxWidth / 2, i),
+                size: { w: 2, h: 15 },
+                bgColor: '#E6F2EF'
+            }).draw();
+        }
     }
 
     this.opt = Object.assign({
         selector: 'body',
         id: 'screen',
-        bgColor: '#152523',
+        bgColor: '#16262C',
         cfResize: resize
     }, options);
 
@@ -2102,6 +2104,8 @@ module.exports = Tennis;
 
 "use strict";
 
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 module.exports.Game = function (options) {
     var _this2 = this;
@@ -2148,6 +2152,8 @@ module.exports.Game = function (options) {
     init.call(this);
 };
 
+//+++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++
 module.exports.Mouse = function (options) {
     // Public
     this.x = 0;
@@ -2177,10 +2183,216 @@ module.exports.Mouse = function (options) {
     };
 
     this.opt = Object.assign({
-        pos: new Vector(0, 0)
+        pos: new Vector2(0, 0)
     }, options);
     init.call(this);
 };
+
+//+++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++
+var Vector2 = function Vector2(x, y) {
+    var _this4 = this;
+
+    this.normal = function (multi) {
+        var x = Math.abs(_this4.x),
+            y = Math.abs(_this4.y);
+
+        if (x > y) {
+            y = y / x;
+            x = 1;
+        } else if (x < y) {
+            x = x / y;
+            y = 1;
+        } else x = y = 1;
+
+        // x += multi;
+        // y += multi;
+
+        x = _this4.x < 0 ? x * -1 : x;
+        y = _this4.y < 0 ? y * -1 : y;
+
+        return new Vector2(x, y);
+    };
+
+    this.move = function (velocity, speed) {
+        if ((typeof velocity === 'undefined' ? 'undefined' : _typeof(velocity)) !== 'object') throw 'Invalid Parameter';
+        speed = speed ? speed : 1;
+        _this4.x += velocity.x * speed;
+        _this4.y += velocity.y * speed;
+    };
+
+    this.distance = function (point) {
+        if (!point) return Math.sqrt(Math.pow(_this4.x, 2) + Math.pow(_this4.y, 2));
+        return Math.sqrt(Math.pow(_this4.x - point.x, 2) + Math.pow(_this4.y - point.y, 2));
+    };
+
+    this.isEmpty = typeof x == 'undefined' || typeof y == 'undefined';
+
+    this.x = x;
+    this.y = y;
+};
+module.exports.Vector2 = Vector2;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Shapes = __webpack_require__(0);
+
+function TennisPlayer(options) {
+    var _this = this;
+
+    // Public
+    this.wPlayer = 5;
+    this.hPlayer = 40;
+
+    // Private
+    var ctx = null,
+        aiSpeed = 2,
+        aiOffset = 10,
+        player = null;
+
+    function init() {
+        ctx = this.opt.ctx;
+
+        player = new _Shapes.Rectangle({
+            ctx: ctx,
+            pos: this.opt.pos,
+            size: { w: this.wPlayer, h: this.hPlayer },
+            bgColor: this.opt.bgColor
+        });
+    }
+
+    // Update object
+    this.aiUpdate = function (ball) {
+        var playerY = _this.opt.pos.y + _this.hPlayer / 2,
+            ballY = ball.opt.pos.y;
+
+        if (Math.abs(playerY - ballY) > aiOffset) if (playerY < ballY) _this.opt.pos.y += aiSpeed;else _this.opt.pos.y -= aiSpeed;
+
+        _this.update();
+    };
+
+    this.aiCatchBall = function (ball) {
+        if (!(ball.opt.pos.x < _this.opt.pos.x - ball.radius || ball.opt.pos.y < _this.opt.pos.y - ball.radius || ball.opt.pos.y > _this.opt.pos.y + _this.hPlayer + ball.radius)) {
+            ball.opt.velocity.y = (ball.opt.pos.y - (_this.opt.pos.y + _this.hPlayer / 2)) / 10;
+            ball.opt.velocity.x *= -1;
+        }
+
+        return _this;
+    };
+
+    // Update object
+    this.update = function (mouse) {
+        if (mouse) {
+            _this.opt.pos.y = mouse.y - _this.hPlayer / 2;
+        }
+
+        if (_this.opt.pos.y < 0) _this.opt.pos.y = 0;
+
+        if (_this.opt.pos.y + _this.hPlayer > ctx.canvas.height) _this.opt.pos.y = ctx.canvas.height - _this.hPlayer;
+        player.draw();
+    };
+
+    this.catchBall = function (ball) {
+        if (!(ball.opt.pos.x > _this.opt.pos.x + _this.wPlayer + ball.radius || ball.opt.pos.y < _this.opt.pos.y - ball.radius || ball.opt.pos.y > _this.opt.pos.y + _this.hPlayer + ball.radius)) {
+            ball.opt.velocity.y = (ball.opt.pos.y - (_this.opt.pos.y + _this.hPlayer / 2)) / 10;
+            ball.opt.velocity.x *= -1;
+        }
+
+        return _this;
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: null,
+        bgColor: '#E6F2EF'
+    }, options);
+    init.call(this);
+}
+
+module.exports = TennisPlayer;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(24);
+
+var _Shapes = __webpack_require__(0);
+
+function Ball(options) {
+    var _this = this;
+
+    // public
+    this.radius = 10;
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        ball = null;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Ball Objects need Context';
+
+        ctx = this.opt.ctx;
+        this.resize();
+
+        if (this.opt.pos.isEmpty) {
+            this.opt.pos = new _Game.Vector2(ctxWidth / 2, ctxHeight / 2);
+        }
+
+        ball = new _Shapes.Circle({
+            ctx: ctx,
+            pos: this.opt.pos,
+            bgColor: this.opt.bgColor,
+            radius: this.radius
+        });
+    }
+
+    // Update object
+    this.update = function () {
+
+        if (_this.opt.pos.y < _this.radius || _this.opt.pos.y > ctxHeight - _this.radius) {
+            _this.opt.velocity.y *= -1;
+        }
+
+        if (_this.opt.pos.x < _this.radius || _this.opt.pos.x > ctxWidth - _this.radius) {
+            _this.reset();
+        }
+
+        _this.opt.pos.move(_this.opt.velocity, 3);
+        ball.draw();
+    };
+
+    this.reset = function () {
+        _this.opt.pos.x = ctxWidth / 2;
+        _this.opt.pos.y = ctxHeight / 2;
+        _this.opt.velocity.x *= -1;
+        _this.opt.velocity.y = rangeRand(0.2, 1);
+    };
+
+    this.resize = function () {
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new _Game.Vector2(),
+        bgColor: '#BEDADC',
+        velocity: new _Game.Vector2(rangeRand(5, 9), rangeRand(2, 4)).normal()
+    }, options);
+    init.call(this);
+}
+
+module.exports = Ball;
 
 /***/ })
 /******/ ]);

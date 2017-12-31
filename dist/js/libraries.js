@@ -45,6 +45,14 @@ var Key = {
     }
 };
 
+rangeRand = (min, max) => {
+    min = min ? min : 0;
+    max = max ? max : 100,
+    sign = Math.random() > 0.5 ? 1 : -1;
+
+    return rand(min, max) * sign;
+};
+
 rand = (min, max) => {
     min = min ? min : 0;
     max = max ? max : 100;
@@ -68,7 +76,7 @@ randColor = () => {
 };
 
 
-function Vector(x, y){
+function Vectorm(x, y){
 
     this.normal = (multi) => {
         var x = Math.abs(this.x),
