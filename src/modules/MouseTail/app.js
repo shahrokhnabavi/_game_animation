@@ -1,28 +1,22 @@
+import {Game} from '../../lib/Game';
+
 function MouseTail(options) {
     // Private
-    var appName = 'Mouse Tail',
-        errorTitle = '[' + appName + ' - Error]: ';
+    var appName = 'Mouse Tail';
 
-    var canvas = null,
-        ctx = null,
+    var ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
 
-        mouse = new Vector(20,20);
+        mouse = null;
 
     function init(){
-        var area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
+        var g = new Game(this.opt);
 
-        canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        ctx = canvas.getContext('2d');
-
-        window.addEventListener('mousemove', getMousePos, false);
-        window.addEventListener('resize', ()=>{resize(area);}, false);
-        resize(area);
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
+        mouse = g.mouse;
 
         allGamesMenu(3);
 

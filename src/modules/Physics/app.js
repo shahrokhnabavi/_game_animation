@@ -1,14 +1,23 @@
+/*
+Movement(Changing the position)
+    Position = A pair of (x, y)
+    Velocity = Changing position by time
+    Acceleration = Changing velocity by time
+
+ */
+
+import {Game, Vector2} from '../../lib/Game';
 import Particle from './classes/Particle';
 
 function CirclePhysics(options) {
+
     // Private
-    var appName = 'CirclePhysics',
-        canvas = null,
+    var appName = ' CirclePhysics',
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
 
-        mouse = new Vector(20,20),
+        mouse = null,
 
         particlesNumber = 400,
         particles = [],
@@ -16,21 +25,15 @@ function CirclePhysics(options) {
         fadeRange = 100;
 
     function init(){
-        var area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
+        var g = new Game( this.opt );
 
-        canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        ctx = canvas.getContext('2d');
-
-        window.addEventListener('mousemove', getMousePos, false);
-        window.addEventListener('resize', ()=>{resize(area);}, false);
-        resize(area);
+        ctx       = g.getCtx();
+        ctxWidth  = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
 
         allGamesMenu(2);
 
+        mouse = g.mouse;
         createObjects();
         update();
     }
@@ -62,7 +65,7 @@ function CirclePhysics(options) {
                 r = 10 ,
                 particle = new Particle({
                     ctx: ctx,
-                    pos: new Vector(rand(r, ctxWidth - r), rand(r, ctxHeight - r)),
+                    pos: new Vector2(rand(r, ctxWidth - r), rand(r, ctxHeight - r)),
                     radius: r
                 });
 
@@ -96,15 +99,16 @@ function CirclePhysics(options) {
     }
 
     // Resize windows event
-    function resize(area){
-        ctxHeight = canvas.height = area.clientHeight;
-        ctxWidth  = canvas.width  = area.clientWidth;
+    function resize(ctxMe) {
+        ctxWidth = ctxMe.canvas.width;
+        ctxHeight = ctxMe.canvas.height
     }
 
     this.opt = Object.assign({
         selector: 'body',
         id: 'screen',
         bgColor: '#152523',
+        cfResize: resize
     }, options);
 
     init.call(this);

@@ -70,145 +70,6 @@
 "use strict";
 
 
-var _Game = __webpack_require__(1);
-
-var _Line = __webpack_require__(17);
-
-var _Line2 = _interopRequireDefault(_Line);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-module.exports.Shapes = function (type, options) {
-    switch (type) {
-        case 'circle':
-            return new Circle(options);
-        case 'line':
-            return new _Line2.default(options);
-        case 'rect':
-            return new Rectangle(options);
-        default:
-            throw 'Undefined Shape type.';
-    }
-};
-
-module.exports.Rectangle = function (options) {
-    var _this = this;
-
-    // Private
-    var ctx = null,
-        ctxWidth = 0,
-        ctxHeight = 0;
-
-    function init() {
-        if (!this.opt.ctx) throw 'Rectangle Objects need Context';
-
-        ctx = this.opt.ctx;
-        ctxHeight = ctx.canvas.clientHeight;
-        ctxWidth = ctx.canvas.clientWidth;
-
-        if (this.opt.pos.isEmpty) {
-            this.opt.pos = new _Game.Vector2(ctxWidth / 2, ctxHeight / 2);
-        }
-
-        if (this.opt.size === null) this.opt.size = { w: 10, h: 10 };
-    }
-
-    // Update object
-    this.update = function (mouse) {
-        if (mouse) {
-            _this.opt.pos.x = mouse.x;
-            _this.opt.pos.y = mouse.y;
-        }
-        return _this;
-    };
-
-    // Draw Object
-    this.draw = function () {
-        ctx.beginPath();
-        ctx.rect(_this.opt.pos.x, _this.opt.pos.y, _this.opt.size.w, _this.opt.size.h);
-        ctx.fillStyle = _this.opt.bgColor;
-
-        var orgAlpha = ctx.globalAlpha;
-        if (_this.opt.alpha !== null) ctx.globalAlpha = _this.opt.alpha;
-        ctx.fill();
-        ctx.globalAlpha = orgAlpha;
-
-        if (_this.opt.brColor !== null) {
-            ctx.strokeStyle = _this.opt.brColor;
-            ctx.stroke();
-        }
-    };
-
-    this.opt = Object.assign({
-        ctx: null,
-        pos: new _Game.Vector2(),
-        size: null,
-        bgColor: '#052B3E',
-        brColor: null,
-        alpha: null
-    }, options);
-    init.call(this);
-};
-
-module.exports.Circle = function (options) {
-    var _this2 = this;
-
-    // Private
-    var ctx = null,
-        ctxWidth = 0,
-        ctxHeight = 0;
-
-    function init(options) {
-        if (!this.opt.ctx) throw 'Circle Objects need Context';
-
-        ctx = this.opt.ctx;
-        ctxHeight = ctx.canvas.clientHeight;
-        ctxWidth = ctx.canvas.clientWidth;
-
-        if (this.opt.pos.isEmpty) {
-            this.opt.pos = new _Game.Vector2(ctxWidth / 2, ctxHeight / 2);
-        }
-    }
-
-    // Update object
-    this.update = function (mouse) {
-        if (mouse) {
-            _this2.opt.pos.x = mouse.x;
-            _this2.opt.pos.y = mouse.y;
-        }
-        return _this2;
-    };
-
-    // Draw Object
-    this.draw = function () {
-        ctx.beginPath();
-        ctx.arc(_this2.opt.pos.x, _this2.opt.pos.y, _this2.opt.radius, 0, Math.PI * 2, false);
-        ctx.fillStyle = _this2.opt.bgColor;
-        ctx.fill();
-
-        if (_this2.opt.brColor !== null) {
-            ctx.strokeStyle = _this2.opt.brColor;
-            ctx.stroke();
-        }
-    };
-
-    this.opt = Object.assign({
-        ctx: null,
-        pos: new _Game.Vector2(),
-        radius: 20,
-        bgColor: '#052B3E',
-        brColor: null
-    }, options);
-    init.call(this);
-};
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 module.exports.Game = function (options) {
@@ -368,6 +229,175 @@ function Input() {
 }
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(0);
+
+function faceVector(ctx) {
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(50, 0);
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+}
+
+module.exports.Rectangle = function (options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Rectangle Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.size === null) this.opt.size = { w: 10, h: 10 };
+    }
+
+    // Draw Object
+    this.draw = function () {
+        var thisX = _this.opt.pivot.x,
+            thisY = _this.opt.pivot.y;
+
+        ctx.beginPath();
+        ctx.rect(thisX, thisY, _this.opt.size.w, _this.opt.size.h);
+        ctx.fillStyle = _this.opt.bgColor;
+
+        var orgAlpha = ctx.globalAlpha;
+        if (_this.opt.alpha !== null) ctx.globalAlpha = _this.opt.alpha;
+        ctx.fill();
+        ctx.globalAlpha = orgAlpha;
+
+        if (_this.opt.brColor !== null) {
+            ctx.strokeStyle = _this.opt.brColor;
+            ctx.stroke();
+        }
+
+        if (_this.opt.showDirection) {
+            faceVector(ctx);
+        }
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        size: null,
+        bgColor: '#052B3E',
+        brColor: null,
+        alpha: null,
+        pivot: new _Game.Vector2(0, 0),
+        showDirection: false
+    }, options);
+    init.call(this);
+};
+
+// #######################################
+module.exports.Circle = function (options) {
+    var _this2 = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    function init(options) {
+        if (!this.opt.ctx) throw 'Circle Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+    }
+
+    // Draw Object
+    this.draw = function () {
+        var thisX = _this2.opt.pivot.x,
+            thisY = _this2.opt.pivot.y;
+
+        ctx.beginPath();
+        ctx.arc(thisX, thisY, _this2.opt.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = _this2.opt.bgColor;
+        ctx.fill();
+
+        if (_this2.opt.brColor !== null) {
+            ctx.strokeStyle = _this2.opt.brColor;
+            ctx.stroke();
+        }
+
+        if (_this2.opt.showDirection) {
+            faceVector(ctx);
+        }
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        radius: 20,
+        bgColor: '#052B3E',
+        brColor: null,
+        pivot: new _Game.Vector2(0, 0),
+        showDirection: false
+    }, options);
+    init.call(this);
+};
+
+// #########################
+module.exports.Line = function (options) {
+    var _this3 = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Line Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.from.isEmpty) {
+            this.opt.from = new _Game.Vector2(ctxWidth / 2 - 5, ctxHeight / 2);
+        }
+
+        if (this.opt.to.isEmpty) {
+            this.opt.to = new _Game.Vector2(ctxWidth / 2 + 5, ctxHeight / 2);
+        }
+    }
+
+    // Update object
+    this.update = function () {
+        return _this3;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.moveTo(_this3.opt.from.x, _this3.opt.from.y);
+        ctx.lineTo(_this3.opt.to.x, _this3.opt.to.y);
+        ctx.lineWidth = _this3.opt.thickness;
+        ctx.strokeStyle = _this3.opt.color;
+        ctx.stroke();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        from: new _Game.Vector2(0, 0),
+        to: new _Game.Vector2(),
+        thickness: 1,
+        color: '#F0F0F1'
+    }, options);
+    init.call(this);
+};
+
+/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -398,18 +428,25 @@ var _app11 = __webpack_require__(15);
 
 var _app12 = _interopRequireDefault(_app11);
 
-var _app13 = __webpack_require__(19);
+var _app13 = __webpack_require__(18);
 
 var _app14 = _interopRequireDefault(_app13);
 
-var _app15 = __webpack_require__(21);
+var _app15 = __webpack_require__(20);
 
 var _app16 = _interopRequireDefault(_app15);
+
+var _app17 = __webpack_require__(23);
+
+var _app18 = _interopRequireDefault(_app17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.loadGame = function (idx) {
     switch (idx) {
+        case 9:
+            new _app18.default();
+            break;
         case 8:
             new _app16.default();
             break;
@@ -436,7 +473,7 @@ window.loadGame = function (idx) {
             break;
     }
 };
-loadGame(8);
+loadGame(9);
 
 /***/ }),
 /* 3 */
@@ -453,66 +490,58 @@ var _BoxCollision = __webpack_require__(5);
 
 var _BoxCollision2 = _interopRequireDefault(_BoxCollision);
 
+var _Game = __webpack_require__(0);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Collision(options) {
     // Private
-    var appName = 'Collision',
-        errorTitle = '[' + appName + ' - Error]: ';
+    var appName = 'Collision';
 
-    var canvas = null,
-        ctx = null,
+    var ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
-        mouse = new Vector(0, 0),
         obj1 = null,
         obj2 = null;
 
     // Initialize
     function init() {
+        var g = new _Game.Game(this.opt);
 
-        var area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
-
-        canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        ctx = canvas.getContext('2d');
-
-        window.addEventListener('mousemove', getMousePos, false);
-        window.addEventListener('resize', function () {
-            return resize(area);
-        }, false);
-        resize(area);
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
 
         allGamesMenu(6);
 
-        // obj1 = new BoxCollision({
-        //     ctx: ctx,
-        //     pos: new Vector(ctxWidth/2 - 50, ctxHeight/2 - 25),
-        //     width: 100,
-        //     height: 50
-        // });
-        obj1 = new _CircleCollision2.default({
+        obj1 = new _BoxCollision2.default({
             ctx: ctx,
-            pos: new Vector(ctxWidth / 2 - 25, ctxHeight / 2 - 25),
-            radius: 50
+            pos: new _Game.Vector2(ctxWidth / 2 - 50, ctxHeight / 2 - 25),
+            width: 100,
+            height: 50
         });
 
-        // obj2 = new BoxCollision({
-        //     ctx: ctx,
-        //     pos: new Vector(ctxWidth/2 - 25, ctxHeight/2 - 12.5),
-        //     width: 50,
-        //     height: 25,
-        //     color: '#225D71'
-        // });
-        obj2 = new _CircleCollision2.default({
+        obj2 = new _BoxCollision2.default({
             ctx: ctx,
-            pos: new Vector(ctxWidth / 2 - 12, ctxHeight / 2 - 12),
-            radius: 24,
-            color: '#225D71'
+            pos: new _Game.Vector2(ctxWidth / 2 - 25, ctxHeight / 2 - 12.5),
+            width: 50,
+            height: 25,
+            color: '#225D71',
+            mouse: g.mouse
         });
+
+        // obj1 = new CircleCollision({
+        //     ctx: ctx,
+        //     pos: new Vector2(ctxWidth/2 - 255, ctxHeight/2 - 25),
+        //     radius: 50,
+        // });
+        // obj2 = new CircleCollision({
+        //     ctx: ctx,
+        //     pos: new Vector2(ctxWidth/2 - 12, ctxHeight/2 - 12),
+        //     radius: 24,
+        //     color: '#225D71',
+        //     mouse: g.mouse
+        // });
         update();
     }
 
@@ -522,21 +551,15 @@ function Collision(options) {
 
         userInterface();
         obj1.update().draw();
-        obj2.update(mouse).draw();
+        obj2.update().draw();
 
         if (obj2.collision(obj1)) obj1.opt.color = '#ABC9D8';else obj1.opt.color = '#052B3E';
     }
 
-    // resize game area
-    function resize(area) {
-        ctxHeight = canvas.height = area.clientHeight;
-        ctxWidth = canvas.width = area.clientWidth;
-    }
-
-    // Get Mouse Position
-    function getMousePos(e) {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
+    // onResize Game
+    function resize(ctxMe) {
+        ctxWidth = ctxMe.canvas.width;
+        ctxHeight = ctxMe.canvas.height;
     }
 
     //How to Use
@@ -567,42 +590,51 @@ module.exports = Collision;
 "use strict";
 
 
+var _Shapes = __webpack_require__(1);
+
 function CircleCollision(options) {
     var _this = this;
 
     // Private
-    var ctx = null;
+    var ctx = null,
+        obj = null;
 
     function init(options) {
-        if (!this.opt.ctx) throw errorTitle + 'Object needs Context';
+        if (!this.opt.ctx) throw 'Object needs Context';
 
         ctx = this.opt.ctx;
+        obj = new _Shapes.Circle({
+            ctx: ctx,
+            pivot: this.opt.pos,
+            bgColor: this.opt.color,
+            radius: this.opt.radius
+        });
     }
 
-    this.update = function (mouse) {
-        if (mouse) {
-            _this.opt.pos.x = mouse.x;
-            _this.opt.pos.y = mouse.y;
+    this.update = function () {
+        if (_this.opt.mouse) {
+            _this.opt.pos.x = _this.opt.mouse.x;
+            _this.opt.pos.y = _this.opt.mouse.y;
         }
         return _this;
     };
 
     this.collision = function (circle) {
+        console.log(_this.opt.pos.distance(circle.opt.pos), _this.opt.radius + circle.opt.radius);
         return _this.opt.pos.distance(circle.opt.pos) < _this.opt.radius + circle.opt.radius;
     };
 
     this.draw = function () {
-        ctx.beginPath();
-        ctx.arc(_this.opt.pos.x, _this.opt.pos.y, _this.opt.radius, 0, Math.PI * 2, false);
-        ctx.fillStyle = _this.opt.color;
-        ctx.fill();
+        obj.opt.bgColor = _this.opt.color;
+        obj.draw();
     };
 
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(),
+        pos: null,
         radius: 20,
-        color: '#052B3E'
+        color: '#052B3E',
+        mouse: null
     }, options);
     init.call(this);
 }
@@ -616,22 +648,32 @@ module.exports = CircleCollision;
 "use strict";
 
 
+var _Shapes = __webpack_require__(1);
+
 function BoxCollision(options) {
     var _this = this;
 
     // Private
-    var ctx = null;
+    var ctx = null,
+        obj = null;
 
     function init(options) {
         if (!this.opt.ctx) throw errorTitle + 'Object needs Context';
 
         ctx = this.opt.ctx;
+
+        obj = new _Shapes.Rectangle({
+            ctx: ctx,
+            pivot: this.opt.pos,
+            bgColor: this.opt.color,
+            size: { w: this.opt.width, h: this.opt.height }
+        });
     }
 
-    this.update = function (mouse) {
-        if (mouse) {
-            _this.opt.pos.x = mouse.x - _this.opt.width / 2;
-            _this.opt.pos.y = mouse.y - _this.opt.height / 2;
+    this.update = function () {
+        if (_this.opt.mouse) {
+            _this.opt.pos.x = _this.opt.mouse.x - _this.opt.width / 2;
+            _this.opt.pos.y = _this.opt.mouse.y - _this.opt.height / 2;
         }
         return _this;
     };
@@ -655,18 +697,17 @@ function BoxCollision(options) {
     };
 
     this.draw = function () {
-        ctx.beginPath();
-        ctx.rect(_this.opt.pos.x, _this.opt.pos.y, _this.opt.width, _this.opt.height);
-        ctx.fillStyle = _this.opt.color;
-        ctx.fill();
+        obj.opt.bgColor = _this.opt.color;
+        obj.draw();
     };
 
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(),
+        pos: null,
         width: 20,
         height: 20,
-        color: '#052B3E'
+        color: '#052B3E',
+        mouse: null
     }, options);
     init.call(this);
 }
@@ -680,6 +721,8 @@ module.exports = BoxCollision;
 "use strict";
 
 
+var _Game = __webpack_require__(0);
+
 var _Ball = __webpack_require__(7);
 
 var _Ball2 = _interopRequireDefault(_Ball);
@@ -691,26 +734,18 @@ function HeavyBall(options) {
     var appName = 'HeavyBall',
         errorTitle = '[' + appName + ' - Error]: ';
 
-    var area = null,
-        canvas = null,
-        ctx = null,
+    var ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
         balls = [];
 
     // Initialize
     function init() {
+        var g = new _Game.Game(this.opt);
 
-        area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
-
-        canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        resize();
-
-        ctx = canvas.getContext('2d');
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
 
         allGamesMenu(4);
 
@@ -742,7 +777,7 @@ function HeavyBall(options) {
     function createBall() {
         var ball = new _Ball2.default({
             ctx: ctx,
-            velocity: new Vector(rand(-2, 2), 0),
+            velocity: new _Game.Vector2(rand(-2, 2), 0),
             speed: 1,
             lifeTime: 0,
             weight: 1.2,
@@ -779,7 +814,7 @@ function HeavyBall(options) {
             case 'D':
                 var ball = new _Ball2.default({
                     ctx: ctx,
-                    velocity: new Vector(rand(-2, 2), rand(-2, 2)),
+                    velocity: new _Game.Vector2(rand(-2, 2), rand(-2, 2)),
                     speed: 1,
                     lifeTime: 10,
                     weight: 1.2,
@@ -798,8 +833,8 @@ function HeavyBall(options) {
     function singleBall(e) {
         var ball = new _Ball2.default({
             ctx: ctx,
-            velocity: new Vector(rand(-2, 2), rand(-2, 2)),
-            pos: new Vector(e.clientX, e.clientY),
+            velocity: new _Game.Vector2(rand(-2, 2), rand(-2, 2)),
+            pos: new _Game.Vector2(e.clientX, e.clientY),
             speed: 1,
             lifeTime: 0,
             weight: 1.2,
@@ -846,6 +881,8 @@ module.exports = HeavyBall;
 "use strict";
 
 
+var _Game = __webpack_require__(0);
+
 function Ball(option) {
     var _this = this;
 
@@ -867,7 +904,7 @@ function Ball(option) {
         ctxHeight = ctx.canvas.clientHeight;
         ctxWidth = ctx.canvas.clientWidth;
 
-        if (this.opt.pos.isEmpty) this.opt.pos = new Vector(rand(this.opt.radius, ctxWidth - this.opt.radius), rand(this.opt.radius, ctxHeight - this.opt.radius));
+        if (this.opt.pos.isEmpty) this.opt.pos = new _Game.Vector2(rand(this.opt.radius, ctxWidth - this.opt.radius), rand(this.opt.radius, ctxHeight - this.opt.radius));
 
         createdAt = new Date().getTime();
         this.draw();
@@ -921,8 +958,8 @@ function Ball(option) {
     // Default options od class
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(),
-        velocity: new Vector(rand(-0.5, 0.5), rand(-0.5, 0.5)),
+        pos: new _Game.Vector2(),
+        velocity: new _Game.Vector2(rand(-0.5, 0.5), rand(-0.5, 0.5)),
         radius: 20,
         color: randColor(),
         speed: 5,
@@ -1217,32 +1254,24 @@ module.exports.Packman = function (ctx) {
 "use strict";
 
 
+var _Game = __webpack_require__(0);
+
 function MouseTail(options) {
     // Private
-    var appName = 'Mouse Tail',
-        errorTitle = '[' + appName + ' - Error]: ';
+    var appName = 'Mouse Tail';
 
-    var canvas = null,
-        ctx = null,
+    var ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
-        mouse = new Vector(20, 20);
+        mouse = null;
 
     function init() {
-        var area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
+        var g = new _Game.Game(this.opt);
 
-        canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        ctx = canvas.getContext('2d');
-
-        window.addEventListener('mousemove', getMousePos, false);
-        window.addEventListener('resize', function () {
-            resize(area);
-        }, false);
-        resize(area);
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
+        mouse = g.mouse;
 
         allGamesMenu(3);
 
@@ -1291,43 +1320,45 @@ module.exports = MouseTail;
 "use strict";
 
 
+var _Game = __webpack_require__(0);
+
 var _Particle = __webpack_require__(14);
 
 var _Particle2 = _interopRequireDefault(_Particle);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/*
+Movement(Changing the position)
+    Position = A pair of (x, y)
+    Velocity = Changing position by time
+    Acceleration = Changing velocity by time
+
+ */
+
 function CirclePhysics(options) {
+
     // Private
-    var appName = 'CirclePhysics',
-        canvas = null,
+    var appName = ' CirclePhysics',
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
-        mouse = new Vector(20, 20),
+        mouse = null,
         particlesNumber = 400,
         particles = [],
         overlapRegenerate = 0,
         fadeRange = 100;
 
     function init() {
-        var area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
+        var g = new _Game.Game(this.opt);
 
-        canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        ctx = canvas.getContext('2d');
-
-        window.addEventListener('mousemove', getMousePos, false);
-        window.addEventListener('resize', function () {
-            resize(area);
-        }, false);
-        resize(area);
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
 
         allGamesMenu(2);
 
+        mouse = g.mouse;
         createObjects();
         update();
     }
@@ -1359,7 +1390,7 @@ function CirclePhysics(options) {
                 r = 10,
                 particle = new _Particle2.default({
                 ctx: ctx,
-                pos: new Vector(rand(r, ctxWidth - r), rand(r, ctxHeight - r)),
+                pos: new _Game.Vector2(rand(r, ctxWidth - r), rand(r, ctxHeight - r)),
                 radius: r
             });
 
@@ -1411,15 +1442,16 @@ function CirclePhysics(options) {
     }
 
     // Resize windows event
-    function resize(area) {
-        ctxHeight = canvas.height = area.clientHeight;
-        ctxWidth = canvas.width = area.clientWidth;
+    function resize(ctxMe) {
+        ctxWidth = ctxMe.canvas.width;
+        ctxHeight = ctxMe.canvas.height;
     }
 
     this.opt = Object.assign({
         selector: 'body',
         id: 'screen',
-        bgColor: '#152523'
+        bgColor: '#152523',
+        cfResize: resize
     }, options);
 
     init.call(this);
@@ -1433,6 +1465,8 @@ module.exports = CirclePhysics;
 
 "use strict";
 
+
+var _Game = __webpack_require__(0);
 
 function Particle(options) {
     var _this = this;
@@ -1513,8 +1547,8 @@ function Particle(options) {
 
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(),
-        vel: new Vector(rand(-20, 20), rand(-20, 20)),
+        pos: new _Game.Vector2(),
+        vel: new _Game.Vector2(rand(-20, 20), rand(-20, 20)),
         speed: 0.04,
         radius: 20,
         opacity: 0,
@@ -1532,24 +1566,23 @@ module.exports = Particle;
 "use strict";
 
 
+var _Game = __webpack_require__(0);
+
 var _Enemy = __webpack_require__(16);
 
 var _Enemy2 = _interopRequireDefault(_Enemy);
 
-var _Player = __webpack_require__(18);
+var _Player = __webpack_require__(17);
 
 var _Player2 = _interopRequireDefault(_Player);
 
-var _Shapes = __webpack_require__(0);
-
-var _Shapes2 = _interopRequireDefault(_Shapes);
+var _Shapes = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function BlockRunner(options) {
     // Private
     var appName = 'BlockRunner',
-        canvas = null,
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
@@ -1566,20 +1599,11 @@ function BlockRunner(options) {
 
     // Initialize
     function init() {
+        var g = new _Game.Game(this.opt);
 
-        var area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
-
-        canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        ctx = canvas.getContext('2d');
-
-        window.addEventListener('resize', function () {
-            resize(area);
-        }, false);
-        resize(area);
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
 
         allGamesMenu(1);
 
@@ -1587,22 +1611,23 @@ function BlockRunner(options) {
             ctx: ctx,
             stage: stage,
             size: playerSize,
-            life: 500
+            life: 50,
+            input: g.input
         });
 
-        gamePanel = (0, _Shapes2.default)('rect', {
+        gamePanel = new _Shapes.Rectangle({
             ctx: ctx,
             bgColor: '#152C35',
             brColor: 'white',
-            pos: new Vector(stage.l, stage.t),
+            pivot: new _Game.Vector2(stage.l, stage.t),
             size: { w: stage.r - stage.l, h: stage.b - stage.t }
         });
 
-        playerHome = (0, _Shapes2.default)('rect', {
+        playerHome = new _Shapes.Rectangle({
             ctx: ctx,
             bgColor: '#152C35',
             brColor: '#03BF94',
-            pos: new Vector(stage.l, stage.b - playerHomeSize),
+            pivot: new _Game.Vector2(stage.l, stage.b - playerHomeSize),
             size: { w: playerHomeSize, h: playerHomeSize }
         });
         update();
@@ -1632,9 +1657,9 @@ function BlockRunner(options) {
     }
 
     // resize game area
-    function resize(area) {
-        ctxHeight = canvas.height = area.clientHeight;
-        ctxWidth = canvas.width = area.clientWidth;
+    function resize(ctxMe) {
+        ctxHeight = ctxMe.canvas.height;
+        ctxWidth = ctxMe.canvas.width;
 
         stage = {
             l: margin,
@@ -1643,7 +1668,8 @@ function BlockRunner(options) {
             b: ctxHeight - margin
         };
         if (player) player.resizeStage(stage);
-        if (enemies) {
+
+        if (ctx !== null && enemies) {
             makeEnemies();
         }
     }
@@ -1651,6 +1677,7 @@ function BlockRunner(options) {
     //Make enemies
     function makeEnemies() {
         enemies = [];
+
         for (var i = 0; i < enemyCount; i++) {
             var enemy = new _Enemy2.default({
                 ctx: ctx,
@@ -1678,14 +1705,14 @@ function BlockRunner(options) {
 
         gamePanel.opt.size = { w: stage.r - stage.l, h: stage.b - stage.t };
         gamePanel.draw();
-        playerHome.opt.pos = new Vector(stage.l + 1, stage.b - playerHomeSize - 1);
+        playerHome.opt.pivot = new _Game.Vector2(stage.l + 1, stage.b - playerHomeSize - 1);
         playerHome.draw();
     }
 
     function gameOver() {
-        (0, _Shapes2.default)('rect', {
+        new _Shapes.Rectangle({
             ctx: ctx,
-            pos: new Vector(0, 0),
+            pos: new _Game.Vector2(0, 0),
             size: { w: ctxWidth, h: ctxHeight },
             alpha: 0.5,
             bgColor: 'black'
@@ -1701,7 +1728,8 @@ function BlockRunner(options) {
     this.opt = Object.assign({
         selector: 'body',
         id: 'screen',
-        bgColor: '#113E52'
+        bgColor: '#113E52',
+        cfResize: resize
     }, options);
 
     // Call Initialize
@@ -1717,11 +1745,9 @@ module.exports = BlockRunner;
 "use strict";
 
 
-var _Shapes = __webpack_require__(0);
+var _Game = __webpack_require__(0);
 
-var _Shapes2 = _interopRequireDefault(_Shapes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _Shapes = __webpack_require__(1);
 
 function Enemy(option) {
     var _this = this;
@@ -1740,11 +1766,11 @@ function Enemy(option) {
         ctx = this.opt.ctx;
         this.resizeStage(this.opt.stage);
 
-        if (this.opt.pos.isEmpty) this.opt.pos = new Vector(rand(this.opt.stage.l, this.opt.stage.r - this.opt.size), rand(this.opt.stage.t, this.opt.stage.b - this.opt.size));
+        if (this.opt.pos.isEmpty) this.opt.pos = new _Game.Vector2(rand(this.opt.stage.l, this.opt.stage.r - this.opt.size), rand(this.opt.stage.t, this.opt.stage.b - this.opt.size));
 
-        box = (0, _Shapes2.default)('rect', {
+        box = new _Shapes.Rectangle({
             ctx: ctx,
-            pos: this.opt.pos,
+            pivot: this.opt.pos,
             bgColor: this.opt.color,
             size: { w: this.opt.size, h: this.opt.size }
         });
@@ -1799,8 +1825,8 @@ function Enemy(option) {
     };
 
     this.resizeStage = function (stage) {
-        ctxHeight = ctx.canvas.clientHeight;
-        ctxWidth = ctx.canvas.clientWidth;
+        // ctxHeight = ctx.canvas.clientHeight;
+        // ctxWidth = ctx.canvas.clientWidth;
 
         _this.opt.stage = stage;
     };
@@ -1808,7 +1834,7 @@ function Enemy(option) {
     // Default options
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(),
+        pos: new _Game.Vector2(),
         color: '#FF1E40',
         stage: null,
         size: 20,
@@ -1826,69 +1852,9 @@ module.exports = Enemy;
 "use strict";
 
 
-function Line(options) {
-    var _this = this;
+var _Game = __webpack_require__(0);
 
-    // Private
-    var ctx = null,
-        ctxWidth = 0,
-        ctxHeight = 0;
-
-    function init() {
-        if (!this.opt.ctx) throw 'Line Objects need Context';
-
-        ctx = this.opt.ctx;
-        ctxHeight = ctx.canvas.clientHeight;
-        ctxWidth = ctx.canvas.clientWidth;
-
-        if (this.opt.from.isEmpty) {
-            this.opt.from = new Vector(ctxWidth / 2 - 5, ctxHeight / 2);
-        }
-
-        if (this.opt.to.isEmpty) {
-            this.opt.to = new Vector(ctxWidth / 2 + 5, ctxHeight / 2);
-        }
-    }
-
-    // Update object
-    this.update = function () {
-        return _this;
-    };
-
-    // Draw Object
-    this.draw = function () {
-        ctx.beginPath();
-        ctx.moveTo(_this.opt.from.x, _this.opt.from.y);
-        ctx.lineTo(_this.opt.to.x, _this.opt.to.y);
-        ctx.lineWidth = _this.opt.thickness;
-        ctx.strokeStyle = _this.opt.color;
-        ctx.stroke();
-    };
-
-    this.opt = Object.assign({
-        ctx: null,
-        from: new Vector(0, 0),
-        to: new Vector(),
-        thickness: 1,
-        color: '#F0F0F1'
-    }, options);
-    init.call(this);
-}
-
-module.exports = Line;
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _Shapes = __webpack_require__(0);
-
-var _Shapes2 = _interopRequireDefault(_Shapes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _Shapes = __webpack_require__(1);
 
 function Player(option) {
     var _this = this;
@@ -1901,8 +1867,6 @@ function Player(option) {
 
     // Initialize
     function init() {
-        if (!this.opt.ctx) throw 'Object needs Context';
-
         ctx = this.opt.ctx;
 
         this.resizeStage(this.opt.stage);
@@ -1910,17 +1874,10 @@ function Player(option) {
         this.opt.pos.x = this.opt.stage.l + 1;
         this.opt.pos.y = this.opt.stage.b - this.opt.size - 1;
 
-        window.addEventListener('keyup', function (event) {
-            Key.onKeyup(event);
-        }, false);
-        window.addEventListener('keydown', function (event) {
-            Key.onKeydown(event);
-        }, false);
-
         this.life = this.opt.life;
-        box = (0, _Shapes2.default)('rect', {
+        box = new _Shapes.Rectangle({
             ctx: ctx,
-            pos: this.opt.pos,
+            pivot: this.opt.pos,
             bgColor: this.opt.color,
             size: { w: this.opt.size, h: this.opt.size }
         });
@@ -1928,19 +1885,20 @@ function Player(option) {
 
     this.update = function () {
         var x = 0,
-            y = 0;
+            y = 0,
+            Key = _this.opt.input;
 
-        if (Key.isDown(Key.UP)) y -= 1;
-        if (Key.isDown(Key.LEFT)) x -= 1;
-        if (Key.isDown(Key.DOWN)) y += 1;
-        if (Key.isDown(Key.RIGHT)) x += 1;
-        _this.move(new Vector(x, y));
+        if (Key.isDown('ArrowUp')) y -= 1;
+        if (Key.isDown('ArrowLeft')) x -= 1;
+        if (Key.isDown('ArrowDown')) y += 1;
+        if (Key.isDown('ArrowRight')) x += 1;
+        _this.move(new _Game.Vector2(x, y));
         _this.draw();
     };
 
     // Draw Ball
     this.draw = function () {
-        box.opt.pos = _this.opt.pos;
+        box.opt.pivot = _this.opt.pos;
         box.draw();
     };
 
@@ -1978,8 +1936,8 @@ function Player(option) {
     // Default options od class
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(0, 0),
-        velocity: new Vector(),
+        pos: new _Game.Vector2(0, 0),
+        velocity: new _Game.Vector2(),
         size: 20,
         color: '#FFF9DD',
         speed: 2,
@@ -1994,15 +1952,15 @@ function Player(option) {
 module.exports = Player;
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Game = __webpack_require__(1);
+var _Game = __webpack_require__(0);
 
-var _Player = __webpack_require__(20);
+var _Player = __webpack_require__(19);
 
 var _Player2 = _interopRequireDefault(_Player);
 
@@ -2014,7 +1972,7 @@ function RotatePlayer(options) {
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
-        mouse = new _Game.Mouse(),
+        mouse = null,
         player = null;
 
     function init() {
@@ -2023,13 +1981,14 @@ function RotatePlayer(options) {
         ctx = g.getCtx();
         ctxWidth = ctx.canvas.width;
         ctxHeight = ctx.canvas.height;
+        mouse = g.mouse;
 
         allGamesMenu(7);
 
         player = new _Player2.default({
             ctx: ctx,
-            pos: new Vector(ctxWidth / 2, ctxHeight / 2),
-            velocity: new Vector(0, 0),
+            pos: new _Game.Vector2(ctxWidth / 2, ctxHeight / 2),
+            velocity: new _Game.Vector2(0, 0),
             radius: 100
         });
         update();
@@ -2040,7 +1999,7 @@ function RotatePlayer(options) {
         requestAnimationFrame(update);
         ctx.clearRect(0, 0, ctxWidth, ctxHeight);
 
-        player.update(mouse).lookAt(new Vector(10, 200));
+        player.update(mouse).lookAt(new _Game.Vector2(10, 200));
         userInterface();
     }
 
@@ -2071,17 +2030,15 @@ function RotatePlayer(options) {
 module.exports = RotatePlayer;
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Shapes = __webpack_require__(0);
+var _Game = __webpack_require__(0);
 
-var _Shapes2 = _interopRequireDefault(_Shapes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _Shapes = __webpack_require__(1);
 
 function Player(options) {
     var _this = this;
@@ -2103,21 +2060,21 @@ function Player(options) {
         ctxWidth = ctx.canvas.clientWidth;
 
         // Objects
-        objCircle = (0, _Shapes2.default)('circle', {
+        objCircle = new _Shapes.Circle({
             ctx: ctx,
-            pos: new Vector(0, 0),
+            pivot: new _Game.Vector2(0, 0),
             radius: this.opt.radius,
             bgColor: this.opt.color
         });
-        objLine = (0, _Shapes2.default)('line', {
+        objLine = new _Shapes.Line({
             ctx: ctx,
             thickness: 5,
-            from: new Vector(0, 0),
-            to: new Vector(this.opt.radius + 10, 0)
+            from: new _Game.Vector2(0, 0),
+            to: new _Game.Vector2(this.opt.radius + 10, 0)
         });
-        objBox = (0, _Shapes2.default)('rect', {
+        objBox = new _Shapes.Rectangle({
             ctx: ctx,
-            pos: new Vector(2, 3),
+            pivot: new _Game.Vector2(2, 3),
             bgColor: '#4F80E1',
             size: { w: 30, h: 50 }
         });
@@ -2156,7 +2113,7 @@ function Player(options) {
 
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(),
+        pos: new _Game.Vector2(),
         radius: 20,
         color: '#FF5349'
     }, options);
@@ -2166,21 +2123,21 @@ function Player(options) {
 module.exports = Player;
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Game = __webpack_require__(1);
+var _Game = __webpack_require__(0);
 
-var _Shapes = __webpack_require__(0);
+var _Shapes = __webpack_require__(1);
 
-var _player = __webpack_require__(22);
+var _player = __webpack_require__(21);
 
 var _player2 = _interopRequireDefault(_player);
 
-var _ball = __webpack_require__(23);
+var _ball = __webpack_require__(22);
 
 var _ball2 = _interopRequireDefault(_ball);
 
@@ -2250,7 +2207,7 @@ function Tennis(options) {
         for (var i = 0; i < ctxHeight; i += 30) {
             new _Shapes.Rectangle({
                 ctx: ctx,
-                pos: new _Game.Vector2(ctxWidth / 2, i),
+                pivot: new _Game.Vector2(ctxWidth / 2, i),
                 size: { w: 2, h: 15 },
                 bgColor: '#E6F2EF'
             }).draw();
@@ -2270,13 +2227,13 @@ function Tennis(options) {
 module.exports = Tennis;
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Shapes = __webpack_require__(0);
+var _Shapes = __webpack_require__(1);
 
 function TennisPlayer(options) {
     var _this = this;
@@ -2298,7 +2255,7 @@ function TennisPlayer(options) {
 
         player = new _Shapes.Rectangle({
             ctx: ctx,
-            pos: this.opt.pos,
+            pivot: this.opt.pos,
             size: { w: this.wPlayer, h: this.hPlayer },
             bgColor: this.opt.bgColor
         });
@@ -2372,15 +2329,15 @@ function TennisPlayer(options) {
 module.exports = TennisPlayer;
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Game = __webpack_require__(1);
+var _Game = __webpack_require__(0);
 
-var _Shapes = __webpack_require__(0);
+var _Shapes = __webpack_require__(1);
 
 function Ball(options) {
     var _this = this;
@@ -2431,6 +2388,7 @@ function Ball(options) {
         }
 
         _this.opt.pos.move(_this.opt.velocity, 3);
+        ball.opt.pivot = _this.opt.pos;
         ball.draw();
     };
 
@@ -2456,6 +2414,183 @@ function Ball(options) {
 }
 
 module.exports = Ball;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(0);
+
+var _Auto = __webpack_require__(24);
+
+var _Auto2 = _interopRequireDefault(_Auto);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function OneDirectionMove(options) {
+    // Private
+    var appName = ' OneDirectionMove',
+        ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        auto = null;
+
+    function init() {
+        var g = new _Game.Game(this.opt);
+
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
+
+        allGamesMenu(9);
+
+        auto = new _Auto2.default({ ctx: ctx, input: g.input });
+        update();
+    }
+
+    // Update animation
+    function update() {
+        requestAnimationFrame(update);
+        ctx.clearRect(0, 0, ctxWidth, ctxHeight);
+
+        userInterface();
+        auto.update();
+    }
+
+    // onResize Game
+    function resize(ctxMe) {
+        ctxWidth = ctxMe.canvas.width;
+        ctxHeight = ctxMe.canvas.height;
+    }
+
+    // Draw User Interface
+    function userInterface() {
+        ctx.font = "20px Georgia";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = "#443954";
+        ctx.fillText("App Name: " + appName, 20, 30);
+    }
+
+    this.opt = Object.assign({
+        selector: 'body',
+        id: 'screen',
+        bgColor: '#F4EEEC',
+        cfResize: resize
+    }, options);
+
+    init.call(this);
+}
+
+module.exports = OneDirectionMove;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(0);
+
+var _Shapes = __webpack_require__(1);
+
+function Auto(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        obj = null,
+        vx = 0,
+        vy = 0,
+        angle = deg(0),
+        dAngle = 0.07,
+        acc = 0.1,
+        v = 0,
+        vmax = 5;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Auto Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        this.opt.pos = new _Game.Vector2(ctxWidth / 2, ctxHeight / 2);
+        obj = new _Shapes.Rectangle({
+            ctx: ctx,
+            size: { w: 80, h: 10 },
+            pivot: new _Game.Vector2(-40, -5),
+            showDirection: true
+        });
+    }
+
+    // Update object
+    this.update = function () {
+        var input = _this.opt.input;
+
+        if (input.isDown('KeyW')) {
+            v += acc;
+            if (v > vmax) v = vmax;
+        } else if (input.isDown('KeyS')) {
+            v -= acc;
+            if (v < -vmax) v = -vmax;
+        } else {
+            if (v < 0.03 && v > -0.03) {
+                v = 0;
+            };
+
+            if (v < 0) {
+                v += 0.03;
+            }
+            if (v > 0) {
+                v -= 0.03;
+            }
+        }
+
+        var upKey = v < 0 ? input.isDown('KeyA') : input.isDown('KeyD');
+        var downKey = v < 0 ? input.isDown('KeyD') : input.isDown('KeyA');
+        if (upKey) {
+            angle += dAngle;
+            if (angle > Math.PI * 2) angle -= Math.PI * 2;
+        }
+        if (downKey) {
+            angle -= dAngle;
+            if (angle < 0) angle += Math.PI * 2;
+        }
+
+        vy = v * Math.sin(angle);
+        vx = v * Math.cos(angle);
+
+        _this.opt.pos.x += vx;
+        _this.opt.pos.y += vy;
+
+        _this.draw();
+    };
+
+    // Draw Object
+    this.draw = function () {
+        ctx.save();
+        ctx.translate(_this.opt.pos.x, _this.opt.pos.y);
+        ctx.rotate(angle);
+
+        obj.draw();
+
+        ctx.restore();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: null
+    }, options);
+    init.call(this);
+}
+
+module.exports = Auto;
 
 /***/ })
 /******/ ]);

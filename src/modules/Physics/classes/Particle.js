@@ -1,3 +1,5 @@
+import {Vector2} from '../../../lib/Game';
+
 function Particle(options) {
     // Private
     var ctx = null,
@@ -84,8 +86,8 @@ function Particle(options) {
 
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(),
-        vel: new Vector(rand(-20, 20), rand(-20, 20)),
+        pos: new Vector2(),
+        vel: new Vector2(rand(-20, 20), rand(-20, 20)),
         speed: 0.04,
         radius: 20,
         opacity: 0,

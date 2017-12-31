@@ -1,19 +1,12 @@
 import {Vector2} from './Game';
-import Line from './Line';
 
-module.exports.Shapes = function(type, options){
-    switch( type ){
-        case 'circle':
-            return new Circle(options);
-        case 'line':
-            return new Line(options);
-        case 'rect':
-            return new Rectangle(options);
-        default:
-            throw 'Undefined Shape type.'
-    }
-};
-
+function faceVector(ctx){
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(50,0);
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+}
 
 module.exports.Rectangle = function(options){
     // Private
@@ -28,29 +21,17 @@ module.exports.Rectangle = function(options){
         ctxHeight = ctx.canvas.clientHeight;
         ctxWidth  = ctx.canvas.clientWidth;
 
-        if( this.opt.pos.isEmpty ){
-            this.opt.pos = new Vector2( ctxWidth / 2, ctxHeight / 2 );
-        }
-
         if( this.opt.size === null )
             this.opt.size = {w: 10, h:10};
     }
 
-    // Update object
-    this.update = (mouse) => {
-        if(mouse){
-            this.opt.pos.x = mouse.x;
-            this.opt.pos.y = mouse.y;
-        }
-        return this;
-    };
-
     // Draw Object
     this.draw = () => {
+        let thisX = this.opt.pivot.x,
+            thisY = this.opt.pivot.y;
+
         ctx.beginPath();
-        ctx.rect(
-            this.opt.pos.x,
-            this.opt.pos.y,
+        ctx.rect(thisX, thisY,
             this.opt.size.w,
             this.opt.size.h
         );
@@ -62,25 +43,29 @@ module.exports.Rectangle = function(options){
         ctx.fill();
         ctx.globalAlpha = orgAlpha;
 
-
         if( this.opt.brColor !== null ) {
             ctx.strokeStyle = this.opt.brColor;
             ctx.stroke();
+        }
+
+        if( this.opt.showDirection ){
+            faceVector(ctx);
         }
     };
 
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector2(),
         size: null,
         bgColor: '#052B3E',
         brColor: null,
-        alpha: null
+        alpha: null,
+        pivot: new Vector2(0,0),
+        showDirection: false
     }, options);
     init.call(this);
 };
 
-
+// #######################################
 module.exports.Circle = function(options){
     // Private
     var ctx = null,
@@ -93,27 +78,15 @@ module.exports.Circle = function(options){
         ctx = this.opt.ctx;
         ctxHeight = ctx.canvas.clientHeight;
         ctxWidth  = ctx.canvas.clientWidth;
-
-        if( this.opt.pos.isEmpty ){
-            this.opt.pos = new Vector2( ctxWidth / 2, ctxHeight / 2 );
-        }
     }
-
-    // Update object
-    this.update = (mouse) => {
-        if(mouse){
-            this.opt.pos.x = mouse.x;
-            this.opt.pos.y = mouse.y;
-        }
-        return this;
-    };
 
     // Draw Object
     this.draw = () => {
+        let thisX = this.opt.pivot.x,
+            thisY = this.opt.pivot.y;
+
         ctx.beginPath();
-        ctx.arc(
-            this.opt.pos.x,
-            this.opt.pos.y,
+        ctx.arc(thisX, thisY,
             this.opt.radius,
             0,
             Math.PI * 2,
@@ -126,14 +99,68 @@ module.exports.Circle = function(options){
             ctx.strokeStyle = this.opt.brColor;
             ctx.stroke();
         }
+
+        if( this.opt.showDirection ){
+            faceVector(ctx);
+        }
     };
 
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector2(),
         radius: 20,
         bgColor: '#052B3E',
-        brColor: null
+        brColor: null,
+        pivot: new Vector2(0,0),
+        showDirection: false
+    }, options);
+    init.call(this);
+};
+
+
+// #########################
+module.exports.Line = function(options) {
+    // Private
+    var ctx = null,
+        ctxWidth  = 0,
+        ctxHeight = 0;
+
+    function init(){
+        if (!this.opt.ctx) throw 'Line Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth  = ctx.canvas.clientWidth;
+
+        if( this.opt.from.isEmpty ){
+            this.opt.from = new Vector2( ctxWidth / 2 - 5, ctxHeight / 2 );
+        }
+
+        if( this.opt.to.isEmpty ){
+            this.opt.to = new Vector2( ctxWidth / 2 + 5, ctxHeight / 2 );
+        }
+    }
+
+    // Update object
+    this.update = () => {
+        return this;
+    };
+
+    // Draw Object
+    this.draw = () => {
+        ctx.beginPath();
+        ctx.moveTo(this.opt.from.x, this.opt.from.y);
+        ctx.lineTo(this.opt.to.x, this.opt.to.y);
+        ctx.lineWidth = this.opt.thickness;
+        ctx.strokeStyle = this.opt.color;
+        ctx.stroke();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        from: new Vector2(0,0),
+        to: new Vector2(),
+        thickness: 1,
+        color: '#F0F0F1',
     }, options);
     init.call(this);
 };

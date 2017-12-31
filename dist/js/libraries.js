@@ -4,7 +4,7 @@ function allGamesMenu( idxGame ){
         select = document.createElement('select'),
         games = [
             'BlockRunner','Physics','MouseTail','HeavyBall','BackgroundBalls','Collision','RotatePlayer',
-            'Tennis',
+            'Tennis','One Direction Move',
         ];
 
     select.id = 'game';
@@ -22,6 +22,8 @@ function allGamesMenu( idxGame ){
 }
 
 
+
+// Utility
 rangeRand = (min, max) => {
     min = min ? min : 0;
     max = max ? max : 100,
@@ -52,46 +54,6 @@ randColor = () => {
     return '#' + colors[rand(0, colors.length-1)];
 };
 
-
-// function Vectorm(x, y){
-//
-//     this.normal = (multi) => {
-//         var x = Math.abs(this.x),
-//             y = Math.abs(this.y);
-//
-//         if( x > y ){
-//             y = y / x;
-//             x = 1;
-//         } else if ( x < y ) {
-//             x = x / y;
-//             y = 1;
-//         } else
-//             x = y = 1;
-//
-//         // x += multi;
-//         // y += multi;
-//
-//         x = (this.x < 0 ? x*-1 : x);
-//         y = (this.y < 0 ? y*-1 : y);
-//
-//         return new Vector(x , y);
-//     };
-//
-//     this.move = (velocity, speed) => {
-//         if( typeof velocity !== 'object' || velocity.constructor.name !== 'Vector') throw 'Invalid Parameter';
-//         speed = speed ? speed : 1;
-//         this.x += velocity.x * speed;
-//         this.y += velocity.y * speed;
-//     };
-//
-//     this.distance = point => {
-//         if( !point )
-//             return Math.sqrt( Math.pow(this.x, 2) + Math.pow(this.y, 2) );
-//         return Math.sqrt( Math.pow(this.x - point.x, 2) + Math.pow(this.y - point.y, 2) );
-//     };
-//
-//     this.isEmpty = (typeof x == 'undefined' || typeof y == 'undefined');
-//
-//     this.x = x;
-//     this.y = y;
-// }
+function deg(degree){
+    return degree * Math.PI / 180;
+}

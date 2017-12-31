@@ -1,15 +1,14 @@
 import {Game, Vector2} from '../../lib/Game';
-import Player from './classes/Player';
+import Auto from './Auto';
 
-function RotatePlayer(options) {
+function  OneDirectionMove(options) {
     // Private
-    var appName = 'RotatePlayer',
+    var appName = ' OneDirectionMove',
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
 
-        mouse = null,
-        player = null;
+        auto = null;
 
     function init(){
         var g = new Game( this.opt );
@@ -17,16 +16,10 @@ function RotatePlayer(options) {
         ctx       = g.getCtx();
         ctxWidth  = ctx.canvas.width;
         ctxHeight = ctx.canvas.height;
-        mouse = g.mouse;
 
-        allGamesMenu(7);
+        allGamesMenu(9);
 
-        player = new Player({
-            ctx: ctx,
-            pos: new Vector2(ctxWidth/2,ctxHeight/2),
-            velocity: new Vector2(0,0),
-            radius: 100
-        });
+        auto = new Auto({ctx: ctx, input: g.input});
         update();
     }
 
@@ -35,32 +28,32 @@ function RotatePlayer(options) {
         requestAnimationFrame( update );
         ctx.clearRect(0, 0, ctxWidth, ctxHeight);
 
-        player.update(mouse).lookAt( new Vector2( 10, 200) );
         userInterface();
+        auto.update();
+    }
+
+    // onResize Game
+    function resize(ctxMe){
+        ctxWidth  = ctxMe.canvas.width;
+        ctxHeight = ctxMe.canvas.height
     }
 
     // Draw User Interface
     function userInterface(){
         ctx.font = "20px Georgia";
         ctx.textAlign = 'left';
-        ctx.fillStyle = "white";
-        ctx.fillText("App Name: " + appName, 10, 50);
-    }
-
-    // Resize windows event
-    function resize( ctxMe ){
-        ctxWidth  = ctxMe.canvas.width;
-        ctxHeight = ctxMe.canvas.height
+        ctx.fillStyle = "#443954";
+        ctx.fillText("App Name: " + appName, 20, 30);
     }
 
     this.opt = Object.assign({
         selector: 'body',
         id: 'screen',
-        bgColor: '#292C44',
+        bgColor: '#F4EEEC',
         cfResize: resize
     }, options);
 
     init.call(this);
 }
 
-module.exports = RotatePlayer;
+module.exports =  OneDirectionMove;

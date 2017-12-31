@@ -70,7 +70,7 @@ function Tennis(options) {
         for( let i = 0; i < ctxHeight; i += 30) {
             (new Rectangle({
                 ctx: ctx,
-                pos: new Vector2(ctxWidth/2, i),
+                pivot: new Vector2(ctxWidth/2, i),
                 size: {w: 2, h: 15},
                 bgColor: '#E6F2EF'
             })).draw();

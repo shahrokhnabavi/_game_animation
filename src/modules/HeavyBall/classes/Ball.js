@@ -1,3 +1,5 @@
+import {Vector2} from '../../../lib/Game';
+
 function Ball(option) {
     // Privates
     var ctx = null,
@@ -20,7 +22,7 @@ function Ball(option) {
         ctxWidth = ctx.canvas.clientWidth;
 
         if (this.opt.pos.isEmpty)
-            this.opt.pos = new Vector(
+            this.opt.pos = new Vector2(
                 rand(this.opt.radius, ctxWidth - this.opt.radius),
                 rand(this.opt.radius, ctxHeight - this.opt.radius)
             );
@@ -87,8 +89,8 @@ function Ball(option) {
     // Default options od class
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(),
-        velocity: new Vector(rand(-0.5, 0.5), rand(-0.5, 0.5)),
+        pos: new Vector2(),
+        velocity: new Vector2(rand(-0.5, 0.5), rand(-0.5, 0.5)),
         radius: 20,
         color: randColor(),
         speed: 5,

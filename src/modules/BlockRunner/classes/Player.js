@@ -1,4 +1,5 @@
-import Shapes from '../../../lib/Shapes';
+import {Vector2} from '../../../lib/Game';
+import {Rectangle} from '../../../lib/Shapes';
 
 function Player(option) {
     // Privates
@@ -10,8 +11,6 @@ function Player(option) {
 
     // Initialize
     function init() {
-        if (!this.opt.ctx) throw  'Object needs Context';
-
         ctx = this.opt.ctx;
 
         this.resizeStage(this.opt.stage);
@@ -19,13 +18,10 @@ function Player(option) {
         this.opt.pos.x = this.opt.stage.l + 1;
         this.opt.pos.y = this.opt.stage.b - this.opt.size - 1;
 
-        window.addEventListener('keyup', function(event) { Key.onKeyup(event); }, false);
-        window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
-
         this.life = this.opt.life;
-        box = Shapes('rect', {
+        box = new Rectangle({
             ctx: ctx,
-            pos: this.opt.pos,
+            pivot: this.opt.pos,
             bgColor: this.opt.color,
             size: {w: this.opt.size, h: this.opt.size}
         });
@@ -33,19 +29,20 @@ function Player(option) {
 
     this.update = () => {
         var x = 0,
-            y = 0;
+            y = 0,
+            Key = this.opt.input;
 
-        if (Key.isDown(Key.UP)) y -= 1;
-        if (Key.isDown(Key.LEFT)) x -= 1;
-        if (Key.isDown(Key.DOWN)) y += 1;
-        if (Key.isDown(Key.RIGHT)) x += 1;
-        this.move( new Vector(x, y));
+        if (Key.isDown('ArrowUp')) y -= 1;
+        if (Key.isDown('ArrowLeft')) x -= 1;
+        if (Key.isDown('ArrowDown')) y += 1;
+        if (Key.isDown('ArrowRight')) x += 1;
+        this.move( new Vector2(x, y));
         this.draw();
     };
 
     // Draw Ball
     this.draw = () => {
-        box.opt.pos = this.opt.pos;
+        box.opt.pivot = this.opt.pos;
         box.draw();
     };
 
@@ -87,8 +84,8 @@ function Player(option) {
     // Default options od class
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(0,0),
-        velocity: new Vector(),
+        pos: new Vector2(0,0),
+        velocity: new Vector2(),
         size: 20,
         color: '#FFF9DD',
         speed: 2,

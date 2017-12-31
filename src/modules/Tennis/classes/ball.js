@@ -49,6 +49,7 @@ function Ball(options){
         }
 
         this.opt.pos.move( this.opt.velocity, 3);
+        ball.opt.pivot = this.opt.pos;
         ball.draw();
     };
 

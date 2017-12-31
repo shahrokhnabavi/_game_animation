@@ -1,17 +1,27 @@
+import {Rectangle} from '../../../lib/Shapes';
+
 function BoxCollision(options){
     // Private
-    var ctx = null;
+    var ctx = null,
+        obj = null;
 
     function init(options){
         if (!this.opt.ctx) throw errorTitle + 'Object needs Context';
 
         ctx = this.opt.ctx;
+
+        obj = new Rectangle({
+            ctx: ctx,
+            pivot: this.opt.pos,
+            bgColor: this.opt.color,
+            size: {w: this.opt.width, h: this.opt.height}
+        });
     }
 
-    this.update = (mouse) => {
-        if(mouse){
-            this.opt.pos.x = mouse.x - (this.opt.width/2);
-            this.opt.pos.y = mouse.y - (this.opt.height/2);
+    this.update = () => {
+        if(this.opt.mouse){
+            this.opt.pos.x = this.opt.mouse.x - (this.opt.width/2);
+            this.opt.pos.y = this.opt.mouse.y - (this.opt.height/2);
         }
         return this;
     };
@@ -38,23 +48,17 @@ function BoxCollision(options){
     };
 
     this.draw = () => {
-        ctx.beginPath();
-        ctx.rect(
-            this.opt.pos.x,
-            this.opt.pos.y,
-            this.opt.width,
-            this.opt.height
-        );
-        ctx.fillStyle = this.opt.color;
-        ctx.fill();
+        obj.opt.bgColor = this.opt.color;
+        obj.draw();
     };
 
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(),
+        pos: null,
         width: 20,
         height: 20,
-        color: '#052B3E'
+        color: '#052B3E',
+        mouse: null
     }, options);
     init.call(this);
 }

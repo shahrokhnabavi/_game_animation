@@ -1,65 +1,59 @@
 import CircleCollision from './classes/CircleCollision';
 import BoxCollision from './classes/BoxCollision';
 
+import {Game, Vector2} from '../../lib/Game';
+
+
 function Collision(options) {
     // Private
-    var appName = 'Collision',
-        errorTitle = '[' + appName + ' - Error]: ';
+    var appName = 'Collision';
 
-    var canvas = null,
-        ctx = null,
+    var ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
-
-        mouse = new Vector(0, 0),
 
         obj1 = null,
         obj2 = null;
 
     // Initialize
     function init() {
+        var g = new Game(this.opt);
 
-        var area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
-
-        canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        ctx = canvas.getContext('2d');
-
-        window.addEventListener('mousemove', getMousePos, false);
-        window.addEventListener('resize', () => resize(area), false);
-        resize(area);
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
 
         allGamesMenu(6);
 
 
-        // obj1 = new BoxCollision({
-        //     ctx: ctx,
-        //     pos: new Vector(ctxWidth/2 - 50, ctxHeight/2 - 25),
-        //     width: 100,
-        //     height: 50
-        // });
-        obj1 = new CircleCollision({
+        obj1 = new BoxCollision({
             ctx: ctx,
-            pos: new Vector(ctxWidth/2 - 25, ctxHeight/2 - 25),
-            radius: 50
+            pos: new Vector2(ctxWidth/2 - 50, ctxHeight/2 - 25),
+            width: 100,
+            height: 50
         });
 
-        // obj2 = new BoxCollision({
-        //     ctx: ctx,
-        //     pos: new Vector(ctxWidth/2 - 25, ctxHeight/2 - 12.5),
-        //     width: 50,
-        //     height: 25,
-        //     color: '#225D71'
-        // });
-        obj2 = new CircleCollision({
+        obj2 = new BoxCollision({
             ctx: ctx,
-            pos: new Vector(ctxWidth/2 - 12, ctxHeight/2 - 12),
-            radius: 24,
-            color: '#225D71'
+            pos: new Vector2(ctxWidth/2 - 25, ctxHeight/2 - 12.5),
+            width: 50,
+            height: 25,
+            color: '#225D71',
+            mouse: g.mouse
         });
+
+        // obj1 = new CircleCollision({
+        //     ctx: ctx,
+        //     pos: new Vector2(ctxWidth/2 - 255, ctxHeight/2 - 25),
+        //     radius: 50,
+        // });
+        // obj2 = new CircleCollision({
+        //     ctx: ctx,
+        //     pos: new Vector2(ctxWidth/2 - 12, ctxHeight/2 - 12),
+        //     radius: 24,
+        //     color: '#225D71',
+        //     mouse: g.mouse
+        // });
         update();
     }
 
@@ -69,7 +63,7 @@ function Collision(options) {
 
         userInterface();
         obj1.update().draw();
-        obj2.update(mouse).draw();
+        obj2.update().draw();
 
         if( obj2.collision( obj1 ) )
             obj1.opt.color = '#ABC9D8';
@@ -77,16 +71,10 @@ function Collision(options) {
             obj1.opt.color = '#052B3E';
     }
 
-    // resize game area
-    function resize(area) {
-        ctxHeight = canvas.height = area.clientHeight;
-        ctxWidth  = canvas.width  = area.clientWidth;
-    }
-
-    // Get Mouse Position
-    function getMousePos(e) {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
+    // onResize Game
+    function resize(ctxMe) {
+        ctxWidth = ctxMe.canvas.width;
+        ctxHeight = ctxMe.canvas.height;
     }
 
 

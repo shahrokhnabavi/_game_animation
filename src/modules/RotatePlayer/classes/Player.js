@@ -1,4 +1,5 @@
-import Shapes from '../../../lib/Shapes';
+import {Vector2} from '../../../lib/Game';
+import {Rectangle, Circle, Line } from '../../../lib/Shapes';
 
 function Player(options){
     // Private
@@ -19,21 +20,21 @@ function Player(options){
         ctxWidth  = ctx.canvas.clientWidth;
 
         // Objects
-        objCircle = Shapes('circle', {
+        objCircle = new Circle({
             ctx: ctx,
-            pos: new Vector(0, 0),
+            pivot: new Vector2(0, 0),
             radius: this.opt.radius,
             bgColor:  this.opt.color
         });
-        objLine = Shapes('line', {
+        objLine = new Line({
             ctx: ctx,
             thickness: 5,
-            from: new Vector(0, 0),
-            to: new Vector(this.opt.radius + 10, 0)
+            from: new Vector2(0, 0),
+            to: new Vector2(this.opt.radius + 10, 0)
         });
-        objBox = Shapes('rect', {
+        objBox = new Rectangle({
             ctx: ctx,
-            pos: new Vector(2, 3),
+            pivot: new Vector2(2, 3),
             bgColor: '#4F80E1',
             size: {w: 30,h:50}
         });
@@ -73,7 +74,7 @@ function Player(options){
 
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(),
+        pos: new Vector2(),
         radius: 20,
         color: '#FF5349'
     }, options);

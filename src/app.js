@@ -6,9 +6,13 @@ import Physics from './modules/Physics/app';
 import BlockRunner from './modules/BlockRunner/app';
 import RotatePlayer from './modules/RotatePlayer/app';
 import Tennis from './modules/Tennis/app';
+import OneDirectionMove from './modules/OneDirectionMove/app';
 
 window.loadGame = idx => {
     switch( idx ){
+        case 9:
+            new OneDirectionMove();
+            break;
         case 8:
             new Tennis();
             break;
@@ -35,4 +39,4 @@ window.loadGame = idx => {
             break;
     }
 };
-loadGame(8);
+loadGame(9);

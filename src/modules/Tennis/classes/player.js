@@ -19,7 +19,7 @@ function TennisPlayer(options) {
 
         player = new Rectangle({
             ctx: ctx,
-            pos: this.opt.pos,
+            pivot: this.opt.pos,
             size: {w: this.wPlayer, h: this.hPlayer},
             bgColor: this.opt.bgColor,
         });

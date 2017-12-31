@@ -1,3 +1,4 @@
+import {Game, Vector2} from '../../lib/Game';
 import Ball from './classes/Ball';
 
 function HeavyBall( options ) {
@@ -5,9 +6,7 @@ function HeavyBall( options ) {
     var appName = 'HeavyBall',
         errorTitle = '[' + appName + ' - Error]: ';
 
-    var area   = null,
-        canvas = null,
-        ctx    = null,
+    var ctx    = null,
         ctxWidth  = 0,
         ctxHeight = 0,
 
@@ -15,17 +14,11 @@ function HeavyBall( options ) {
 
     // Initialize
     function init() {
+        var g = new Game(this.opt);
 
-        area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
-
-        canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        resize();
-
-        ctx = canvas.getContext('2d');
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
 
         allGamesMenu(4);
 
@@ -57,7 +50,7 @@ function HeavyBall( options ) {
     function createBall(){
         var ball = new Ball({
             ctx: ctx,
-            velocity: new Vector(rand(-2,2), 0),
+            velocity: new Vector2(rand(-2,2), 0),
             speed: 1,
             lifeTime: 0,
             weight: 1.2,
@@ -92,7 +85,7 @@ function HeavyBall( options ) {
             case 'D':
                 var ball = new Ball({
                     ctx: ctx,
-                    velocity: new Vector(rand(-2,2), rand(-2,2)),
+                    velocity: new Vector2(rand(-2,2), rand(-2,2)),
                     speed: 1,
                     lifeTime: 10,
                     weight: 1.2,
@@ -111,8 +104,8 @@ function HeavyBall( options ) {
     function singleBall(e){
         var ball = new Ball({
             ctx: ctx,
-            velocity: new Vector(rand(-2,2), rand(-2,2)),
-            pos: new Vector(e.clientX, e.clientY),
+            velocity: new Vector2(rand(-2,2), rand(-2,2)),
+            pos: new Vector2(e.clientX, e.clientY),
             speed: 1,
             lifeTime: 0,
             weight: 1.2,

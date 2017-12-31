@@ -1,4 +1,5 @@
-import Shapes from '../../../lib/Shapes';
+import {Vector2} from '../../../lib/Game';
+import {Rectangle} from '../../../lib/Shapes';
 
 function Enemy( option ) {
     //Public
@@ -17,14 +18,14 @@ function Enemy( option ) {
         this.resizeStage( this.opt.stage );
 
         if( this.opt.pos.isEmpty )
-            this.opt.pos = new Vector(
+            this.opt.pos = new Vector2(
                 rand(this.opt.stage.l, this.opt.stage.r - this.opt.size),
                 rand(this.opt.stage.t, this.opt.stage.b - this.opt.size)
             );
 
-        box = Shapes('rect', {
+        box = new Rectangle({
             ctx: ctx,
-            pos: this.opt.pos,
+            pivot: this.opt.pos,
             bgColor: this.opt.color,
             size: {w: this.opt.size, h: this.opt.size}
         });
@@ -87,8 +88,8 @@ function Enemy( option ) {
     };
 
     this.resizeStage = stage => {
-        ctxHeight = ctx.canvas.clientHeight;
-        ctxWidth = ctx.canvas.clientWidth;
+        // ctxHeight = ctx.canvas.clientHeight;
+        // ctxWidth = ctx.canvas.clientWidth;
 
         this.opt.stage = stage;
     };
@@ -96,7 +97,7 @@ function Enemy( option ) {
     // Default options
     this.opt = Object.assign({
         ctx: null,
-        pos: new Vector(),
+        pos: new Vector2(),
         color: '#FF1E40',
         stage: null,
         size: 20,

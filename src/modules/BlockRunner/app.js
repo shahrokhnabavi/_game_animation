@@ -1,11 +1,12 @@
+import {Game, Vector2} from '../../lib/Game';
+
 import Enemy from './classes/Enemy';
 import Player from './classes/Player';
-import Shapes from '../../lib/Shapes';
+import {Rectangle} from '../../lib/Shapes';
 
 function BlockRunner(options) {
     // Private
     var appName = 'BlockRunner',
-        canvas = null,
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
@@ -25,20 +26,11 @@ function BlockRunner(options) {
 
     // Initialize
     function init() {
+        var g = new Game(this.opt);
 
-        var area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
-
-        canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        ctx = canvas.getContext('2d');
-
-        window.addEventListener('resize', () => {
-            resize(area);
-        }, false);
-        resize(area);
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
 
         allGamesMenu(1);
 
@@ -47,22 +39,23 @@ function BlockRunner(options) {
             ctx: ctx,
             stage: stage,
             size: playerSize,
-            life: 500
+            life: 50,
+            input: g.input
         });
 
-        gamePanel = Shapes('rect', {
+        gamePanel = new Rectangle({
             ctx: ctx,
             bgColor: '#152C35',
             brColor: 'white',
-            pos: new Vector(stage.l, stage.t),
+            pivot: new Vector2(stage.l, stage.t),
             size: {w: stage.r - stage.l, h: stage.b - stage.t}
         });
 
-        playerHome = Shapes('rect', {
+        playerHome = new Rectangle({
             ctx: ctx,
             bgColor: '#152C35',
             brColor: '#03BF94',
-            pos: new Vector(stage.l , stage.b - playerHomeSize),
+            pivot: new Vector2(stage.l , stage.b - playerHomeSize),
             size: {w: playerHomeSize, h: playerHomeSize}
         });
         update();
@@ -92,9 +85,9 @@ function BlockRunner(options) {
     }
 
     // resize game area
-    function resize(area) {
-        ctxHeight = canvas.height = area.clientHeight;
-        ctxWidth = canvas.width = area.clientWidth;
+    function resize(ctxMe) {
+        ctxHeight = ctxMe.canvas.height;
+        ctxWidth = ctxMe.canvas.width;
 
         stage = {
             l: margin,
@@ -103,7 +96,8 @@ function BlockRunner(options) {
             b: ctxHeight - margin,
         };
         if (player) player.resizeStage(stage);
-        if (enemies) {
+
+        if (ctx !== null && enemies) {
             makeEnemies();
         }
     }
@@ -111,6 +105,7 @@ function BlockRunner(options) {
     //Make enemies
     function makeEnemies() {
         enemies = [];
+
         for (let i = 0; i < enemyCount; i++) {
             let enemy = new Enemy({
                 ctx: ctx,
@@ -138,18 +133,18 @@ function BlockRunner(options) {
 
         gamePanel.opt.size = {w: stage.r - stage.l, h: stage.b - stage.t};
         gamePanel.draw();
-        playerHome.opt.pos = new Vector(stage.l + 1, stage.b - playerHomeSize - 1);
+        playerHome.opt.pivot = new Vector2(stage.l + 1, stage.b - playerHomeSize - 1);
         playerHome.draw();
     }
 
     function gameOver() {
-        Shapes('rect', {
+        (new Rectangle({
             ctx: ctx,
-            pos: new Vector(0,0),
+            pos: new Vector2(0,0),
             size: {w:ctxWidth , h:ctxHeight},
             alpha: 0.5,
             bgColor: 'black'
-        }).draw();
+        })).draw();
 
         ctx.font = "72px Georgia";
         ctx.textAlign = 'center';
@@ -162,6 +157,7 @@ function BlockRunner(options) {
         selector: 'body',
         id: 'screen',
         bgColor: '#113E52',
+        cfResize: resize
     }, options);
 
     // Call Initialize
