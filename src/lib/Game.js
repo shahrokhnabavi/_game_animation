@@ -1,4 +1,8 @@
 module.exports.Game = function(options){
+    // Public
+    this.input = null;
+    this.mouse = null;
+
     // Private
     var ctx = null;
 
@@ -17,6 +21,9 @@ module.exports.Game = function(options){
             this.resize(area);
         }, false);
         this.resize(area);
+
+        this.input = new Input();
+        this.mouse = new Mouse();
     }
 
     this.getCtx = () => {
@@ -46,7 +53,7 @@ module.exports.Game = function(options){
 
 //+++++++++++++++++++++++++++++++++++++
 //+++++++++++++++++++++++++++++++++++++
-module.exports.Mouse = function(options) {
+function Mouse(options) {
     // Public
     this.x = 0;
     this.y = 0;
@@ -125,3 +132,27 @@ var Vector2 = function(x, y){
     this.y = y;
 };
 module.exports.Vector2 = Vector2;
+
+
+//+++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++
+function Input(){
+
+    var _pressed= {};
+
+    this.isDown = function(keyCode) {
+        return _pressed[keyCode];
+    };
+
+    function onKeydown(event) {
+        // console.log(event.code);
+        _pressed[event.code] = true;
+    }
+
+    function onKeyup(event) {
+        delete _pressed[event.code];
+    }
+
+    window.addEventListener('keydown', onKeydown);
+    window.addEventListener('keyup', onKeyup);
+}

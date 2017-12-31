@@ -4,6 +4,8 @@ import {Circle} from '../../../lib/Shapes';
 function Ball(options){
     // public
     this.radius = 10;
+    this.leftGoal = false;
+    this.rightGoal = false;
     // Private
     var ctx = null,
         ctxWidth  = 0,
@@ -36,7 +38,13 @@ function Ball(options){
             this.opt.velocity.y *= -1;
         }
 
-        if( this.opt.pos.x < this.radius || this.opt.pos.x > ctxWidth - this.radius){
+        if( this.opt.pos.x < this.radius ) {
+            this.leftGoal = true;
+            this.reset();
+        }
+
+        if( this.opt.pos.x > ctxWidth - this.radius ){
+            this.rightGoal = true;
             this.reset();
         }
 

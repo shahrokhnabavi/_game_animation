@@ -1,4 +1,4 @@
-import {Game, Mouse, Vector2} from '../../lib/Game';
+import {Game, Vector2} from '../../lib/Game';
 import {Rectangle} from '../../lib/Shapes';
 import Player from './classes/player';
 import Ball from './classes/ball';
@@ -10,11 +10,10 @@ function Tennis(options) {
         ctxWidth = 0,
         ctxHeight = 0,
 
-        mouse = new Mouse(),
         margin = 5,
 
-        player1 = null,
-        player2 = null,
+        player = null,
+        computer = null,
         ball = null;
 
     function init() {
@@ -24,8 +23,10 @@ function Tennis(options) {
         ctxWidth = ctx.canvas.width;
         ctxHeight = ctx.canvas.height;
 
-        player1 = new Player({ctx: ctx, pos: new Vector2(margin, ctxHeight / 2)});
-        player2 = new Player({ctx: ctx, pos: new Vector2(ctxWidth - margin - player1.wPlayer, ctxHeight / 2)});
+        allGamesMenu(8);
+
+        player = new Player({ctx: ctx, pos: new Vector2(margin, ctxHeight / 2), input: g.input, mouse: g.mouse});
+        computer = new Player({ctx: ctx, pos: new Vector2(ctxWidth - margin - player.wPlayer, ctxHeight / 2), isAi: true});
         ball = new Ball({ctx: ctx});
         update();
     }
@@ -37,8 +38,8 @@ function Tennis(options) {
 
         userInterface();
 
-        player1.catchBall(ball).update(mouse);
-        player2.aiCatchBall(ball).aiUpdate(ball);
+        player.catchBall(ball).update(ball);
+        computer.catchBall(ball).update(ball);
         ball.update();
     }
 
@@ -56,6 +57,15 @@ function Tennis(options) {
         ctx.textAlign = 'center';
         ctx.fillStyle = "#4D6266";
         ctx.fillText("App Name: " + appName, ctxWidth/2, ctxHeight-10);
+
+        ctx.font = "14px Georgia";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = "#E6F2EF";
+        ctx.fillText("Player Score: " + player.score, 20, 15);
+
+        ctx.textAlign = 'right';
+        ctx.fillText("AI Score: " + computer.score, ctxWidth - 20, 15);
+
 
         for( let i = 0; i < ctxHeight; i += 30) {
             (new Rectangle({

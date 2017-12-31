@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,7 +70,7 @@
 "use strict";
 
 
-var _Game = __webpack_require__(24);
+var _Game = __webpack_require__(1);
 
 var _Line = __webpack_require__(17);
 
@@ -209,35 +209,200 @@ module.exports.Circle = function (options) {
 "use strict";
 
 
-var _app = __webpack_require__(2);
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+module.exports.Game = function (options) {
+    var _this2 = this;
+
+    // Public
+    this.input = null;
+    this.mouse = null;
+
+    // Private
+    var ctx = null;
+
+    function init() {
+        var _this = this;
+
+        var area = document.querySelector(this.opt.selector);
+        area.innerHTML = '';
+
+        var canvas = document.createElement('canvas');
+        canvas.id = this.opt.id;
+        canvas.style.backgroundColor = this.opt.bgColor;
+        area.appendChild(canvas);
+        ctx = canvas.getContext('2d');
+
+        window.addEventListener('resize', function () {
+            _this.resize(area);
+        }, false);
+        this.resize(area);
+
+        this.input = new Input();
+        this.mouse = new Mouse();
+    }
+
+    this.getCtx = function () {
+        return ctx;
+    };
+
+    // Resize windows event
+    this.resize = function (area) {
+        ctx.canvas.height = area.clientHeight;
+        ctx.canvas.width = area.clientWidth;
+
+        if (typeof _this2.opt.cfResize === 'function') _this2.opt.cfResize(ctx);
+    };
+
+    this.opt = Object.assign({
+        selector: 'body',
+        id: 'screen',
+        bgColor: '#152523',
+        cfResize: null
+    }, options);
+    init.call(this);
+};
+
+//+++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++
+function Mouse(options) {
+    // Public
+    this.x = 0;
+    this.y = 0;
+
+    // Private
+    var mouse = null;
+
+    function init() {
+        var _this3 = this;
+
+        mouse = this.opt.pos;
+        window.addEventListener('mousemove', function (e) {
+            getMousePos.call(_this3, e);
+        }, false);
+    }
+
+    // Retrieve mouse position from window
+    function getMousePos(e) {
+        this.x = mouse.x = e.clientX;
+        this.y = mouse.y = e.clientY;
+    }
+
+    // return vector
+    this.get = function () {
+        return mouse;
+    };
+
+    this.opt = Object.assign({
+        pos: new Vector2(0, 0)
+    }, options);
+    init.call(this);
+};
+
+//+++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++
+var Vector2 = function Vector2(x, y) {
+    var _this4 = this;
+
+    this.normal = function (multi) {
+        var x = Math.abs(_this4.x),
+            y = Math.abs(_this4.y);
+
+        if (x > y) {
+            y = y / x;
+            x = 1;
+        } else if (x < y) {
+            x = x / y;
+            y = 1;
+        } else x = y = 1;
+
+        // x += multi;
+        // y += multi;
+
+        x = _this4.x < 0 ? x * -1 : x;
+        y = _this4.y < 0 ? y * -1 : y;
+
+        return new Vector2(x, y);
+    };
+
+    this.move = function (velocity, speed) {
+        if ((typeof velocity === 'undefined' ? 'undefined' : _typeof(velocity)) !== 'object') throw 'Invalid Parameter';
+        speed = speed ? speed : 1;
+        _this4.x += velocity.x * speed;
+        _this4.y += velocity.y * speed;
+    };
+
+    this.distance = function (point) {
+        if (!point) return Math.sqrt(Math.pow(_this4.x, 2) + Math.pow(_this4.y, 2));
+        return Math.sqrt(Math.pow(_this4.x - point.x, 2) + Math.pow(_this4.y - point.y, 2));
+    };
+
+    this.isEmpty = typeof x == 'undefined' || typeof y == 'undefined';
+
+    this.x = x;
+    this.y = y;
+};
+module.exports.Vector2 = Vector2;
+
+//+++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++
+function Input() {
+
+    var _pressed = {};
+
+    this.isDown = function (keyCode) {
+        return _pressed[keyCode];
+    };
+
+    function onKeydown(event) {
+        // console.log(event.code);
+        _pressed[event.code] = true;
+    }
+
+    function onKeyup(event) {
+        delete _pressed[event.code];
+    }
+
+    window.addEventListener('keydown', onKeydown);
+    window.addEventListener('keyup', onKeyup);
+}
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _app = __webpack_require__(3);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _app3 = __webpack_require__(5);
+var _app3 = __webpack_require__(6);
 
 var _app4 = _interopRequireDefault(_app3);
 
-var _app5 = __webpack_require__(7);
+var _app5 = __webpack_require__(8);
 
 var _app6 = _interopRequireDefault(_app5);
 
-var _app7 = __webpack_require__(11);
+var _app7 = __webpack_require__(12);
 
 var _app8 = _interopRequireDefault(_app7);
 
-var _app9 = __webpack_require__(12);
+var _app9 = __webpack_require__(13);
 
 var _app10 = _interopRequireDefault(_app9);
 
-var _app11 = __webpack_require__(14);
+var _app11 = __webpack_require__(15);
 
 var _app12 = _interopRequireDefault(_app11);
 
-var _app13 = __webpack_require__(20);
+var _app13 = __webpack_require__(19);
 
 var _app14 = _interopRequireDefault(_app13);
 
-var _app15 = __webpack_require__(23);
+var _app15 = __webpack_require__(21);
 
 var _app16 = _interopRequireDefault(_app15);
 
@@ -274,17 +439,17 @@ window.loadGame = function (idx) {
 loadGame(8);
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _CircleCollision = __webpack_require__(3);
+var _CircleCollision = __webpack_require__(4);
 
 var _CircleCollision2 = _interopRequireDefault(_CircleCollision);
 
-var _BoxCollision = __webpack_require__(4);
+var _BoxCollision = __webpack_require__(5);
 
 var _BoxCollision2 = _interopRequireDefault(_BoxCollision);
 
@@ -396,7 +561,7 @@ function Collision(options) {
 module.exports = Collision;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -445,7 +610,7 @@ function CircleCollision(options) {
 module.exports = CircleCollision;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -509,13 +674,13 @@ function BoxCollision(options) {
 module.exports = BoxCollision;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Ball = __webpack_require__(6);
+var _Ball = __webpack_require__(7);
 
 var _Ball2 = _interopRequireDefault(_Ball);
 
@@ -675,7 +840,7 @@ function HeavyBall(options) {
 module.exports = HeavyBall;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -772,21 +937,21 @@ function Ball(option) {
 module.exports = Ball;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _screen = __webpack_require__(8);
+var _screen = __webpack_require__(9);
 
 var _screen2 = _interopRequireDefault(_screen);
 
-var _ball = __webpack_require__(9);
+var _ball = __webpack_require__(10);
 
 var _ball2 = _interopRequireDefault(_ball);
 
-var _shapes = __webpack_require__(10);
+var _shapes = __webpack_require__(11);
 
 var _shapes2 = _interopRequireDefault(_shapes);
 
@@ -858,7 +1023,7 @@ function BackgroundBalls() {
 module.exports = BackgroundBalls;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -903,7 +1068,7 @@ function Screen(selector, options) {
 module.exports = Screen;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -997,7 +1162,7 @@ function Ball(options) {
 module.exports = Ball;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1046,7 +1211,7 @@ module.exports.Packman = function (ctx) {
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1120,13 +1285,13 @@ function MouseTail(options) {
 module.exports = MouseTail;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Particle = __webpack_require__(13);
+var _Particle = __webpack_require__(14);
 
 var _Particle2 = _interopRequireDefault(_Particle);
 
@@ -1263,7 +1428,7 @@ function CirclePhysics(options) {
 module.exports = CirclePhysics;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1361,17 +1526,17 @@ function Particle(options) {
 module.exports = Particle;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Enemy = __webpack_require__(15);
+var _Enemy = __webpack_require__(16);
 
 var _Enemy2 = _interopRequireDefault(_Enemy);
 
-var _Player = __webpack_require__(19);
+var _Player = __webpack_require__(18);
 
 var _Player2 = _interopRequireDefault(_Player);
 
@@ -1546,7 +1711,7 @@ function BlockRunner(options) {
 module.exports = BlockRunner;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1655,7 +1820,6 @@ function Enemy(option) {
 module.exports = Enemy;
 
 /***/ }),
-/* 16 */,
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1714,8 +1878,7 @@ function Line(options) {
 module.exports = Line;
 
 /***/ }),
-/* 18 */,
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1831,15 +1994,15 @@ function Player(option) {
 module.exports = Player;
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Game = __webpack_require__(24);
+var _Game = __webpack_require__(1);
 
-var _Player = __webpack_require__(22);
+var _Player = __webpack_require__(20);
 
 var _Player2 = _interopRequireDefault(_Player);
 
@@ -1908,8 +2071,7 @@ function RotatePlayer(options) {
 module.exports = RotatePlayer;
 
 /***/ }),
-/* 21 */,
-/* 22 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2004,21 +2166,21 @@ function Player(options) {
 module.exports = Player;
 
 /***/ }),
-/* 23 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Game = __webpack_require__(24);
+var _Game = __webpack_require__(1);
 
 var _Shapes = __webpack_require__(0);
 
-var _player = __webpack_require__(25);
+var _player = __webpack_require__(22);
 
 var _player2 = _interopRequireDefault(_player);
 
-var _ball = __webpack_require__(26);
+var _ball = __webpack_require__(23);
 
 var _ball2 = _interopRequireDefault(_ball);
 
@@ -2030,10 +2192,9 @@ function Tennis(options) {
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
-        mouse = new _Game.Mouse(),
         margin = 5,
-        player1 = null,
-        player2 = null,
+        player = null,
+        computer = null,
         ball = null;
 
     function init() {
@@ -2043,8 +2204,10 @@ function Tennis(options) {
         ctxWidth = ctx.canvas.width;
         ctxHeight = ctx.canvas.height;
 
-        player1 = new _player2.default({ ctx: ctx, pos: new _Game.Vector2(margin, ctxHeight / 2) });
-        player2 = new _player2.default({ ctx: ctx, pos: new _Game.Vector2(ctxWidth - margin - player1.wPlayer, ctxHeight / 2) });
+        allGamesMenu(8);
+
+        player = new _player2.default({ ctx: ctx, pos: new _Game.Vector2(margin, ctxHeight / 2), input: g.input, mouse: g.mouse });
+        computer = new _player2.default({ ctx: ctx, pos: new _Game.Vector2(ctxWidth - margin - player.wPlayer, ctxHeight / 2), isAi: true });
         ball = new _ball2.default({ ctx: ctx });
         update();
     }
@@ -2056,8 +2219,8 @@ function Tennis(options) {
 
         userInterface();
 
-        player1.catchBall(ball).update(mouse);
-        player2.aiCatchBall(ball).aiUpdate(ball);
+        player.catchBall(ball).update(ball);
+        computer.catchBall(ball).update(ball);
         ball.update();
     }
 
@@ -2075,6 +2238,14 @@ function Tennis(options) {
         ctx.textAlign = 'center';
         ctx.fillStyle = "#4D6266";
         ctx.fillText("App Name: " + appName, ctxWidth / 2, ctxHeight - 10);
+
+        ctx.font = "14px Georgia";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = "#E6F2EF";
+        ctx.fillText("Player Score: " + player.score, 20, 15);
+
+        ctx.textAlign = 'right';
+        ctx.fillText("AI Score: " + computer.score, ctxWidth - 20, 15);
 
         for (var i = 0; i < ctxHeight; i += 30) {
             new _Shapes.Rectangle({
@@ -2099,142 +2270,7 @@ function Tennis(options) {
 module.exports = Tennis;
 
 /***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-module.exports.Game = function (options) {
-    var _this2 = this;
-
-    // Private
-    var ctx = null;
-
-    function init() {
-        var _this = this;
-
-        var area = document.querySelector(this.opt.selector);
-        area.innerHTML = '';
-
-        var canvas = document.createElement('canvas');
-        canvas.id = this.opt.id;
-        canvas.style.backgroundColor = this.opt.bgColor;
-        area.appendChild(canvas);
-        ctx = canvas.getContext('2d');
-
-        window.addEventListener('resize', function () {
-            _this.resize(area);
-        }, false);
-        this.resize(area);
-    }
-
-    this.getCtx = function () {
-        return ctx;
-    };
-
-    // Resize windows event
-    this.resize = function (area) {
-        ctx.canvas.height = area.clientHeight;
-        ctx.canvas.width = area.clientWidth;
-
-        if (typeof _this2.opt.cfResize === 'function') _this2.opt.cfResize(ctx);
-    };
-
-    this.opt = Object.assign({
-        selector: 'body',
-        id: 'screen',
-        bgColor: '#152523',
-        cfResize: null
-    }, options);
-    init.call(this);
-};
-
-//+++++++++++++++++++++++++++++++++++++
-//+++++++++++++++++++++++++++++++++++++
-module.exports.Mouse = function (options) {
-    // Public
-    this.x = 0;
-    this.y = 0;
-
-    // Private
-    var mouse = null;
-
-    function init() {
-        var _this3 = this;
-
-        mouse = this.opt.pos;
-        window.addEventListener('mousemove', function (e) {
-            getMousePos.call(_this3, e);
-        }, false);
-    }
-
-    // Retrieve mouse position from window
-    function getMousePos(e) {
-        this.x = mouse.x = e.clientX;
-        this.y = mouse.y = e.clientY;
-    }
-
-    // return vector
-    this.get = function () {
-        return mouse;
-    };
-
-    this.opt = Object.assign({
-        pos: new Vector2(0, 0)
-    }, options);
-    init.call(this);
-};
-
-//+++++++++++++++++++++++++++++++++++++
-//+++++++++++++++++++++++++++++++++++++
-var Vector2 = function Vector2(x, y) {
-    var _this4 = this;
-
-    this.normal = function (multi) {
-        var x = Math.abs(_this4.x),
-            y = Math.abs(_this4.y);
-
-        if (x > y) {
-            y = y / x;
-            x = 1;
-        } else if (x < y) {
-            x = x / y;
-            y = 1;
-        } else x = y = 1;
-
-        // x += multi;
-        // y += multi;
-
-        x = _this4.x < 0 ? x * -1 : x;
-        y = _this4.y < 0 ? y * -1 : y;
-
-        return new Vector2(x, y);
-    };
-
-    this.move = function (velocity, speed) {
-        if ((typeof velocity === 'undefined' ? 'undefined' : _typeof(velocity)) !== 'object') throw 'Invalid Parameter';
-        speed = speed ? speed : 1;
-        _this4.x += velocity.x * speed;
-        _this4.y += velocity.y * speed;
-    };
-
-    this.distance = function (point) {
-        if (!point) return Math.sqrt(Math.pow(_this4.x, 2) + Math.pow(_this4.y, 2));
-        return Math.sqrt(Math.pow(_this4.x - point.x, 2) + Math.pow(_this4.y - point.y, 2));
-    };
-
-    this.isEmpty = typeof x == 'undefined' || typeof y == 'undefined';
-
-    this.x = x;
-    this.y = y;
-};
-module.exports.Vector2 = Vector2;
-
-/***/ }),
-/* 25 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2248,11 +2284,13 @@ function TennisPlayer(options) {
     // Public
     this.wPlayer = 5;
     this.hPlayer = 40;
+    this.score = 0;
 
     // Private
     var ctx = null,
         aiSpeed = 2,
         aiOffset = 10,
+        ball = null,
         player = null;
 
     function init() {
@@ -2267,38 +2305,52 @@ function TennisPlayer(options) {
     }
 
     // Update object
-    this.aiUpdate = function (ball) {
-        var playerY = _this.opt.pos.y + _this.hPlayer / 2,
-            ballY = ball.opt.pos.y;
+    this.update = function () {
+        if (!_this.opt.isAi) {
+            var mouse = _this.opt.mouse;
+            if (mouse) {
+                _this.opt.pos.y = mouse.y - _this.hPlayer / 2;
+            }
 
-        if (Math.abs(playerY - ballY) > aiOffset) if (playerY < ballY) _this.opt.pos.y += aiSpeed;else _this.opt.pos.y -= aiSpeed;
+            if (_this.opt.input.isDown('ArrowUp')) {
+                _this.opt.pos.y -= 5;
+                mouse.y -= 5;
+            }
 
-        _this.update();
-    };
+            if (_this.opt.input.isDown('ArrowDown')) {
+                _this.opt.pos.y += 5;
+                mouse.y += 5;
+            }
 
-    this.aiCatchBall = function (ball) {
-        if (!(ball.opt.pos.x < _this.opt.pos.x - ball.radius || ball.opt.pos.y < _this.opt.pos.y - ball.radius || ball.opt.pos.y > _this.opt.pos.y + _this.hPlayer + ball.radius)) {
-            ball.opt.velocity.y = (ball.opt.pos.y - (_this.opt.pos.y + _this.hPlayer / 2)) / 10;
-            ball.opt.velocity.x *= -1;
-        }
+            if (ball.rightGoal) {
+                ball.rightGoal = false;
+                _this.score++;
+            }
+        } else {
 
-        return _this;
-    };
+            var playerY = _this.opt.pos.y + _this.hPlayer / 2,
+                ballY = ball.opt.pos.y;
 
-    // Update object
-    this.update = function (mouse) {
-        if (mouse) {
-            _this.opt.pos.y = mouse.y - _this.hPlayer / 2;
+            if (Math.abs(playerY - ballY) > aiOffset) if (playerY < ballY) _this.opt.pos.y += aiSpeed;else _this.opt.pos.y -= aiSpeed;
+
+            if (ball.leftGoal) {
+                ball.leftGoal = false;
+                _this.score++;
+            }
         }
 
         if (_this.opt.pos.y < 0) _this.opt.pos.y = 0;
 
         if (_this.opt.pos.y + _this.hPlayer > ctx.canvas.height) _this.opt.pos.y = ctx.canvas.height - _this.hPlayer;
+
         player.draw();
     };
 
-    this.catchBall = function (ball) {
-        if (!(ball.opt.pos.x > _this.opt.pos.x + _this.wPlayer + ball.radius || ball.opt.pos.y < _this.opt.pos.y - ball.radius || ball.opt.pos.y > _this.opt.pos.y + _this.hPlayer + ball.radius)) {
+    this.catchBall = function (b) {
+        ball = b;
+        var playerCondition = !_this.opt.isAi ? ball.opt.pos.x > _this.opt.pos.x + _this.wPlayer + ball.radius : ball.opt.pos.x < _this.opt.pos.x - ball.radius;
+
+        if (!(playerCondition || ball.opt.pos.y < _this.opt.pos.y - ball.radius || ball.opt.pos.y > _this.opt.pos.y + _this.hPlayer + ball.radius)) {
             ball.opt.velocity.y = (ball.opt.pos.y - (_this.opt.pos.y + _this.hPlayer / 2)) / 10;
             ball.opt.velocity.x *= -1;
         }
@@ -2309,7 +2361,10 @@ function TennisPlayer(options) {
     this.opt = Object.assign({
         ctx: null,
         pos: null,
-        bgColor: '#E6F2EF'
+        bgColor: '#E6F2EF',
+        input: null,
+        mouse: null,
+        isAi: false
     }, options);
     init.call(this);
 }
@@ -2317,13 +2372,13 @@ function TennisPlayer(options) {
 module.exports = TennisPlayer;
 
 /***/ }),
-/* 26 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Game = __webpack_require__(24);
+var _Game = __webpack_require__(1);
 
 var _Shapes = __webpack_require__(0);
 
@@ -2332,6 +2387,8 @@ function Ball(options) {
 
     // public
     this.radius = 10;
+    this.leftGoal = false;
+    this.rightGoal = false;
     // Private
     var ctx = null,
         ctxWidth = 0,
@@ -2363,7 +2420,13 @@ function Ball(options) {
             _this.opt.velocity.y *= -1;
         }
 
-        if (_this.opt.pos.x < _this.radius || _this.opt.pos.x > ctxWidth - _this.radius) {
+        if (_this.opt.pos.x < _this.radius) {
+            _this.leftGoal = true;
+            _this.reset();
+        }
+
+        if (_this.opt.pos.x > ctxWidth - _this.radius) {
+            _this.rightGoal = true;
             _this.reset();
         }
 
