@@ -126,7 +126,7 @@ function BlockRunner(options) {
         ctx.font = "20px Georgia";
         ctx.textAlign = 'left';
         ctx.fillStyle = "white";
-        ctx.fillText("App Name: " + appName, margin, 30);
+        ctx.fillText("App Name: " + appName, 20, 30);
         ctx.font = "16px Georgia";
         ctx.textAlign = 'right';
         ctx.fillText("Player life: " + player.life, stage.r, 30);

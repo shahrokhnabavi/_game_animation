@@ -83,7 +83,7 @@ function Collision(options) {
         ctx.font = "20px Georgia";
         ctx.textAlign = 'left';
         ctx.fillStyle = "#052B3E";
-        ctx.fillText("App Name: " + appName, 10, 30);
+        ctx.fillText("App Name: " + appName, 20, 30);
     }
 
     // Default options od class

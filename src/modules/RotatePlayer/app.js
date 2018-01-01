@@ -44,7 +44,7 @@ function RotatePlayer(options) {
         ctx.font = "20px Georgia";
         ctx.textAlign = 'left';
         ctx.fillStyle = "white";
-        ctx.fillText("App Name: " + appName, 10, 50);
+        ctx.fillText("App Name: " + appName, 20, 30);
     }
 
     // Resize windows event

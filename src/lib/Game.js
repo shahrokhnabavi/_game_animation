@@ -17,6 +17,9 @@ module.exports.Game = function(options){
         area.appendChild(canvas);
         ctx = canvas.getContext('2d');
 
+        if( typeof this.opt.cfClick === 'function' )
+            window.addEventListener('click', this.opt.cfClick);
+
         window.addEventListener('resize', () => {
             this.resize(area);
         }, false);
@@ -29,7 +32,6 @@ module.exports.Game = function(options){
     this.getCtx = () => {
         return ctx;
     };
-
 
     // Resize windows event
     this.resize = (area) => {
@@ -45,7 +47,8 @@ module.exports.Game = function(options){
         selector: 'body',
         id: 'screen',
         bgColor: '#152523',
-        cfResize: null
+        cfResize: null,
+        cfClick: null
     }, options);
     init.call(this);
 };

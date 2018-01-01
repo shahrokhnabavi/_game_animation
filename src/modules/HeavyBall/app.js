@@ -120,7 +120,7 @@ function HeavyBall( options ) {
         ctx.font="20px Georgia";
         ctx.textAlign = 'left';
         ctx.fillStyle = "white";
-        ctx.fillText("App Name:" + appName,10,50);
+        ctx.fillText("App Name:" + appName,20,30);
         ctx.font="14px Georgia";
         ctx.fillText("Click anywhere to create a ball.",10,80);
         ctx.fillText("Press \'R\' key to generate randomly 500 balls",10,96);

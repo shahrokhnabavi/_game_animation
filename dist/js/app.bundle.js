@@ -94,6 +94,8 @@ module.exports.Game = function (options) {
         area.appendChild(canvas);
         ctx = canvas.getContext('2d');
 
+        if (typeof this.opt.cfClick === 'function') window.addEventListener('click', this.opt.cfClick);
+
         window.addEventListener('resize', function () {
             _this.resize(area);
         }, false);
@@ -119,7 +121,8 @@ module.exports.Game = function (options) {
         selector: 'body',
         id: 'screen',
         bgColor: '#152523',
-        cfResize: null
+        cfResize: null,
+        cfClick: null
     }, options);
     init.call(this);
 };
@@ -440,10 +443,17 @@ var _app17 = __webpack_require__(23);
 
 var _app18 = _interopRequireDefault(_app17);
 
+var _app19 = __webpack_require__(25);
+
+var _app20 = _interopRequireDefault(_app19);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.loadGame = function (idx) {
     switch (idx) {
+        case 10:
+            new _app20.default();
+            break;
         case 9:
             new _app18.default();
             break;
@@ -473,7 +483,7 @@ window.loadGame = function (idx) {
             break;
     }
 };
-loadGame(9);
+loadGame(10);
 
 /***/ }),
 /* 3 */
@@ -567,7 +577,7 @@ function Collision(options) {
         ctx.font = "20px Georgia";
         ctx.textAlign = 'left';
         ctx.fillStyle = "#052B3E";
-        ctx.fillText("App Name: " + appName, 10, 30);
+        ctx.fillText("App Name: " + appName, 20, 30);
     }
 
     // Default options od class
@@ -849,7 +859,7 @@ function HeavyBall(options) {
         ctx.font = "20px Georgia";
         ctx.textAlign = 'left';
         ctx.fillStyle = "white";
-        ctx.fillText("App Name:" + appName, 10, 50);
+        ctx.fillText("App Name:" + appName, 20, 30);
         ctx.font = "14px Georgia";
         ctx.fillText("Click anywhere to create a ball.", 10, 80);
         ctx.fillText("Press \'R\' key to generate randomly 500 balls", 10, 96);
@@ -1432,7 +1442,7 @@ function CirclePhysics(options) {
         ctx.font = "20px Georgia";
         ctx.textAlign = 'left';
         ctx.fillStyle = "white";
-        ctx.fillText("App Name: " + appName, 10, 30);
+        ctx.fillText("App Name: " + appName, 20, 30);
     }
 
     //Get mouse position
@@ -1698,7 +1708,7 @@ function BlockRunner(options) {
         ctx.font = "20px Georgia";
         ctx.textAlign = 'left';
         ctx.fillStyle = "white";
-        ctx.fillText("App Name: " + appName, margin, 30);
+        ctx.fillText("App Name: " + appName, 20, 30);
         ctx.font = "16px Georgia";
         ctx.textAlign = 'right';
         ctx.fillText("Player life: " + player.life, stage.r, 30);
@@ -2008,7 +2018,7 @@ function RotatePlayer(options) {
         ctx.font = "20px Georgia";
         ctx.textAlign = 'left';
         ctx.fillStyle = "white";
-        ctx.fillText("App Name: " + appName, 10, 50);
+        ctx.fillText("App Name: " + appName, 20, 30);
     }
 
     // Resize windows event
@@ -2591,6 +2601,179 @@ function Auto(options) {
 }
 
 module.exports = Auto;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(0);
+
+var _button = __webpack_require__(26);
+
+var _button2 = _interopRequireDefault(_button);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function CodingMath(options) {
+    // Private
+    var appName = ' CodingMath',
+        ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        btn1 = null,
+        btn2 = null,
+        btn3 = null;
+
+    function init() {
+        var g = new _Game.Game(this.opt);
+
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
+
+        // g.click(this.clickHandler);
+
+        btn1 = new _button2.default({ ctx: ctx, pos: new _Game.Vector2(20, 100), bgColor: '#F29B00', text: 'Circle' });
+        btn2 = new _button2.default({ ctx: ctx, pos: new _Game.Vector2(20, 140), bgColor: '#F25533', text: 'Click' });
+        btn3 = new _button2.default({ ctx: ctx, pos: new _Game.Vector2(20, 180), bgColor: '#378C3F', text: 'Test Me' });
+        update();
+    }
+
+    // Update animation
+    function update() {
+        requestAnimationFrame(update);
+        ctx.clearRect(0, 0, ctxWidth, ctxHeight);
+
+        userInterface();
+    }
+
+    // onResize Game
+    function resize(ctxMe) {
+        ctxWidth = ctxMe.canvas.width;
+        ctxHeight = ctxMe.canvas.height;
+    }
+
+    // Draw User Interface
+    function userInterface() {
+        ctx.font = "20px Georgia";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = "#152C35";
+        ctx.fillText("App Name: " + appName, 20, 30);
+
+        btn1.draw();
+        btn2.draw();
+        btn3.draw();
+    }
+
+    function clickHandler(e) {
+        var x = e.clientX,
+            y = e.clientY;
+
+        if (btn1.isClick(x, y)) console.log("yellow hello");
+
+        if (btn2.isClick(x, y)) console.log("red hello");
+
+        if (btn3.isClick(x, y)) console.log("green hello");
+    }
+
+    this.opt = Object.assign({
+        selector: 'body',
+        id: 'screen',
+        bgColor: '#F2F0F2',
+        cfResize: resize,
+        cfClick: clickHandler
+    }, options);
+
+    init.call(this);
+}
+
+module.exports = CodingMath;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(0);
+
+var _Shapes = __webpack_require__(1);
+
+function Button(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        obj = null;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Button Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        obj = new _Shapes.Rectangle({
+            ctx: ctx,
+            size: {
+                w: this.opt.size.x,
+                h: this.opt.size.y
+            },
+            pivot: this.opt.pos,
+            bgColor: this.opt.bgColor,
+            txtColor: this.opt.txtColor
+        });
+    }
+
+    // Update object
+    this.update = function () {
+        _this.draw();
+    };
+
+    this.isClick = function (x, y) {
+        return x > _this.opt.pos.x && x < _this.opt.pos.x + _this.opt.size.x && y > _this.opt.pos.y && y < _this.opt.pos.y + _this.opt.size.y;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        var w = obj.opt.size.w,
+            h = obj.opt.size.h,
+            x = obj.opt.pivot.x,
+            y = obj.opt.pivot.y,
+            fSize = _this.opt.fontSize;
+        ctx.beginPath();
+        ctx.font = fSize + 'px Arial';
+
+        var ts = ctx.measureText(_this.opt.text).width;
+        obj.opt.size.w = ts + 20;
+        obj.draw();
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = _this.opt.txtColor;
+        ctx.fillText(_this.opt.text, x + w / 2, y + (fSize / 2 - 2) + h / 2);
+        ctx.closePath();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: null,
+        size: new _Game.Vector2(80, 30),
+        bgColor: 'red',
+        txtColor: 'white',
+        text: 'Click Me',
+        fontSize: 14,
+        mouse: null
+    }, options);
+    init.call(this);
+}
+
+module.exports = Button;
 
 /***/ })
 /******/ ]);

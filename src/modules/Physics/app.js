@@ -89,7 +89,7 @@ function CirclePhysics(options) {
         ctx.font = "20px Georgia";
         ctx.textAlign = 'left';
         ctx.fillStyle = "white";
-        ctx.fillText("App Name: " + appName, 10, 30);
+        ctx.fillText("App Name: " + appName, 20, 30);
     }
 
     //Get mouse position
