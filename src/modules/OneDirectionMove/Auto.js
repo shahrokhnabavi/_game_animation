@@ -11,7 +11,7 @@ function Auto(options){
 
         vx = 0,
         vy = 0,
-        angle = deg(0),
+        angle = toRadian(0),
         dAngle = 0.07,
         acc = 0.1,
         v = 0,

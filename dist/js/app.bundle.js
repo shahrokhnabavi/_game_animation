@@ -72,6 +72,8 @@
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+var _Shapes = __webpack_require__(1);
+
 module.exports.Game = function (options) {
     var _this2 = this;
 
@@ -230,6 +232,84 @@ function Input() {
     window.addEventListener('keydown', onKeydown);
     window.addEventListener('keyup', onKeyup);
 }
+
+//+++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++
+
+
+function Button(options) {
+    var _this5 = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        obj = null;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Button Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        obj = new _Shapes.Rectangle({
+            ctx: ctx,
+            size: {
+                w: this.opt.size.x,
+                h: this.opt.size.y
+            },
+            pivot: this.opt.pos,
+            bgColor: this.opt.bgColor,
+            txtColor: this.opt.txtColor
+        });
+    }
+
+    // Update object
+    this.update = function () {
+        _this5.draw();
+    };
+
+    this.isClick = function (e) {
+        var x = e.clientX,
+            y = e.clientY;
+
+        return x > _this5.opt.pos.x && x < _this5.opt.pos.x + _this5.opt.size.x && y > _this5.opt.pos.y && y < _this5.opt.pos.y + _this5.opt.size.y;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        var w = obj.opt.size.w,
+            h = obj.opt.size.h,
+            x = obj.opt.pivot.x,
+            y = obj.opt.pivot.y,
+            fSize = _this5.opt.fontSize;
+        ctx.beginPath();
+        ctx.font = fSize + 'px Arial';
+
+        var ts = ctx.measureText(_this5.opt.text).width;
+        obj.opt.size.w = ts + 20;
+        obj.draw();
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = _this5.opt.txtColor;
+        ctx.fillText(_this5.opt.text, x + w / 2, y + (fSize / 2 - 2) + h / 2);
+        ctx.closePath();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: null,
+        size: new Vector2(80, 30),
+        bgColor: 'red',
+        txtColor: 'white',
+        text: 'Click Me',
+        fontSize: 14,
+        mouse: null
+    }, options);
+    init.call(this);
+};
+module.exports.Button = Button;
 
 /***/ }),
 /* 1 */
@@ -2517,7 +2597,7 @@ function Auto(options) {
         obj = null,
         vx = 0,
         vy = 0,
-        angle = deg(0),
+        angle = toRadian(0),
         dAngle = 0.07,
         acc = 0.1,
         v = 0,
@@ -2611,11 +2691,18 @@ module.exports = Auto;
 
 var _Game = __webpack_require__(0);
 
-var _button = __webpack_require__(26);
+var _SinWave = __webpack_require__(27);
 
-var _button2 = _interopRequireDefault(_button);
+var _SinWave2 = _interopRequireDefault(_SinWave);
+
+var _CosMove = __webpack_require__(28);
+
+var _CosMove2 = _interopRequireDefault(_CosMove);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+window.min = 0;
+window.max = 360;
 
 function CodingMath(options) {
     // Private
@@ -2623,9 +2710,9 @@ function CodingMath(options) {
         ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
-        btn1 = null,
-        btn2 = null,
-        btn3 = null;
+        btn = [],
+        sinWave = null,
+        cosMove = null;
 
     function init() {
         var g = new _Game.Game(this.opt);
@@ -2633,12 +2720,15 @@ function CodingMath(options) {
         ctx = g.getCtx();
         ctxWidth = ctx.canvas.width;
         ctxHeight = ctx.canvas.height;
+        allGamesMenu(10);
 
-        // g.click(this.clickHandler);
+        var clr = '#594F4F',
+            w = ctxWidth / 2;
+        btn.push({ btn: new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(w + 90, 10), bgColor: clr, text: 'Sin' }), clk: false });
+        btn.push({ btn: new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(w + 135, 10), bgColor: clr, text: 'Cos Move' }), clk: false });
 
-        btn1 = new _button2.default({ ctx: ctx, pos: new _Game.Vector2(20, 100), bgColor: '#F29B00', text: 'Circle' });
-        btn2 = new _button2.default({ ctx: ctx, pos: new _Game.Vector2(20, 140), bgColor: '#F25533', text: 'Click' });
-        btn3 = new _button2.default({ ctx: ctx, pos: new _Game.Vector2(20, 180), bgColor: '#378C3F', text: 'Test Me' });
+        sinWave = new _SinWave2.default({ ctx: ctx });
+        cosMove = new _CosMove2.default({ ctx: ctx, pos: new _Game.Vector2(ctxWidth / 2, ctxHeight / 2) });
         update();
     }
 
@@ -2648,6 +2738,10 @@ function CodingMath(options) {
         ctx.clearRect(0, 0, ctxWidth, ctxHeight);
 
         userInterface();
+
+        if (btn[0].clk) sinWave.update();
+
+        if (btn[1].clk) cosMove.update();
     }
 
     // onResize Game
@@ -2663,20 +2757,28 @@ function CodingMath(options) {
         ctx.fillStyle = "#152C35";
         ctx.fillText("App Name: " + appName, 20, 30);
 
-        btn1.draw();
-        btn2.draw();
-        btn3.draw();
+        btn.forEach(function (item) {
+            item.btn.draw();
+        });
     }
 
     function clickHandler(e) {
-        var x = e.clientX,
-            y = e.clientY;
+        if (btn[0].clk) sinWave.click(e);
 
-        if (btn1.isClick(x, y)) console.log("yellow hello");
+        if (btn[1].clk) cosMove.click(e);
 
-        if (btn2.isClick(x, y)) console.log("red hello");
+        btn.forEach(function (item, index) {
+            if (item.btn.isClick(e)) {
+                unclickAll();
+                item.clk = !item.clk;
+            }
+        });
+    }
 
-        if (btn3.isClick(x, y)) console.log("green hello");
+    function unclickAll() {
+        btn.forEach(function (item) {
+            item.clk = false;
+        });
     }
 
     this.opt = Object.assign({
@@ -2693,7 +2795,117 @@ function CodingMath(options) {
 module.exports = CodingMath;
 
 /***/ }),
-/* 26 */
+/* 26 */,
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(0);
+
+function SinWave(options) {
+    var _this = this;
+
+    // Public
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        maxDistance = 360,
+        minDistance = 0,
+        maxLength = 200,
+        length = 0,
+        lengthStep = 1,
+        maxAmplitude = 200,
+        amplitude = 0,
+        amplitudeStep = 5,
+        btn1 = null,
+        btn2 = null,
+        btn3 = null,
+        isLength = false,
+        isAmplitude = false,
+        isDistance = false;
+
+    function init() {
+        if (!this.opt.ctx) throw 'SinWave Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        length = maxLength;
+        amplitude = maxAmplitude;
+
+        btn1 = new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(20, 100), bgColor: '#F29B00', text: 'Wavelength' });
+        btn2 = new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(20, 140), bgColor: '#F25533', text: 'Amplitude' });
+        btn3 = new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(20, 180), bgColor: '#378C3F', text: 'Increase Distance' });
+    }
+
+    this.update = function () {
+        if (isLength) _this.waveLength();
+
+        if (isAmplitude) _this.amplitude();
+
+        if (isDistance) {
+            _this.distance(window.min, window.max);
+        }
+        _this.draw();
+    };
+
+    this.waveLength = function () {
+        if (length <= 20 || length >= maxLength) lengthStep *= -1;
+        length += lengthStep;
+    };
+
+    this.amplitude = function () {
+        if (amplitude <= 20 || amplitude >= maxAmplitude) amplitudeStep *= -1;
+        amplitude += amplitudeStep;
+    };
+
+    this.distance = function (from, to) {
+        minDistance = from;
+        maxDistance = to;
+    };
+
+    // Draw Object
+    this.draw = function () {
+        btn1.draw();
+        btn2.draw();
+        btn3.draw();
+
+        ctx.save();
+        ctx.translate(150, ctxHeight / 2);
+        ctx.fillStyle = 'blue';
+        for (var i = toRadian(minDistance); i < toRadian(maxDistance); i += 0.01) {
+            var x = i * length,
+                y = Math.sin(i) * amplitude;
+
+            ctx.fillRect(x, y, 2, 2);
+        }
+        ctx.restore();
+    };
+
+    this.click = function (e) {
+        if (btn1.isClick(e)) isLength = !isLength;
+
+        if (btn2.isClick(e)) isAmplitude = !isAmplitude;
+
+        if (btn3.isClick(e)) isDistance = !isDistance;
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new _Game.Vector2()
+    }, options);
+    init.call(this);
+}
+
+module.exports = SinWave;
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2703,77 +2915,86 @@ var _Game = __webpack_require__(0);
 
 var _Shapes = __webpack_require__(1);
 
-function Button(options) {
+function CosMove(options) {
     var _this = this;
 
     // Private
     var ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
+        btn1 = null,
+        btn2 = null,
+        btn3 = null,
+        isSin = false,
+        isCos = false,
+        isRadius = false,
+        speed = 1,
+        angle = 0,
+        range = 100,
+        offsetX = 0,
+        offsetY = 0,
         obj = null;
 
     function init() {
-        if (!this.opt.ctx) throw 'Button Objects need Context';
+        if (!this.opt.ctx) throw 'CosMove Objects need Context';
 
         ctx = this.opt.ctx;
         ctxHeight = ctx.canvas.clientHeight;
         ctxWidth = ctx.canvas.clientWidth;
 
-        obj = new _Shapes.Rectangle({
+        obj = new _Shapes.Circle({
             ctx: ctx,
-            size: {
-                w: this.opt.size.x,
-                h: this.opt.size.y
-            },
             pivot: this.opt.pos,
-            bgColor: this.opt.bgColor,
-            txtColor: this.opt.txtColor
+            radius: 20,
+            bgColor: '#052B3E'
         });
+
+        offsetX = this.opt.pos.x;
+        offsetY = this.opt.pos.y;
+
+        btn1 = new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(20, 100), bgColor: '#F29B00', text: 'Sin' });
+        btn2 = new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(20, 140), bgColor: '#F25533', text: 'Cos' });
+        btn3 = new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(20, 180), bgColor: '#378C3F', text: 'Radius' });
     }
 
     // Update object
     this.update = function () {
-        _this.draw();
-    };
+        if (angle > 360) angle = 0;
+        angle += speed;
 
-    this.isClick = function (x, y) {
-        return x > _this.opt.pos.x && x < _this.opt.pos.x + _this.opt.size.x && y > _this.opt.pos.y && y < _this.opt.pos.y + _this.opt.size.y;
+        if (isSin) obj.opt.pivot.y = offsetY + Math.sin(toRadian(angle)) * range;
+
+        if (isCos) obj.opt.pivot.x = offsetX + Math.cos(toRadian(angle)) * range;
+
+        if (isRadius) obj.opt.radius = 20 + Math.abs(Math.cos(toRadian(angle)) * range);
+
+        _this.draw();
     };
 
     // Draw Object
     this.draw = function () {
-        var w = obj.opt.size.w,
-            h = obj.opt.size.h,
-            x = obj.opt.pivot.x,
-            y = obj.opt.pivot.y,
-            fSize = _this.opt.fontSize;
-        ctx.beginPath();
-        ctx.font = fSize + 'px Arial';
-
-        var ts = ctx.measureText(_this.opt.text).width;
-        obj.opt.size.w = ts + 20;
         obj.draw();
+        btn1.draw();
+        btn2.draw();
+        btn3.draw();
+    };
 
-        ctx.textAlign = 'center';
-        ctx.fillStyle = _this.opt.txtColor;
-        ctx.fillText(_this.opt.text, x + w / 2, y + (fSize / 2 - 2) + h / 2);
-        ctx.closePath();
+    this.click = function (e) {
+        if (btn1.isClick(e)) isSin = !isSin;
+
+        if (btn2.isClick(e)) isCos = !isCos;
+
+        if (btn3.isClick(e)) isRadius = !isRadius;
     };
 
     this.opt = Object.assign({
         ctx: null,
-        pos: null,
-        size: new _Game.Vector2(80, 30),
-        bgColor: 'red',
-        txtColor: 'white',
-        text: 'Click Me',
-        fontSize: 14,
-        mouse: null
+        pos: new _Game.Vector2()
     }, options);
     init.call(this);
 }
 
-module.exports = Button;
+module.exports = CosMove;
 
 /***/ })
 /******/ ]);

@@ -1,6 +1,9 @@
-import {Game, Vector2} from '../../lib/Game';
-import Button from './button';
+import {Game, Vector2, Button} from '../../lib/Game';
+import SinWave from './SinWave';
+import CosMove from './CosMove';
 
+window.min = 0;
+window.max = 360;
 
 function  CodingMath(options) {
     // Private
@@ -9,9 +12,10 @@ function  CodingMath(options) {
         ctxWidth = 0,
         ctxHeight = 0,
 
-        btn1 = null,
-        btn2 = null,
-        btn3 = null;
+        btn = [],
+
+        sinWave = null,
+        cosMove = null;
 
     function init(){
         var g = new Game( this.opt );
@@ -19,12 +23,16 @@ function  CodingMath(options) {
         ctx       = g.getCtx();
         ctxWidth  = ctx.canvas.width;
         ctxHeight = ctx.canvas.height;
-        
-        // g.click(this.clickHandler);
+        allGamesMenu(10);
 
-        btn1 = new Button({ctx:ctx, pos: new Vector2(20, 100), bgColor:'#F29B00', text: 'Circle'});
-        btn2 = new Button({ctx:ctx, pos: new Vector2(20, 140), bgColor:'#F25533', text: 'Click'});
-        btn3 = new Button({ctx:ctx, pos: new Vector2(20, 180), bgColor:'#378C3F', text: 'Test Me'});
+
+        let clr = '#594F4F',
+            w = ctxWidth / 2;
+        btn.push({btn: new Button({ctx:ctx, pos: new Vector2(w + 90, 10), bgColor:clr, text: 'Sin'}), clk: false});
+        btn.push({btn: new Button({ctx:ctx, pos: new Vector2(w + 135, 10), bgColor:clr, text: 'Cos Move'}), clk: false});
+
+        sinWave = new SinWave({ctx: ctx});
+        cosMove = new CosMove({ctx: ctx, pos: new Vector2(ctxWidth/2,ctxHeight/2)});
         update();
     }
 
@@ -34,6 +42,12 @@ function  CodingMath(options) {
         ctx.clearRect(0, 0, ctxWidth, ctxHeight);
 
         userInterface();
+
+        if ( btn[0].clk )
+            sinWave.update();
+
+        if ( btn[1].clk )
+            cosMove.update();
     }
 
     // onResize Game
@@ -49,23 +63,30 @@ function  CodingMath(options) {
         ctx.fillStyle = "#152C35";
         ctx.fillText("App Name: " + appName, 20, 30);
 
-        btn1.draw();
-        btn2.draw();
-        btn3.draw();
+        btn.forEach( item => {
+            item.btn.draw();
+        });
     }
 
     function clickHandler(e) {
-        let x = e.clientX,
-            y = e.clientY;
+        if( btn[0].clk )
+            sinWave.click(e);
 
-        if( btn1.isClick(x, y) )
-            console.log("yellow hello");
+        if( btn[1].clk )
+            cosMove.click(e);
 
-        if( btn2.isClick(x, y) )
-            console.log("red hello");
+        btn.forEach( (item,index) => {
+            if ( item.btn.isClick(e) ){
+                unclickAll();
+                item.clk = !item.clk;
+            }
+        });
+    }
 
-        if( btn3.isClick(x, y) )
-            console.log("green hello");
+    function unclickAll(){
+        btn.forEach( item => {
+            item.clk = false;
+        });
     }
 
     this.opt = Object.assign({

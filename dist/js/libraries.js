@@ -4,7 +4,7 @@ function allGamesMenu( idxGame ){
         select = document.createElement('select'),
         games = [
             'BlockRunner','Physics','MouseTail','HeavyBall','BackgroundBalls','Collision','RotatePlayer',
-            'Tennis','One Direction Move',
+            'Tennis','One Direction Move','Coding Math',
         ];
 
     select.id = 'game';
@@ -54,6 +54,10 @@ randColor = () => {
     return '#' + colors[rand(0, colors.length-1)];
 };
 
-function deg(degree){
+function toRadian(degree){
     return degree * Math.PI / 180;
+}
+
+function toDegree(radian){
+    return radian * 180 / Math.PI;
 }
