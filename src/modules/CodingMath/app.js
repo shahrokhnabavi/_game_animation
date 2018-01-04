@@ -1,6 +1,7 @@
 import {Game, Vector2, Button} from '../../lib/Game';
 import SinWave from './SinWave';
 import CosMove from './CosMove';
+import CircleMove from './CircleMove';
 
 window.min = 0;
 window.max = 360;
@@ -15,7 +16,8 @@ function  CodingMath(options) {
         btn = [],
 
         sinWave = null,
-        cosMove = null;
+        cosMove = null,
+        circleMove = null;
 
     function init(){
         var g = new Game( this.opt );
@@ -30,9 +32,11 @@ function  CodingMath(options) {
             w = ctxWidth / 2;
         btn.push({btn: new Button({ctx:ctx, pos: new Vector2(w + 90, 10), bgColor:clr, text: 'Sin'}), clk: false});
         btn.push({btn: new Button({ctx:ctx, pos: new Vector2(w + 135, 10), bgColor:clr, text: 'Cos Move'}), clk: false});
+        btn.push({btn: new Button({ctx:ctx, pos: new Vector2(w + 223, 10), bgColor:clr, text: 'Circle Movement'}), clk: false});
 
         sinWave = new SinWave({ctx: ctx});
         cosMove = new CosMove({ctx: ctx, pos: new Vector2(ctxWidth/2,ctxHeight/2)});
+        circleMove = new CircleMove({ctx: ctx});
         update();
     }
 
@@ -48,6 +52,9 @@ function  CodingMath(options) {
 
         if ( btn[1].clk )
             cosMove.update();
+
+        if ( btn[2].clk )
+            circleMove.update();
     }
 
     // onResize Game

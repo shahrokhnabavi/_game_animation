@@ -406,8 +406,10 @@ module.exports.Circle = function (options) {
 
         ctx.beginPath();
         ctx.arc(thisX, thisY, _this2.opt.radius, 0, Math.PI * 2, false);
-        ctx.fillStyle = _this2.opt.bgColor;
-        ctx.fill();
+        if (_this2.opt.bgColor !== null) {
+            ctx.fillStyle = _this2.opt.bgColor;
+            ctx.fill();
+        }
 
         if (_this2.opt.brColor !== null) {
             ctx.strokeStyle = _this2.opt.brColor;
@@ -2691,13 +2693,17 @@ module.exports = Auto;
 
 var _Game = __webpack_require__(0);
 
-var _SinWave = __webpack_require__(27);
+var _SinWave = __webpack_require__(26);
 
 var _SinWave2 = _interopRequireDefault(_SinWave);
 
-var _CosMove = __webpack_require__(28);
+var _CosMove = __webpack_require__(27);
 
 var _CosMove2 = _interopRequireDefault(_CosMove);
+
+var _CircleMove = __webpack_require__(28);
+
+var _CircleMove2 = _interopRequireDefault(_CircleMove);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2712,7 +2718,8 @@ function CodingMath(options) {
         ctxHeight = 0,
         btn = [],
         sinWave = null,
-        cosMove = null;
+        cosMove = null,
+        circleMove = null;
 
     function init() {
         var g = new _Game.Game(this.opt);
@@ -2726,9 +2733,11 @@ function CodingMath(options) {
             w = ctxWidth / 2;
         btn.push({ btn: new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(w + 90, 10), bgColor: clr, text: 'Sin' }), clk: false });
         btn.push({ btn: new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(w + 135, 10), bgColor: clr, text: 'Cos Move' }), clk: false });
+        btn.push({ btn: new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(w + 223, 10), bgColor: clr, text: 'Circle Movement' }), clk: false });
 
         sinWave = new _SinWave2.default({ ctx: ctx });
         cosMove = new _CosMove2.default({ ctx: ctx, pos: new _Game.Vector2(ctxWidth / 2, ctxHeight / 2) });
+        circleMove = new _CircleMove2.default({ ctx: ctx });
         update();
     }
 
@@ -2742,6 +2751,8 @@ function CodingMath(options) {
         if (btn[0].clk) sinWave.update();
 
         if (btn[1].clk) cosMove.update();
+
+        if (btn[2].clk) circleMove.update();
     }
 
     // onResize Game
@@ -2795,8 +2806,7 @@ function CodingMath(options) {
 module.exports = CodingMath;
 
 /***/ }),
-/* 26 */,
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2905,7 +2915,7 @@ function SinWave(options) {
 module.exports = SinWave;
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2995,6 +3005,86 @@ function CosMove(options) {
 }
 
 module.exports = CosMove;
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(0);
+
+var _Shapes = __webpack_require__(1);
+
+function CircleMove(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        path = null,
+        obj = null,
+        boxSize = 20,
+        angle = 0;
+
+    function init() {
+        if (!this.opt.ctx) throw 'CircleMove Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.pos.isEmpty) {
+            this.opt.pos = new _Game.Vector2(ctxWidth / 2 - boxSize / 2, ctxHeight / 2 - boxSize / 2);
+        }
+
+        obj = new _Shapes.Rectangle({
+            ctx: ctx,
+            size: { w: boxSize, h: boxSize },
+            pivot: new _Game.Vector2(this.opt.pos.x, this.opt.pos.y)
+        });
+        path = new _Shapes.Circle({
+            ctx: ctx,
+            radius: this.opt.rotateRadius,
+            pivot: new _Game.Vector2(this.opt.pos.x, this.opt.pos.y),
+            bgColor: null,
+            brColor: '#FBBA42'
+        });
+    }
+
+    // Update object
+    this.update = function () {
+        var centerX = _this.opt.pos.x - boxSize / 2,
+            centerY = _this.opt.pos.y - boxSize / 2,
+            radius = _this.opt.rotateRadius,
+            posX = centerX + radius * Math.cos(toRadian(angle)),
+            posY = centerY + radius * Math.sin(toRadian(angle));
+
+        obj.opt.pivot.x = posX;
+        obj.opt.pivot.y = posY;
+
+        if (angle > 360) angle = 0;
+        angle += 0.1;
+        _this.draw();
+    };
+
+    // Draw Object
+    this.draw = function () {
+        obj.draw();
+        path.draw();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new _Game.Vector2(),
+        rotateRadius: 100
+    }, options);
+    init.call(this);
+}
+
+module.exports = CircleMove;
 
 /***/ })
 /******/ ]);

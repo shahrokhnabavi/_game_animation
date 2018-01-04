@@ -92,8 +92,10 @@ module.exports.Circle = function(options){
             Math.PI * 2,
             false
         );
-        ctx.fillStyle = this.opt.bgColor;
-        ctx.fill();
+        if( this.opt.bgColor !== null ) {
+            ctx.fillStyle = this.opt.bgColor;
+            ctx.fill();
+        }
 
         if( this.opt.brColor !== null ) {
             ctx.strokeStyle = this.opt.brColor;
