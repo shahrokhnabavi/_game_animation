@@ -82,6 +82,9 @@ function  CodingMath(options) {
         if( btn[1].clk )
             cosMove.click(e);
 
+        if( btn[2].clk )
+            circleMove.click(e);
+
         btn.forEach( (item,index) => {
             if ( item.btn.isClick(e) ){
                 unclickAll();

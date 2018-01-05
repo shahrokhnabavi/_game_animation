@@ -8,9 +8,16 @@ import RotatePlayer from './modules/RotatePlayer/app';
 import Tennis from './modules/Tennis/app';
 import OneDirectionMove from './modules/OneDirectionMove/app';
 import CodingMath from './modules/CodingMath/app';
+import FliesAroundShit from './modules/FliesAroundShit/app';
 
 window.loadGame = idx => {
     switch( idx ){
+        case 12:
+            new FliesAroundShit();
+            break;
+        case 11:
+            console.log("Clock");
+            break;
         case 10:
             new CodingMath();
             break;
@@ -43,4 +50,4 @@ window.loadGame = idx => {
             break;
     }
 };
-loadGame(10);
+loadGame(12);

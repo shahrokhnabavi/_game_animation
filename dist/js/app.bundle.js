@@ -353,12 +353,15 @@ module.exports.Rectangle = function (options) {
 
         ctx.beginPath();
         ctx.rect(thisX, thisY, _this.opt.size.w, _this.opt.size.h);
-        ctx.fillStyle = _this.opt.bgColor;
 
-        var orgAlpha = ctx.globalAlpha;
-        if (_this.opt.alpha !== null) ctx.globalAlpha = _this.opt.alpha;
-        ctx.fill();
-        ctx.globalAlpha = orgAlpha;
+        if (_this.opt.bgColor !== null) {
+            ctx.fillStyle = _this.opt.bgColor;
+
+            var orgAlpha = ctx.globalAlpha;
+            if (_this.opt.alpha !== null) ctx.globalAlpha = _this.opt.alpha;
+            ctx.fill();
+            ctx.globalAlpha = orgAlpha;
+        }
 
         if (_this.opt.brColor !== null) {
             ctx.strokeStyle = _this.opt.brColor;
@@ -529,10 +532,20 @@ var _app19 = __webpack_require__(25);
 
 var _app20 = _interopRequireDefault(_app19);
 
+var _app21 = __webpack_require__(29);
+
+var _app22 = _interopRequireDefault(_app21);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.loadGame = function (idx) {
     switch (idx) {
+        case 12:
+            new _app22.default();
+            break;
+        case 11:
+            console.log("Clock");
+            break;
         case 10:
             new _app20.default();
             break;
@@ -565,7 +578,7 @@ window.loadGame = function (idx) {
             break;
     }
 };
-loadGame(10);
+loadGame(12);
 
 /***/ }),
 /* 3 */
@@ -2778,6 +2791,8 @@ function CodingMath(options) {
 
         if (btn[1].clk) cosMove.click(e);
 
+        if (btn[2].clk) circleMove.click(e);
+
         btn.forEach(function (item, index) {
             if (item.btn.isClick(e)) {
                 unclickAll();
@@ -3024,10 +3039,17 @@ function CircleMove(options) {
     var ctx = null,
         ctxWidth = 0,
         ctxHeight = 0,
+        btn1 = null,
+        btn2 = null,
+        btn3 = null,
+        isCircle = false,
+        isEllipse = false,
+        isLissajous = false,
         path = null,
         obj = null,
         boxSize = 20,
-        angle = 0;
+        angle = 0,
+        angleL = 0;
 
     function init() {
         if (!this.opt.ctx) throw 'CircleMove Objects need Context';
@@ -3039,6 +3061,10 @@ function CircleMove(options) {
         if (this.opt.pos.isEmpty) {
             this.opt.pos = new _Game.Vector2(ctxWidth / 2 - boxSize / 2, ctxHeight / 2 - boxSize / 2);
         }
+
+        btn1 = new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(20, 100), bgColor: '#F29B00', text: 'Circle' });
+        btn2 = new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(20, 140), bgColor: '#F25533', text: 'Ellipse' });
+        btn3 = new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(20, 180), bgColor: '#378C3F', text: 'Lissajous' });
 
         obj = new _Shapes.Rectangle({
             ctx: ctx,
@@ -3059,32 +3085,302 @@ function CircleMove(options) {
         var centerX = _this.opt.pos.x - boxSize / 2,
             centerY = _this.opt.pos.y - boxSize / 2,
             radius = _this.opt.rotateRadius,
-            posX = centerX + radius * Math.cos(toRadian(angle)),
+            speed = _this.opt.speed,
+            speedL = 4,
+            posX = void 0,
+            posY = void 0;
+
+        if (angle > 360) angle = 0;
+
+        if (angleL > 360) angleL = 0;
+
+        if (isCircle) {
+            posX = centerX + radius * Math.cos(toRadian(angle));
             posY = centerY + radius * Math.sin(toRadian(angle));
+            angle += speed;
+            obj.opt.size.w = obj.opt.size.h = boxSize;
+        }
+
+        if (isEllipse) {
+            posX = centerX + (radius - 50) * Math.cos(toRadian(angle));
+            posY = centerY + (radius + 20) * Math.sin(toRadian(angle));
+            angle += speed;
+            obj.opt.size.w = obj.opt.size.h = boxSize;
+        }
+
+        if (isLissajous) {
+            obj.opt.size.w = obj.opt.size.h = 4;
+            speed = 3;
+            posX = centerX + radius * Math.cos(toRadian(angle));
+            posY = centerY + radius * Math.sin(toRadian(angleL));
+            angle += speed;
+            angleL += speedL;
+        }
 
         obj.opt.pivot.x = posX;
         obj.opt.pivot.y = posY;
-
-        if (angle > 360) angle = 0;
-        angle += 0.1;
         _this.draw();
+    };
+
+    this.click = function (e) {
+        if (btn1.isClick(e)) isCircle = !isCircle;
+
+        if (btn2.isClick(e)) isEllipse = !isEllipse;
+
+        if (btn3.isClick(e)) isLissajous = !isLissajous;
     };
 
     // Draw Object
     this.draw = function () {
         obj.draw();
         path.draw();
+
+        btn1.draw();
+        btn2.draw();
+        btn3.draw();
     };
 
     this.opt = Object.assign({
         ctx: null,
         pos: new _Game.Vector2(),
-        rotateRadius: 100
+        rotateRadius: 80,
+        speed: 1
     }, options);
     init.call(this);
 }
 
 module.exports = CircleMove;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(0);
+
+var _Shit = __webpack_require__(30);
+
+var _Shit2 = _interopRequireDefault(_Shit);
+
+var _Fly = __webpack_require__(31);
+
+var _Fly2 = _interopRequireDefault(_Fly);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function FliesAroundShit(options) {
+    // Private
+    var appName = ' FliesAroundShit',
+        ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        shit = null,
+        flyNumber = 10,
+        flies = [];
+
+    function init() {
+        var g = new _Game.Game(this.opt);
+
+        ctx = g.getCtx();
+        ctxWidth = ctx.canvas.width;
+        ctxHeight = ctx.canvas.height;
+
+        shit = new _Shit2.default({ ctx: ctx });
+        for (var i = 0; i < flyNumber; i++) {
+            flies.push(new _Fly2.default({ ctx: ctx }));
+        }
+
+        update();
+    }
+
+    // Update animation
+    function update() {
+        requestAnimationFrame(update);
+        ctx.clearRect(0, 0, ctxWidth, ctxHeight);
+
+        userInterface();
+
+        shit.update();
+        flies.forEach(function (item) {
+            item.update();
+        });
+    }
+
+    function clickHandler(e) {
+        flies.push(new _Fly2.default({ ctx: ctx }));
+    }
+
+    // onResize Game
+    function resize(ctxMe) {
+        ctxWidth = ctxMe.canvas.width;
+        ctxHeight = ctxMe.canvas.height;
+    }
+
+    // Draw User Interface
+    function userInterface() {
+        ctx.font = "20px Georgia";
+        ctx.textAlign = 'left';
+        ctx.fillStyle = "#F24C27";
+        ctx.fillText("App Name: " + appName, 20, 30);
+    }
+
+    this.opt = Object.assign({
+        selector: 'body',
+        id: 'screen',
+        bgColor: '#FEFEFE',
+        cfResize: resize,
+        cfClick: clickHandler
+    }, options);
+
+    init.call(this);
+}
+
+module.exports = FliesAroundShit;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(0);
+
+var _Shapes = __webpack_require__(1);
+
+function Shit(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        img1 = null;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Shit Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+        allGamesMenu(12);
+
+        if (this.opt.pos.isEmpty) {
+            this.opt.pos = new _Game.Vector2(ctxWidth / 2, ctxHeight / 2);
+        }
+
+        img1 = new Image();
+        img1.src = '/dist/img/shit.png';
+    }
+
+    // Update object
+    this.update = function () {
+        _this.draw();
+    };
+
+    // Draw Object
+    this.draw = function () {
+        var thisX = _this.opt.pos.x - img1.width / 2,
+            thisY = _this.opt.pos.y - 30;
+
+        ctx.drawImage(img1, thisX, thisY);
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new _Game.Vector2()
+    }, options);
+    init.call(this);
+}
+
+module.exports = Shit;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(0);
+
+var _Shapes = __webpack_require__(1);
+
+function Fly(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        img1 = null,
+        angleX = rand(0, 360),
+        angleY = rand(0, 360),
+        cX,
+        cY,
+        r,
+        speedX,
+        speedY,
+        rotate;
+
+    function init() {
+        if (!this.opt.ctx) throw 'Fly Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.pos.isEmpty) {
+            this.opt.pos = new _Game.Vector2(ctxWidth / 2, ctxHeight / 2);
+        }
+
+        img1 = new Image();
+        img1.src = '/dist/img/fly.png';
+
+        cX = this.opt.pos.x;
+        cY = this.opt.pos.y;
+        r = rand(30, 90);
+        speedX = rand(2, 4);
+        speedY = rand(4, 7);
+        rotate = rangeRand(20, 25);
+    }
+
+    // Update object
+    this.update = function () {
+
+        _this.opt.pos.x = cX + r * Math.cos(toRadian(angleX));
+        _this.opt.pos.y = cY + r * Math.sin(toRadian(angleY));
+
+        if (angleX > 360) angleX = 0;
+        angleX += speedX;
+
+        if (angleY > 360) angleY = 0;
+        angleY += speedY;
+
+        _this.draw();
+    };
+
+    // Draw Object
+    this.draw = function () {
+        var thisX = _this.opt.pos.x - img1.width / 2,
+            thisY = _this.opt.pos.y;
+        ctx.save();
+        ctx.translate(ctxWidth / 2, ctxHeight / 2);
+        ctx.rotate(rotate);
+        ctx.drawImage(img1, ctxWidth / 2 - thisX, ctxHeight / 2 - thisY, 10, 5);
+        ctx.restore();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new _Game.Vector2()
+    }, options);
+    init.call(this);
+}
+
+module.exports = Fly;
 
 /***/ })
 /******/ ]);

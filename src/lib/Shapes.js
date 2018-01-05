@@ -35,13 +35,17 @@ module.exports.Rectangle = function(options){
             this.opt.size.w,
             this.opt.size.h
         );
-        ctx.fillStyle = this.opt.bgColor;
 
-        let orgAlpha = ctx.globalAlpha;
-        if( this.opt.alpha !== null)
-            ctx.globalAlpha = this.opt.alpha;
-        ctx.fill();
-        ctx.globalAlpha = orgAlpha;
+
+        if( this.opt.bgColor !== null ) {
+            ctx.fillStyle = this.opt.bgColor;
+
+            let orgAlpha = ctx.globalAlpha;
+            if (this.opt.alpha !== null)
+                ctx.globalAlpha = this.opt.alpha;
+            ctx.fill();
+            ctx.globalAlpha = orgAlpha;
+        }
 
         if( this.opt.brColor !== null ) {
             ctx.strokeStyle = this.opt.brColor;

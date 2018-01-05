@@ -4,7 +4,7 @@ function allGamesMenu( idxGame ){
         select = document.createElement('select'),
         games = [
             'BlockRunner','Physics','MouseTail','HeavyBall','BackgroundBalls','Collision','RotatePlayer',
-            'Tennis','One Direction Move','Coding Math',
+            'Tennis','One Direction Move','Coding Math','Clock Move','Flies Around Shit',
         ];
 
     select.id = 'game';
