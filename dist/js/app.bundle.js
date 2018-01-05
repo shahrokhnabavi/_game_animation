@@ -167,6 +167,83 @@ function Mouse(options) {
 
 //+++++++++++++++++++++++++++++++++++++
 //+++++++++++++++++++++++++++++++++++++
+var Vector = {
+    _x: 1,
+    _y: 0,
+
+    create: function create(x, y) {
+        var obj = Object.create(this);
+        obj.setX(x);
+        obj.setY(y);
+        return obj;
+    },
+
+    getX: function getX() {
+        return this._x;
+    },
+    setX: function setX(value) {
+        this._x = value;
+    },
+
+    getY: function getY() {
+        return this._y;
+    },
+    setY: function setY(value) {
+        this._y = value;
+    },
+
+    getLength: function getLength() {
+        return Math.sqrt(this._x * this._x + this._y * this._y);
+    },
+    setLength: function setLength(length) {
+        var angle = this.getAngle();
+        this._x = Math.cos(angle) * length;
+        this._y = Math.sin(angle) * length;
+    },
+
+    getAngle: function getAngle() {
+        return Math.atan2(this._y, this._x);
+    },
+    setAngle: function setAngle(angle) {
+        var length = this.getLength();
+        this._x = Math.cos(angle) * length;
+        this._y = Math.sin(angle) * length;
+    },
+
+    add: function add(v2) {
+        return Vector.create(this._x + v2._x, this._y + v2._y);
+    },
+    addTo: function addTo(v2) {
+        this._x += v2._x;
+        this._y += v2._y;
+    },
+
+    subtract: function subtract(v2) {
+        return Vector.create(this._x - v2._x, this._y - v2._y);
+    },
+    subtractFrom: function subtractFrom(v2) {
+        this._x -= v2._x;
+        this._y -= v2._y;
+    },
+
+    multiply: function multiply(scaler) {
+        return Vector.create(this._x * scaler, this._y * scaler);
+    },
+    multiplyBy: function multiplyBy(scaler) {
+        this._x *= scaler;
+        this._y *= scaler;
+    },
+
+    divide: function divide(scaler) {
+        return Vector.create(this._x / scaler, this._y / scaler);
+    },
+    divideBy: function divideBy(scaler) {
+        this._x /= scaler;
+        this._y /= scaler;
+    }
+};
+module.exports.Vector = Vector;
+
 var Vector2 = function Vector2(x, y) {
     var _this4 = this;
 
@@ -578,7 +655,7 @@ window.loadGame = function (idx) {
             break;
     }
 };
-loadGame(12);
+loadGame(10);
 
 /***/ }),
 /* 3 */
@@ -2718,6 +2795,10 @@ var _CircleMove = __webpack_require__(28);
 
 var _CircleMove2 = _interopRequireDefault(_CircleMove);
 
+var _PointToMouse = __webpack_require__(32);
+
+var _PointToMouse2 = _interopRequireDefault(_PointToMouse);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.min = 0;
@@ -2732,6 +2813,7 @@ function CodingMath(options) {
         btn = [],
         sinWave = null,
         cosMove = null,
+        pointToMouse = null,
         circleMove = null;
 
     function init() {
@@ -2747,10 +2829,12 @@ function CodingMath(options) {
         btn.push({ btn: new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(w + 90, 10), bgColor: clr, text: 'Sin' }), clk: false });
         btn.push({ btn: new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(w + 135, 10), bgColor: clr, text: 'Cos Move' }), clk: false });
         btn.push({ btn: new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(w + 223, 10), bgColor: clr, text: 'Circle Movement' }), clk: false });
+        btn.push({ btn: new _Game.Button({ ctx: ctx, pos: new _Game.Vector2(w - 200, 10), bgColor: clr, text: 'Point to Mouse' }), clk: false });
 
         sinWave = new _SinWave2.default({ ctx: ctx });
         cosMove = new _CosMove2.default({ ctx: ctx, pos: new _Game.Vector2(ctxWidth / 2, ctxHeight / 2) });
         circleMove = new _CircleMove2.default({ ctx: ctx });
+        pointToMouse = new _PointToMouse2.default({ ctx: ctx, mouse: g.mouse });
         update();
     }
 
@@ -2766,6 +2850,8 @@ function CodingMath(options) {
         if (btn[1].clk) cosMove.update();
 
         if (btn[2].clk) circleMove.update();
+
+        if (btn[3].clk) pointToMouse.update();
     }
 
     // onResize Game
@@ -3381,6 +3467,82 @@ function Fly(options) {
 }
 
 module.exports = Fly;
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(0);
+
+var _Shapes = __webpack_require__(1);
+
+function PointToMouse(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        angle;
+
+    function init() {
+        if (!this.opt.ctx) throw 'PointToMouse Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.pos.isEmpty) {
+            this.opt.pos = new _Game.Vector2(ctxWidth / 2, ctxHeight / 2);
+        }
+    }
+
+    // Update object
+    this.update = function () {
+        var mouse = _this.opt.mouse,
+            dx = mouse.x - _this.opt.pos.x,
+            dy = mouse.y - _this.opt.pos.y;
+
+        angle = Math.atan2(dy, dx);
+        console.log(toDegree(Math.atan(dy / dx)));
+
+        _this.draw();
+    };
+
+    // Draw Object
+    this.draw = function () {
+        var thisX = _this.opt.pos.x,
+            thisY = _this.opt.pos.y,
+            arrowLen = 100;
+
+        ctx.save();
+        ctx.translate(thisX, thisY);
+        ctx.rotate(angle);
+
+        ctx.beginPath();
+        ctx.moveTo(-arrowLen / 2, 0);
+        ctx.lineTo(arrowLen / 2, 0);
+        ctx.lineTo(arrowLen / 2 - 10, 2);
+        ctx.moveTo(arrowLen / 2, 0);
+        ctx.lineTo(arrowLen / 2 - 10, -2);
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.restore();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new _Game.Vector2(),
+        mouse: null
+    }, options);
+    init.call(this);
+}
+
+module.exports = PointToMouse;
 
 /***/ })
 /******/ ]);

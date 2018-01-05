@@ -92,6 +92,68 @@ function Mouse(options) {
 
 //+++++++++++++++++++++++++++++++++++++
 //+++++++++++++++++++++++++++++++++++++
+var Vector = {
+    _x: 1,
+    _y: 0,
+
+    create: function(x,y) {
+        let obj = Object.create(this);
+        obj.setX(x);
+        obj.setY(y);
+        return obj;
+    },
+
+    getX: function(){ return this._x; },
+    setX: function(value) {
+        this._x = value;
+    },
+
+    getY: function(){ return this._y; },
+    setY: function(value) {
+        this._y = value;
+    },
+
+    getLength: function(){ return Math.sqrt(this._x * this._x + this._y * this._y); },
+    setLength: function(length) {
+        let angle = this.getAngle();
+        this._x = Math.cos(angle) * length;
+        this._y = Math.sin(angle) * length;
+    },
+
+    getAngle: function(){ return Math.atan2( this._y, this._x) },
+    setAngle: function(angle) {
+        let length = this.getLength();
+        this._x = Math.cos(angle) * length;
+        this._y = Math.sin(angle) * length;
+    },
+
+    add: function (v2) { return Vector.create(this._x + v2._x, this._y + v2._y); },
+    addTo: function (v2) {
+        this._x += v2._x;
+        this._y += v2._y;
+    },
+
+    subtract: function (v2) { return Vector.create(this._x - v2._x, this._y - v2._y); },
+    subtractFrom: function (v2) {
+        this._x -= v2._x;
+        this._y -= v2._y;
+    },
+
+    multiply: function (scaler) { return Vector.create(this._x * scaler, this._y * scaler) },
+    multiplyBy: function (scaler) {
+        this._x *= scaler;
+        this._y *= scaler;
+    },
+
+    divide: function (scaler) { return Vector.create(this._x / scaler, this._y / scaler) },
+    divideBy: function (scaler) {
+        this._x /= scaler;
+        this._y /= scaler;
+    },
+};
+module.exports.Vector = Vector;
+
+
 var Vector2 = function(x, y){
 
     this.normal = (multi) => {

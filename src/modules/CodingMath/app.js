@@ -2,6 +2,7 @@ import {Game, Vector2, Button} from '../../lib/Game';
 import SinWave from './SinWave';
 import CosMove from './CosMove';
 import CircleMove from './CircleMove';
+import PointToMouse from './PointToMouse';
 
 window.min = 0;
 window.max = 360;
@@ -17,6 +18,7 @@ function  CodingMath(options) {
 
         sinWave = null,
         cosMove = null,
+        pointToMouse = null,
         circleMove = null;
 
     function init(){
@@ -33,10 +35,12 @@ function  CodingMath(options) {
         btn.push({btn: new Button({ctx:ctx, pos: new Vector2(w + 90, 10), bgColor:clr, text: 'Sin'}), clk: false});
         btn.push({btn: new Button({ctx:ctx, pos: new Vector2(w + 135, 10), bgColor:clr, text: 'Cos Move'}), clk: false});
         btn.push({btn: new Button({ctx:ctx, pos: new Vector2(w + 223, 10), bgColor:clr, text: 'Circle Movement'}), clk: false});
+        btn.push({btn: new Button({ctx:ctx, pos: new Vector2(w - 200, 10), bgColor:clr, text: 'Point to Mouse'}), clk: false});
 
         sinWave = new SinWave({ctx: ctx});
         cosMove = new CosMove({ctx: ctx, pos: new Vector2(ctxWidth/2,ctxHeight/2)});
         circleMove = new CircleMove({ctx: ctx});
+        pointToMouse = new PointToMouse({ctx: ctx,mouse: g.mouse});
         update();
     }
 
@@ -55,6 +59,9 @@ function  CodingMath(options) {
 
         if ( btn[2].clk )
             circleMove.update();
+
+        if ( btn[3].clk )
+            pointToMouse.update();
     }
 
     // onResize Game

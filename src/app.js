@@ -50,4 +50,4 @@ window.loadGame = idx => {
             break;
     }
 };
-loadGame(12);
+loadGame(10);
