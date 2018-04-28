@@ -609,7 +609,7 @@ var _app19 = __webpack_require__(25);
 
 var _app20 = _interopRequireDefault(_app19);
 
-var _app21 = __webpack_require__(29);
+var _app21 = __webpack_require__(30);
 
 var _app22 = _interopRequireDefault(_app21);
 
@@ -655,7 +655,7 @@ window.loadGame = function (idx) {
             break;
     }
 };
-loadGame(10);
+loadGame(11);
 
 /***/ }),
 /* 3 */
@@ -2795,7 +2795,7 @@ var _CircleMove = __webpack_require__(28);
 
 var _CircleMove2 = _interopRequireDefault(_CircleMove);
 
-var _PointToMouse = __webpack_require__(32);
+var _PointToMouse = __webpack_require__(29);
 
 var _PointToMouse2 = _interopRequireDefault(_PointToMouse);
 
@@ -3246,11 +3246,87 @@ module.exports = CircleMove;
 
 var _Game = __webpack_require__(0);
 
-var _Shit = __webpack_require__(30);
+var _Shapes = __webpack_require__(1);
+
+function PointToMouse(options) {
+    var _this = this;
+
+    // Private
+    var ctx = null,
+        ctxWidth = 0,
+        ctxHeight = 0,
+        angle;
+
+    function init() {
+        if (!this.opt.ctx) throw 'PointToMouse Objects need Context';
+
+        ctx = this.opt.ctx;
+        ctxHeight = ctx.canvas.clientHeight;
+        ctxWidth = ctx.canvas.clientWidth;
+
+        if (this.opt.pos.isEmpty) {
+            this.opt.pos = new _Game.Vector2(ctxWidth / 2, ctxHeight / 2);
+        }
+    }
+
+    // Update object
+    this.update = function () {
+        var mouse = _this.opt.mouse,
+            dx = mouse.x - _this.opt.pos.x,
+            dy = mouse.y - _this.opt.pos.y;
+
+        angle = Math.atan2(dy, dx);
+        console.log(toDegree(Math.atan(dy / dx)));
+
+        _this.draw();
+    };
+
+    // Draw Object
+    this.draw = function () {
+        var thisX = _this.opt.pos.x,
+            thisY = _this.opt.pos.y,
+            arrowLen = 100;
+
+        ctx.save();
+        ctx.translate(thisX, thisY);
+        ctx.rotate(angle);
+
+        ctx.beginPath();
+        ctx.moveTo(-arrowLen / 2, 0);
+        ctx.lineTo(arrowLen / 2, 0);
+        ctx.lineTo(arrowLen / 2 - 10, 2);
+        ctx.moveTo(arrowLen / 2, 0);
+        ctx.lineTo(arrowLen / 2 - 10, -2);
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.restore();
+    };
+
+    this.opt = Object.assign({
+        ctx: null,
+        pos: new _Game.Vector2(),
+        mouse: null
+    }, options);
+    init.call(this);
+}
+
+module.exports = PointToMouse;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Game = __webpack_require__(0);
+
+var _Shit = __webpack_require__(31);
 
 var _Shit2 = _interopRequireDefault(_Shit);
 
-var _Fly = __webpack_require__(31);
+var _Fly = __webpack_require__(32);
 
 var _Fly2 = _interopRequireDefault(_Fly);
 
@@ -3326,7 +3402,7 @@ function FliesAroundShit(options) {
 module.exports = FliesAroundShit;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3384,7 +3460,7 @@ function Shit(options) {
 module.exports = Shit;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3467,82 +3543,6 @@ function Fly(options) {
 }
 
 module.exports = Fly;
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _Game = __webpack_require__(0);
-
-var _Shapes = __webpack_require__(1);
-
-function PointToMouse(options) {
-    var _this = this;
-
-    // Private
-    var ctx = null,
-        ctxWidth = 0,
-        ctxHeight = 0,
-        angle;
-
-    function init() {
-        if (!this.opt.ctx) throw 'PointToMouse Objects need Context';
-
-        ctx = this.opt.ctx;
-        ctxHeight = ctx.canvas.clientHeight;
-        ctxWidth = ctx.canvas.clientWidth;
-
-        if (this.opt.pos.isEmpty) {
-            this.opt.pos = new _Game.Vector2(ctxWidth / 2, ctxHeight / 2);
-        }
-    }
-
-    // Update object
-    this.update = function () {
-        var mouse = _this.opt.mouse,
-            dx = mouse.x - _this.opt.pos.x,
-            dy = mouse.y - _this.opt.pos.y;
-
-        angle = Math.atan2(dy, dx);
-        console.log(toDegree(Math.atan(dy / dx)));
-
-        _this.draw();
-    };
-
-    // Draw Object
-    this.draw = function () {
-        var thisX = _this.opt.pos.x,
-            thisY = _this.opt.pos.y,
-            arrowLen = 100;
-
-        ctx.save();
-        ctx.translate(thisX, thisY);
-        ctx.rotate(angle);
-
-        ctx.beginPath();
-        ctx.moveTo(-arrowLen / 2, 0);
-        ctx.lineTo(arrowLen / 2, 0);
-        ctx.lineTo(arrowLen / 2 - 10, 2);
-        ctx.moveTo(arrowLen / 2, 0);
-        ctx.lineTo(arrowLen / 2 - 10, -2);
-        ctx.stroke();
-        ctx.closePath();
-
-        ctx.restore();
-    };
-
-    this.opt = Object.assign({
-        ctx: null,
-        pos: new _Game.Vector2(),
-        mouse: null
-    }, options);
-    init.call(this);
-}
-
-module.exports = PointToMouse;
 
 /***/ })
 /******/ ]);
